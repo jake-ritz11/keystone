@@ -66,6 +66,14 @@ h2 {
   margin-bottom: var(--ks-space-4);
 }
 
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--ks-space-5) var(--ks-space-4);
+  align-items: start;
+  margin-bottom: var(--ks-space-6);
+}
+
 .swatches {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));

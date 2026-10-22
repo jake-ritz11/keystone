@@ -1,6 +1,13 @@
 import { color } from "@keystone-ui/tokens";
-import { Button } from "@keystone-ui/ui";
+import { Button, Input } from "@keystone-ui/ui";
 import { ThemeToggle } from "./ThemeToggle";
+
+const SearchIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <circle cx="7" cy="7" r="4.5" />
+    <path d="m10.5 10.5 3 3" strokeLinecap="round" />
+  </svg>
+);
 
 const kebab = (key: string) => key.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`);
 
@@ -33,6 +40,23 @@ export default function Home() {
       <div className="row">
         <Button loading>Saving</Button>
         <Button disabled>Disabled</Button>
+      </div>
+
+      <h2>Input</h2>
+      <div className="grid">
+        <Input label="Name" placeholder="Ada Lovelace" />
+        <Input label="Email" type="email" hint="Used only for sign-in." required />
+        <Input label="Username" defaultValue="ada" error="That username is taken." />
+        <Input label="Workspace ID" defaultValue="ks-0042" readOnly hint="Read-only." />
+        <Input label="Disabled" placeholder="Not editable" disabled />
+      </div>
+      <div className="row">
+        <Input label="Search" hideLabel placeholder="Search components" iconStart={<SearchIcon />} />
+      </div>
+      <div className="row">
+        <Input label="Small" size="sm" placeholder="sm" />
+        <Input label="Medium" size="md" placeholder="md" />
+        <Input label="Large" size="lg" placeholder="lg" />
       </div>
 
       <h2>Color tokens</h2>

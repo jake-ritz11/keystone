@@ -1,0 +1,29 @@
+.input {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  border: 0;
+  padding-inline: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: var(--ks-font-line-height-tight);
+  outline: none;
+}
+
+.input::placeholder {
+  color: var(--ks-color-text-muted);
+  opacity: 1;
+}
+
+.sm {
+  padding-block: var(--ks-space-1);
+}
+
+.md {
+  padding-block: var(--ks-space-2);
+}
+
+.lg {
+  padding-block: var(--ks-space-3);
+}

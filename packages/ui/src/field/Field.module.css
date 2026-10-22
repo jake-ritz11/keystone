@@ -1,0 +1,110 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ks-space-1);
+  font-family: var(--ks-font-family-sans);
+  min-width: 0;
+}
+
+.label {
+  font-size: var(--ks-font-size-sm);
+  font-weight: var(--ks-font-weight-medium);
+  line-height: var(--ks-font-line-height-tight);
+  color: var(--ks-color-text);
+}
+
+.required {
+  color: var(--ks-color-danger);
+  margin-left: var(--ks-space-1);
+}
+
+.hint,
+.error {
+  margin: 0;
+  font-size: var(--ks-font-size-sm);
+  line-height: var(--ks-font-line-height-normal);
+}
+
+.hint {
+  color: var(--ks-color-text-muted);
+}
+
+.error {
+  color: var(--ks-color-danger);
+  font-weight: var(--ks-font-weight-medium);
+}
+
+/* Off-screen but still read by assistive tech, for fields whose label is implied visually. */
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* The bordered box shared by Input and Select. */
+.control {
+  display: flex;
+  align-items: center;
+  gap: var(--ks-space-2);
+  border: 1px solid var(--ks-color-border);
+  border-radius: var(--ks-radius-md);
+  background: var(--ks-color-surface);
+  color: var(--ks-color-text);
+  transition: border-color var(--ks-motion-duration-fast) var(--ks-motion-easing-standard);
+}
+
+.control:hover:not([data-disabled]) {
+  border-color: var(--ks-color-text-muted);
+}
+
+.control:has(:focus-visible) {
+  outline: 2px solid var(--ks-color-focus);
+  outline-offset: 1px;
+}
+
+.control[data-invalid] {
+  border-color: var(--ks-color-danger);
+}
+
+.control[data-readonly] {
+  background: var(--ks-color-surface-raised);
+}
+
+.control[data-disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.control[data-disabled] * {
+  cursor: not-allowed;
+}
+
+.sm {
+  padding-inline: var(--ks-space-2);
+  font-size: var(--ks-font-size-sm);
+}
+
+.md {
+  padding-inline: var(--ks-space-3);
+  font-size: var(--ks-font-size-md);
+}
+
+.lg {
+  padding-inline: var(--ks-space-4);
+  font-size: var(--ks-font-size-lg);
+}
+
+.icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: var(--ks-color-text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .control {
+    transition: none;
+  }
+}

@@ -1,0 +1,137 @@
+.tabs {
+  display: flex;
+  gap: var(--ks-space-4);
+  font-family: var(--ks-font-family-sans);
+  color: var(--ks-color-text);
+}
+
+.horizontal {
+  flex-direction: column;
+}
+
+.vertical {
+  flex-direction: row;
+}
+
+.list {
+  display: flex;
+}
+
+.vertical .list {
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ks-space-2);
+  border: 0;
+  padding: var(--ks-space-2) var(--ks-space-3);
+  background: transparent;
+  color: var(--ks-color-text-muted);
+  font: inherit;
+  font-size: var(--ks-font-size-sm);
+  font-weight: var(--ks-font-weight-medium);
+  line-height: var(--ks-font-line-height-tight);
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    color var(--ks-motion-duration-fast) var(--ks-motion-easing-standard),
+    background-color var(--ks-motion-duration-fast) var(--ks-motion-easing-standard);
+}
+
+.tab:hover:not(:disabled),
+.tab[aria-selected="true"] {
+  color: var(--ks-color-text);
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--ks-color-focus);
+  outline-offset: -2px;
+  border-radius: var(--ks-radius-sm);
+}
+
+.tab:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Underline: a rule under the list, and an indicator on the selected tab. */
+.underline {
+  gap: var(--ks-space-1);
+  box-shadow: inset 0 -1px 0 var(--ks-color-border);
+}
+
+.vertical .underline {
+  box-shadow: inset -1px 0 0 var(--ks-color-border);
+}
+
+.underline .tab::after {
+  content: "";
+  position: absolute;
+  inset: auto var(--ks-space-2) 0;
+  height: 2px;
+  border-radius: var(--ks-radius-full);
+  background: var(--ks-color-accent);
+  transform: scaleX(0);
+  transition: transform var(--ks-motion-duration-normal) var(--ks-motion-easing-standard);
+}
+
+.vertical .underline .tab {
+  justify-content: flex-start;
+}
+
+.vertical .underline .tab::after {
+  inset: var(--ks-space-1) 0 var(--ks-space-1) auto;
+  width: 2px;
+  height: auto;
+  transform: scaleY(0);
+}
+
+.underline .tab[aria-selected="true"]::after {
+  transform: none;
+}
+
+/* Segmented: a track with the selected tab raised out of it. */
+.segmented {
+  gap: var(--ks-space-1);
+  align-self: flex-start;
+  border-radius: var(--ks-radius-md);
+  padding: var(--ks-space-1);
+  background: var(--ks-color-surface-raised);
+}
+
+.segmented .tab {
+  border-radius: var(--ks-radius-sm);
+  padding: var(--ks-space-1) var(--ks-space-3);
+}
+
+.segmented .tab[aria-selected="true"] {
+  background: var(--ks-color-surface);
+  box-shadow:
+    0 1px 2px var(--ks-color-shadow),
+    inset 0 0 0 1px var(--ks-color-border);
+}
+
+.panel {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--ks-font-size-md);
+  line-height: var(--ks-font-line-height-normal);
+}
+
+.panel:focus-visible {
+  outline: 2px solid var(--ks-color-focus);
+  outline-offset: 2px;
+  border-radius: var(--ks-radius-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tab,
+  .underline .tab::after {
+    transition: none;
+  }
+}

@@ -13,3 +13,6 @@ export type { DialogProps, DialogSize } from "./dialog/Dialog";
 
 export { Menu, MenuItem, MenuSeparator } from "./menu/Menu";
 export type { MenuItemProps, MenuProps } from "./menu/Menu";
+
+export { Tab, TabList, TabPanel, Tabs } from "./tabs/Tabs";
+export type { TabListProps, TabPanelProps, TabProps, TabsProps, TabsVariant } from "./tabs/Tabs";

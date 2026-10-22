@@ -1,5 +1,5 @@
 import { color } from "@keystone-ui/tokens";
-import { Button, Input, Select } from "@keystone-ui/ui";
+import { Button, Input, Select, Tab, TabList, TabPanel, Tabs } from "@keystone-ui/ui";
 import { ThemeToggle } from "./ThemeToggle";
 import { DialogDemo } from "./demos/DialogDemo";
 import { MenuDemo } from "./demos/MenuDemo";
@@ -110,6 +110,46 @@ export default function Home() {
 
       <h2>Menu</h2>
       <MenuDemo />
+
+      <h2>Tabs</h2>
+      <div className="stack">
+        <Tabs defaultValue="overview">
+          <TabList aria-label="Project">
+            <Tab value="overview">Overview</Tab>
+            <Tab value="activity">Activity</Tab>
+            <Tab value="settings">Settings</Tab>
+            <Tab value="billing" disabled>
+              Billing
+            </Tab>
+          </TabList>
+          <TabPanel value="overview">Underline tabs. Arrow keys move between tabs and select as they go.</TabPanel>
+          <TabPanel value="activity">Recent changes would be listed here.</TabPanel>
+          <TabPanel value="settings">Settings for the project would go here.</TabPanel>
+          <TabPanel value="billing">Billing is unavailable.</TabPanel>
+        </Tabs>
+
+        <Tabs defaultValue="day" variant="segmented" activation="manual">
+          <TabList aria-label="Range">
+            <Tab value="day">Day</Tab>
+            <Tab value="week">Week</Tab>
+            <Tab value="month">Month</Tab>
+          </TabList>
+          <TabPanel value="day">Segmented, manual activation: arrows move focus, Enter or Space selects.</TabPanel>
+          <TabPanel value="week">Weekly view.</TabPanel>
+          <TabPanel value="month">Monthly view.</TabPanel>
+        </Tabs>
+
+        <Tabs defaultValue="general" orientation="vertical">
+          <TabList aria-label="Account settings">
+            <Tab value="general">General</Tab>
+            <Tab value="security">Security</Tab>
+            <Tab value="notifications">Notifications</Tab>
+          </TabList>
+          <TabPanel value="general">Vertical tabs use the up and down arrows.</TabPanel>
+          <TabPanel value="security">Security settings.</TabPanel>
+          <TabPanel value="notifications">Notification settings.</TabPanel>
+        </Tabs>
+      </div>
 
       <h2>Color tokens</h2>
       <div className="swatches">

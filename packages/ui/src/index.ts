@@ -7,3 +7,6 @@ export type { FieldSize } from "./field/Field";
 
 export { Select } from "./select/Select";
 export type { SelectProps } from "./select/Select";
+
+export { Dialog } from "./dialog/Dialog";
+export type { DialogProps, DialogSize } from "./dialog/Dialog";

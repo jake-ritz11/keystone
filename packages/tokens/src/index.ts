@@ -16,6 +16,10 @@ export const color = {
     accentText: "#ffffff",
     danger: "#c92a2a",
     focus: "#3b5bdb",
+    /** Behind modal layers. */
+    scrim: "#1d1b1866",
+    /** Elevation shadows for popovers and dialogs. */
+    shadow: "#1d1b1824",
   },
   dark: {
     bg: "#141312",
@@ -29,6 +33,8 @@ export const color = {
     accentText: "#0f1220",
     danger: "#ff6b6b",
     focus: "#97abf8",
+    scrim: "#000000a6",
+    shadow: "#00000080",
   },
 } as const;
 

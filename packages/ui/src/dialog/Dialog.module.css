@@ -1,0 +1,129 @@
+.dialog {
+  width: min(calc(100vw - var(--ks-space-8)), 520px);
+  max-height: calc(100dvh - var(--ks-space-12));
+  margin: auto;
+  border: 1px solid var(--ks-color-border);
+  border-radius: var(--ks-radius-lg);
+  padding: 0;
+  background: var(--ks-color-surface);
+  color: var(--ks-color-text);
+  font-family: var(--ks-font-family-sans);
+  box-shadow: 0 16px 48px var(--ks-color-shadow);
+  opacity: 0;
+  transform: translateY(var(--ks-space-2)) scale(0.98);
+  transition:
+    opacity var(--ks-motion-duration-normal) var(--ks-motion-easing-standard),
+    transform var(--ks-motion-duration-normal) var(--ks-motion-easing-standard),
+    display var(--ks-motion-duration-normal) allow-discrete,
+    overlay var(--ks-motion-duration-normal) allow-discrete;
+}
+
+.dialog[open] {
+  display: flex;
+  flex-direction: column;
+  opacity: 1;
+  transform: none;
+}
+
+.dialog::backdrop {
+  background: var(--ks-color-scrim);
+  opacity: 0;
+  transition:
+    opacity var(--ks-motion-duration-normal) var(--ks-motion-easing-standard),
+    display var(--ks-motion-duration-normal) allow-discrete,
+    overlay var(--ks-motion-duration-normal) allow-discrete;
+}
+
+.dialog[open]::backdrop {
+  opacity: 1;
+}
+
+@starting-style {
+  .dialog[open] {
+    opacity: 0;
+    transform: translateY(var(--ks-space-2)) scale(0.98);
+  }
+
+  .dialog[open]::backdrop {
+    opacity: 0;
+  }
+}
+
+/* Keep the page behind a modal from scrolling. */
+:global(html):has(.dialog[open]) {
+  overflow: hidden;
+}
+
+.sm {
+  width: min(calc(100vw - var(--ks-space-8)), 400px);
+}
+
+.lg {
+  width: min(calc(100vw - var(--ks-space-8)), 720px);
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ks-space-3);
+  padding: var(--ks-space-5) var(--ks-space-5) var(--ks-space-3);
+}
+
+.heading {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ks-space-1);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--ks-font-size-lg);
+  font-weight: var(--ks-font-weight-semibold);
+  line-height: var(--ks-font-line-height-tight);
+}
+
+.description {
+  margin: 0;
+  font-size: var(--ks-font-size-sm);
+  line-height: var(--ks-font-line-height-normal);
+  color: var(--ks-color-text-muted);
+}
+
+.close {
+  margin-block-start: calc(var(--ks-space-1) * -1);
+  margin-inline-end: calc(var(--ks-space-2) * -1);
+  padding: var(--ks-space-1);
+}
+
+.body {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--ks-space-2) var(--ks-space-5) var(--ks-space-5);
+  font-size: var(--ks-font-size-md);
+  line-height: var(--ks-font-line-height-normal);
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--ks-space-2);
+  border-top: 1px solid var(--ks-color-border);
+  padding: var(--ks-space-4) var(--ks-space-5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Fade only: no movement, and quicker. */
+  .dialog,
+  .dialog::backdrop {
+    transform: none;
+    transition-duration: var(--ks-motion-duration-fast);
+  }
+
+  @starting-style {
+    .dialog[open] {
+      transform: none;
+    }
+  }
+}

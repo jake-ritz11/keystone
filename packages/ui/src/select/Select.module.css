@@ -71,7 +71,7 @@
     padding: var(--ks-space-1);
     background: var(--ks-color-surface);
     color: var(--ks-color-text);
-    box-shadow: 0 8px 24px color-mix(in srgb, var(--ks-color-text) 14%, transparent);
+    box-shadow: 0 8px 24px var(--ks-color-shadow);
     opacity: 1;
     transition:
       opacity var(--ks-motion-duration-fast) var(--ks-motion-easing-standard),

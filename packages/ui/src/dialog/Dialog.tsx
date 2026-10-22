@@ -14,6 +14,27 @@ import styles from "./Dialog.module.css";
 
 export type DialogSize = "sm" | "md" | "lg";
 
+// Safari doesn't focus a button when it's clicked, so on open `document.activeElement` is often
+// <body>. Remember the last control pressed so focus can still go back to whatever opened the
+// dialog.
+let lastPressed: HTMLElement | null = null;
+if (typeof document !== "undefined") {
+  document.addEventListener(
+    "pointerdown",
+    (event) => {
+      const target = event.target instanceof Element ? event.target : null;
+      lastPressed = target?.closest<HTMLElement>("button, a[href], input, select, textarea, [tabindex]") ?? null;
+    },
+    true,
+  );
+}
+
+function openerElement(): HTMLElement | null {
+  const active = document.activeElement;
+  if (active instanceof HTMLElement && active !== document.body) return active;
+  return lastPressed?.isConnected ? lastPressed : null;
+}
+
 export interface DialogProps extends Omit<DialogHTMLAttributes<HTMLDialogElement>, "open" | "title"> {
   open: boolean;
   /** Called with `false` on Escape, the close button, or a backdrop click (when `dismissible`). */
@@ -66,7 +87,7 @@ export const Dialog = forwardRef<HTMLDialogElement, DialogProps>(function Dialog
     const dialog = dialogRef.current;
     if (!dialog) return;
     if (open && !dialog.open) {
-      returnFocus.current = document.activeElement as HTMLElement | null;
+      returnFocus.current = openerElement();
       dialog.showModal();
     } else if (!open && dialog.open) {
       dialog.close();

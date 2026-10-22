@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "keystone": {
+      "command": "node",
+      "args": ["packages/mcp/src/server.ts"]
+    }
+  }
+}

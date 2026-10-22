@@ -1,0 +1,112 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ks-space-2);
+  border: 1px solid transparent;
+  border-radius: var(--ks-radius-md);
+  font-family: var(--ks-font-family-sans);
+  font-weight: var(--ks-font-weight-medium);
+  line-height: var(--ks-font-line-height-tight);
+  cursor: pointer;
+  transition:
+    background-color var(--ks-motion-duration-fast) var(--ks-motion-easing-standard),
+    border-color var(--ks-motion-duration-fast) var(--ks-motion-easing-standard),
+    transform var(--ks-motion-duration-fast) var(--ks-motion-easing-standard);
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--ks-color-focus);
+  outline-offset: 2px;
+}
+
+.button:active:not(:disabled, [aria-disabled="true"]) {
+  transform: translateY(1px);
+}
+
+.button:disabled,
+.button[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.sm {
+  padding: var(--ks-space-1) var(--ks-space-3);
+  font-size: var(--ks-font-size-sm);
+}
+
+.md {
+  padding: var(--ks-space-2) var(--ks-space-4);
+  font-size: var(--ks-font-size-md);
+}
+
+.lg {
+  padding: var(--ks-space-3) var(--ks-space-5);
+  font-size: var(--ks-font-size-lg);
+}
+
+.primary {
+  background: var(--ks-color-accent);
+  color: var(--ks-color-accent-text);
+}
+
+.primary:hover:not(:disabled, [aria-disabled="true"]) {
+  background: var(--ks-color-accent-hover);
+}
+
+.secondary {
+  background: var(--ks-color-surface);
+  border-color: var(--ks-color-border);
+  color: var(--ks-color-text);
+}
+
+.secondary:hover:not(:disabled, [aria-disabled="true"]) {
+  background: var(--ks-color-surface-raised);
+}
+
+.ghost {
+  background: transparent;
+  color: var(--ks-color-text);
+}
+
+.ghost:hover:not(:disabled, [aria-disabled="true"]) {
+  background: var(--ks-color-surface-raised);
+}
+
+.danger {
+  background: var(--ks-color-danger);
+  color: var(--ks-color-accent-text);
+}
+
+.label {
+  white-space: nowrap;
+}
+
+.spinner {
+  width: 1em;
+  height: 1em;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: var(--ks-radius-full);
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition: none;
+  }
+
+  .button:active:not(:disabled, [aria-disabled="true"]) {
+    transform: none;
+  }
+
+  .spinner {
+    animation-duration: 2s;
+  }
+}

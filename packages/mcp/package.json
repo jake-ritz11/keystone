@@ -1,0 +1,22 @@
+{
+  "name": "@keystone-ui/mcp",
+  "version": "0.0.0",
+  "private": true,
+  "description": "MCP server that gives Claude the Keystone tokens and audits components against them.",
+  "type": "module",
+  "bin": {
+    "keystone-mcp": "./src/server.ts",
+    "keystone-audit": "./src/cli.ts"
+  },
+  "scripts": {
+    "start": "node src/server.ts",
+    "audit": "node src/cli.ts",
+    "test": "node --test \"src/**/*.test.ts\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@keystone-ui/tokens": "0.0.0",
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "zod": "^4.6.7"
+  }
+}

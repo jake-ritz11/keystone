@@ -1,0 +1,18 @@
+{
+  "name": "@keystone-ui/docs",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@keystone-ui/tokens": "0.0.0",
+    "@keystone-ui/ui": "0.0.0",
+    "next": "^16.4.2",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  }
+}

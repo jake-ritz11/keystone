@@ -1,0 +1,13 @@
+{
+  "name": "@keystone-ui/tokens",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Design tokens: the single source of truth for color, space, type, radius and motion.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  }
+}

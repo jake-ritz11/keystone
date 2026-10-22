@@ -1,0 +1,93 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light dark;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  background: var(--ks-color-bg);
+  color: var(--ks-color-text);
+  font-family: var(--ks-font-family-sans);
+  font-size: var(--ks-font-size-md);
+  line-height: var(--ks-font-line-height-normal);
+}
+
+main {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: var(--ks-space-10) var(--ks-space-4);
+}
+
+h1,
+h2 {
+  line-height: var(--ks-font-line-height-tight);
+}
+
+h1 {
+  font-size: var(--ks-font-size-2xl);
+  margin: 0 0 var(--ks-space-2);
+}
+
+h2 {
+  font-size: var(--ks-font-size-xl);
+  margin: var(--ks-space-12) 0 var(--ks-space-4);
+}
+
+.lede {
+  color: var(--ks-color-text-muted);
+  margin: 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--ks-space-4);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ks-space-3);
+  margin-bottom: var(--ks-space-4);
+}
+
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--ks-space-3);
+}
+
+.swatch {
+  border: 1px solid var(--ks-color-border);
+  border-radius: var(--ks-radius-md);
+  overflow: hidden;
+  background: var(--ks-color-surface);
+}
+
+.swatch-chip {
+  height: 56px;
+}
+
+.swatch-name {
+  display: block;
+  padding: var(--ks-space-2);
+  font-family: var(--ks-font-family-mono);
+  font-size: var(--ks-font-size-xs);
+  color: var(--ks-color-text-muted);
+  overflow-wrap: anywhere;
+}

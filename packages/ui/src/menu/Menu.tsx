@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  cloneElement,
   createContext,
   forwardRef,
   useContext,
@@ -12,22 +11,18 @@ import {
   type ButtonHTMLAttributes,
   type HTMLAttributes,
   type KeyboardEvent,
-  type ReactElement,
   type ReactNode,
-  type Ref,
 } from "react";
-import { anchorName, anchorStyle, placeFallback, positionedStyle } from "../popover/anchor";
+import { anchorName, placeFallback, positionedStyle, wireTrigger } from "../popover/anchor";
 import styles from "./Menu.module.css";
 
 const ITEM = '[role="menuitem"]:not([aria-disabled="true"])';
 
 const MenuContext = createContext<{ close: () => void } | null>(null);
 
-type TriggerProps = ButtonHTMLAttributes<HTMLButtonElement> & { ref?: Ref<HTMLButtonElement> };
-
 export interface MenuProps extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
-  /** A single button-like element that forwards its ref, e.g. a Keystone `Button`. */
-  trigger: ReactElement<TriggerProps>;
+  /** A single button, such as a Keystone `Button`. It can come from a server component. */
+  trigger: ReactNode;
   /** `MenuItem` and `MenuSeparator` elements. */
   children: ReactNode;
   /** Which edge of the trigger the menu lines up with. */
@@ -43,14 +38,30 @@ export interface MenuProps extends Omit<HTMLAttributes<HTMLDivElement>, "childre
 export function Menu({ trigger, children, align = "start", className, style, ...rest }: MenuProps) {
   const id = useId();
   const menuId = `${id}-menu`;
-  const triggerId = trigger.props.id ?? `${id}-trigger`;
   const anchor = anchorName(id);
+  const wrapRef = useRef<HTMLSpanElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLButtonElement | null>(null);
   const focusOnOpen = useRef<"first" | "last">("first");
   const [open, setOpen] = useState(false);
 
   const items = () => Array.from(menuRef.current?.querySelectorAll<HTMLElement>(ITEM) ?? []);
+  const triggerElement = () => wrapRef.current?.firstElementChild as HTMLElement | null | undefined;
+
+  useEffect(() => {
+    const trigger = triggerElement();
+    if (!trigger) return;
+    if (!trigger.id) trigger.id = `${id}-trigger`;
+    menuRef.current?.setAttribute("aria-labelledby", trigger.id);
+    return wireTrigger(wrapRef.current, anchor, {
+      popovertarget: menuId,
+      "aria-haspopup": "menu",
+      "aria-controls": menuId,
+    });
+  }, [anchor, id, menuId]);
+
+  useEffect(() => {
+    triggerElement()?.setAttribute("aria-expanded", String(open));
+  }, [open]);
 
   useEffect(() => {
     const menu = menuRef.current;
@@ -58,14 +69,15 @@ export function Menu({ trigger, children, align = "start", className, style, ...
     const onToggle = (event: Event) => {
       const isOpen = (event as ToggleEvent).newState === "open";
       setOpen(isOpen);
+      const trigger = triggerElement();
       if (isOpen) {
-        if (triggerRef.current) placeFallback(triggerRef.current, menu, "bottom", "start", 4);
+        if (trigger) placeFallback(trigger, menu, "bottom", "start", 4);
         const list = items();
         (focusOnOpen.current === "last" ? list.at(-1) : list[0])?.focus();
         focusOnOpen.current = "first";
       } else if (menu.contains(document.activeElement) || document.activeElement === document.body) {
         // Escape, or an item was chosen: put focus back where the user started.
-        triggerRef.current?.focus();
+        trigger?.focus();
       }
     };
     menu.addEventListener("toggle", onToggle);
@@ -73,6 +85,14 @@ export function Menu({ trigger, children, align = "start", className, style, ...
   }, []);
 
   const close = () => menuRef.current?.hidePopover();
+
+  const onTriggerKeyDown = (event: KeyboardEvent<HTMLSpanElement>) => {
+    if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
+    event.preventDefault();
+    focusOnOpen.current = event.key === "ArrowUp" ? "last" : "first";
+    if (open) items()[focusOnOpen.current === "last" ? items().length - 1 : 0]?.focus();
+    else menuRef.current?.showPopover();
+  };
 
   const onMenuKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     const list = items();
@@ -106,39 +126,17 @@ export function Menu({ trigger, children, align = "start", className, style, ...
     event.preventDefault();
   };
 
-  const triggerProps = trigger.props;
-  const setTriggerRef = (node: HTMLButtonElement | null) => {
-    triggerRef.current = node;
-    const outer = triggerProps.ref;
-    if (typeof outer === "function") outer(node);
-    else if (outer) outer.current = node;
-  };
-
   return (
     <MenuContext.Provider value={{ close }}>
-      {cloneElement(trigger, {
-        ref: setTriggerRef,
-        id: triggerId,
-        popoverTarget: menuId,
-        "aria-haspopup": "menu",
-        "aria-expanded": open,
-        "aria-controls": menuId,
-        style: { ...triggerProps.style, ...anchorStyle(anchor) },
-        onKeyDown: (event: KeyboardEvent<HTMLButtonElement>) => {
-          triggerProps.onKeyDown?.(event);
-          if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
-          event.preventDefault();
-          focusOnOpen.current = event.key === "ArrowUp" ? "last" : "first";
-          if (open) items()[focusOnOpen.current === "last" ? items().length - 1 : 0]?.focus();
-          else menuRef.current?.showPopover();
-        },
-      })}
+      {/* display: contents, so the trigger lays out as if unwrapped; its keys still bubble here. */}
+      <span ref={wrapRef} className={styles.trigger} onKeyDown={onTriggerKeyDown}>
+        {trigger}
+      </span>
       <div
         ref={menuRef}
         id={menuId}
         popover="auto"
         role="menu"
-        aria-labelledby={triggerId}
         className={[styles.menu, styles[align], className].filter(Boolean).join(" ")}
         style={{ ...positionedStyle(anchor), ...style }}
         onKeyDown={onMenuKeyDown}

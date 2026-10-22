@@ -10,9 +10,36 @@ export function anchorName(id: string): string {
   return `--ks-anchor-${id.replace(/[^a-zA-Z0-9_-]/g, "")}`;
 }
 
-// `anchorName` and `positionAnchor` aren't in every csstype release yet, so they go in as strings.
-export const anchorStyle = (name: string) => ({ anchorName: name }) as CSSProperties;
+// `positionAnchor` isn't in every csstype release yet.
 export const positionedStyle = (name: string) => ({ positionAnchor: name }) as CSSProperties;
+
+/**
+ * Popover triggers are wrapped in a `display: contents` span instead of cloned, because an
+ * element passed in from a server component can arrive as a lazy reference whose props can't
+ * be read. This sets the anchor name and ARIA attributes on the wrapper's first element, merging
+ * with any id lists already there, and returns a cleanup that takes them off again.
+ */
+export function wireTrigger(
+  wrapper: HTMLElement | null,
+  anchor: string,
+  attributes: Record<string, string>,
+): (() => void) | undefined {
+  const trigger = wrapper?.firstElementChild;
+  if (!(trigger instanceof HTMLElement)) return;
+  const previous = Object.fromEntries(Object.keys(attributes).map((name) => [name, trigger.getAttribute(name)]));
+  for (const [name, value] of Object.entries(attributes)) {
+    const merged = name.endsWith("by") ? [previous[name], value].filter(Boolean).join(" ") : value;
+    trigger.setAttribute(name, merged);
+  }
+  trigger.style.setProperty("anchor-name", anchor);
+  return () => {
+    for (const [name, value] of Object.entries(previous)) {
+      if (value === null) trigger.removeAttribute(name);
+      else trigger.setAttribute(name, value);
+    }
+    trigger.style.removeProperty("anchor-name");
+  };
+}
 
 export function supportsAnchorPositioning(): boolean {
   return typeof CSS !== "undefined" && CSS.supports("anchor-name: --a");

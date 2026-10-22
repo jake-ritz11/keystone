@@ -16,3 +16,6 @@ export type { MenuItemProps, MenuProps } from "./menu/Menu";
 
 export { Tab, TabList, TabPanel, Tabs } from "./tabs/Tabs";
 export type { TabListProps, TabPanelProps, TabProps, TabsProps, TabsVariant } from "./tabs/Tabs";
+
+export { Tooltip } from "./tooltip/Tooltip";
+export type { TooltipProps } from "./tooltip/Tooltip";

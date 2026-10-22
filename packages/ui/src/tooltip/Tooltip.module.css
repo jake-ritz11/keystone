@@ -1,0 +1,68 @@
+.trigger {
+  display: contents;
+}
+
+.tooltip {
+  inset: auto;
+  max-width: 280px;
+  margin: var(--ks-space-2) 0;
+  border: 0;
+  border-radius: var(--ks-radius-sm);
+  padding: var(--ks-space-1) var(--ks-space-2);
+  /* Inverted from the page, so it reads as an overlay in either theme. */
+  background: var(--ks-color-text);
+  color: var(--ks-color-bg);
+  font-family: var(--ks-font-family-sans);
+  font-size: var(--ks-font-size-xs);
+  font-weight: var(--ks-font-weight-medium);
+  line-height: var(--ks-font-line-height-normal);
+  overflow: visible;
+  opacity: 0;
+  transition:
+    opacity var(--ks-motion-duration-fast) var(--ks-motion-easing-standard),
+    translate var(--ks-motion-duration-fast) var(--ks-motion-easing-standard),
+    display var(--ks-motion-duration-fast) allow-discrete,
+    overlay var(--ks-motion-duration-fast) allow-discrete;
+}
+
+.tooltip:popover-open {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.top {
+  position-area: block-start;
+  position-try-fallbacks: flip-block;
+  translate: 0 var(--ks-space-1);
+}
+
+.bottom {
+  position-area: block-end;
+  position-try-fallbacks: flip-block;
+  translate: 0 calc(var(--ks-space-1) * -1);
+}
+
+@starting-style {
+  .top:popover-open {
+    opacity: 0;
+    translate: 0 var(--ks-space-1);
+  }
+
+  .bottom:popover-open {
+    opacity: 0;
+    translate: 0 calc(var(--ks-space-1) * -1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .top,
+  .bottom,
+  .top:popover-open,
+  .bottom:popover-open {
+    translate: none;
+  }
+
+  .tooltip {
+    transition-property: opacity, display, overlay;
+  }
+}

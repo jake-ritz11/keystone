@@ -1,5 +1,5 @@
 import { color } from "@keystone-ui/tokens";
-import { Button, Input, Select, Tab, TabList, TabPanel, Tabs } from "@keystone-ui/ui";
+import { Button, Input, Select, Tab, TabList, TabPanel, Tabs, Tooltip } from "@keystone-ui/ui";
 import { ThemeToggle } from "./ThemeToggle";
 import { DialogDemo } from "./demos/DialogDemo";
 import { MenuDemo } from "./demos/MenuDemo";
@@ -150,6 +150,28 @@ export default function Home() {
           <TabPanel value="notifications">Notification settings.</TabPanel>
         </Tabs>
       </div>
+
+      <h2>Tooltip</h2>
+      <div className="row">
+        <Tooltip content="Saves a copy to your workspace">
+          <Button variant="secondary">Hover or focus me</Button>
+        </Tooltip>
+        <Tooltip content="Search" kind="label">
+          <Button variant="secondary">
+            <SearchIcon />
+          </Button>
+        </Tooltip>
+        <Tooltip content="Opens below, and flips if there is no room" side="bottom">
+          <Button variant="ghost">Bottom</Button>
+        </Tooltip>
+        <Tooltip content="No delay on this one" delay={0}>
+          <Button variant="ghost">Instant</Button>
+        </Tooltip>
+      </div>
+      <p className="note">
+        The search button is icon-only, so its tooltip is its accessible name. Escape dismisses
+        any tooltip.
+      </p>
 
       <h2>Color tokens</h2>
       <div className="swatches">

@@ -21,11 +21,13 @@ npm run dev        # docs site at http://localhost:3000
 npm run check      # typecheck, unit tests, audit, production build, behavior tests
 ```
 
-The behavior tests (`apps/docs/tests`) drive the production docs build in real Chromium with
-Playwright: keyboard models, focus return, ARIA wiring, light dismiss, and the WCAG timing and
-hover rules for tooltips and toasts. Real Chromium rather than jsdom, because the components
+The behavior tests (`apps/docs/tests`) drive the production docs build in Chromium and WebKit
+with Playwright: keyboard models, focus return, ARIA wiring, light dismiss, and the WCAG timing and
+hover rules for tooltips and toasts. Real engines rather than jsdom, because the components
 are built on `<dialog>`, `popover` and anchor positioning, which jsdom doesn't implement. The
-first run needs `npx -w apps/docs playwright install chromium`.
+first run needs `npx -w apps/docs playwright install chromium webkit`. Firefox is configured
+too (`npm run test:e2e:firefox -w apps/docs`) but isn't in `check` yet: it won't launch on the
+Windows machine this was built on.
 
 The MCP server is registered in [`.mcp.json`](.mcp.json), so Claude Code picks it up when it
 opens this folder. Other clients can run `node packages/mcp/src/server.ts` over stdio.

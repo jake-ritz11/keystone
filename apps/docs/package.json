@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test --project=chromium --project=webkit",
+    "test:e2e:firefox": "playwright test --project=firefox"
   },
   "dependencies": {
     "@keystone-ui/tokens": "0.0.0",

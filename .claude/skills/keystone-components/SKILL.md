@@ -9,7 +9,8 @@ description: Build or change a React component in the Keystone design system. Us
    `packages/tokens/src/index.ts`. Every color, space, radius, font and motion value comes from a
    `--ks-*` CSS variable. No hex, rgb(), hsl() or raw px for spacing.
 2. **One folder per component**: `packages/ui/src/<name>/<Name>.tsx` and `<Name>.module.css`,
-   exported from `packages/ui/src/index.ts`. Follow `button/` as the reference.
+   exported from `packages/ui/src/index.ts`. Follow `button/` as the reference. For a new
+   component, `generate_component` returns a clean scaffold to start from.
 3. **Accessibility is part of done:**
    - Real elements first: `<button>` for actions, `<a>` for navigation. A `div` with `onClick` is a bug.
    - Every interactive state has a `:focus-visible` style built on `--ks-color-focus`.

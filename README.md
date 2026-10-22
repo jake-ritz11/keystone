@@ -7,7 +7,7 @@ components *from* the system and check its own work against it.
 | --- | --- |
 | [`packages/tokens`](packages/tokens) | Design tokens (color for light and dark, space, radius, type, motion), the single source of truth |
 | [`packages/ui`](packages/ui) | React components built only from tokens: accessible, themeable, reduced-motion aware |
-| [`packages/mcp`](packages/mcp) | MCP server: `get_tokens`, `audit_component`, plus a CLI audit |
+| [`packages/mcp`](packages/mcp) | MCP server: `get_tokens`, `audit_component`, `generate_component`, plus a CLI audit |
 | [`apps/docs`](apps/docs) | Next.js docs site and component playground |
 | [`.claude/skills`](.claude/skills) | Claude skills that teach the rules (`keystone-components`) |
 
@@ -33,6 +33,22 @@ opens this folder. Other clients can run `node packages/mcp/src/server.ts` over 
 - **missing-focus-visible**: a `cursor: pointer` with no `:focus-visible` style
 - **missing-reduced-motion**: motion with no `prefers-reduced-motion` fallback
 - **clickable-non-button**: a `div` or `span` with `onClick` and no role
+
+## Components
+
+Button, Input, Select, Dialog, Menu, Tabs, Tooltip and Toast. The overlays are built on the
+platform rather than a headless library: `<dialog>` and `showModal()` for Dialog, the `popover`
+attribute and CSS anchor positioning for Menu and Tooltip, and `appearance: base-select` for
+Select's popup where the browser supports it. Keystone adds the parts the platform leaves out:
+the menu and tabs keyboard models, controlled state, focus return, and live-region
+announcements for toasts.
+
+## Generating components
+
+`generate_component` scaffolds a TSX file and a CSS module that pass the audit by
+construction: tokens only, a forwarded ref, native props spread through, and focus-visible and
+reduced-motion styles for buttons and links. It returns the files instead of writing them, so
+the agent (or person) still does the design work and reviews what lands.
 
 ## Roadmap
 

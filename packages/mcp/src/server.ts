@@ -8,6 +8,7 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { z } from "zod";
 import { color, font, motion, radius, space, cssVariables } from "@keystone-ui/tokens";
 import { auditSource, formatFindings, RULES } from "./audit.ts";
+import { ELEMENTS, GenerateError, SIZES, generateComponent } from "./generate.ts";
 
 const server = new McpServer({ name: "keystone", version: "0.0.0" });
 
@@ -50,6 +51,40 @@ server.registerTool(
   async ({ filename, source }) => ({
     content: [{ type: "text", text: formatFindings(auditSource(filename, source)) }],
   }),
+);
+
+server.registerTool(
+  "generate_component",
+  {
+    title: "Generate a component",
+    description:
+      "Scaffolds a Keystone component (TSX and CSS module) that follows the rules by construction: " +
+      "tokens only, forwarded ref, native props spread, and focus-visible plus reduced-motion styles " +
+      "for interactive elements. Returns the files, the index.ts export lines, the audit result and " +
+      "next steps. It doesn't write to disk; write the files yourself, then do the design work.",
+    inputSchema: {
+      name: z.string().describe('PascalCase component name, e.g. "Badge" or "IconButton"'),
+      element: z.enum(ELEMENTS).describe("The root element. Use button for actions and a for navigation."),
+      variants: z.array(z.string()).optional().describe("camelCase variant ids; the first is the default"),
+      sizes: z.array(z.enum(SIZES)).optional().describe("Size steps to support"),
+      description: z.string().optional().describe("One sentence for the component's doc comment"),
+    },
+  },
+  async (input) => {
+    try {
+      const out = generateComponent(input);
+      const text = [
+        ...out.files.map((f) => `--- ${f.path}\n${f.contents}`),
+        `--- append to packages/ui/src/index.ts\n${out.exports}`,
+        `Audit: ${formatFindings(out.findings)}`,
+        `Next steps:\n${out.nextSteps.map((step) => `- ${step}`).join("\n")}`,
+      ].join("\n");
+      return { content: [{ type: "text", text }] };
+    } catch (error) {
+      if (!(error instanceof GenerateError)) throw error;
+      return { content: [{ type: "text", text: error.message }], isError: true };
+    }
+  },
 );
 
 await server.connect(new StdioServerTransport());

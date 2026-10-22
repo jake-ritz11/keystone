@@ -17,8 +17,9 @@ A token-driven React design system (npm workspaces): `packages/tokens`, `package
 
 ## Validation
 
-`npm run check` must pass: typecheck, tests (`node --test`), the design-system audit, and the
-Next production build. Verify visual changes in the browser in both themes.
+`npm run check` must pass: typecheck, tests (`node --test`), the design-system audit, the
+Next production build, and the Playwright behavior tests in `apps/docs/tests`. A component with
+interactive behavior gets a spec there. Verify visual changes in the browser in both themes.
 
 ## Working style
 

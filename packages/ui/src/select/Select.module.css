@@ -1,0 +1,135 @@
+.control {
+  position: relative;
+}
+
+.select {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  border: 0;
+  padding-inline: 0 var(--ks-space-6);
+  appearance: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: var(--ks-font-line-height-tight);
+  cursor: pointer;
+  outline: none;
+}
+
+/* While the placeholder option is selected, read it as a prompt rather than a value. */
+.select:has(option[value=""]:checked) {
+  color: var(--ks-color-text-muted);
+}
+
+.select option {
+  color: var(--ks-color-text);
+}
+
+.select:disabled {
+  cursor: not-allowed;
+}
+
+.sm {
+  padding-block: var(--ks-space-1);
+}
+
+.md {
+  padding-block: var(--ks-space-2);
+}
+
+.lg {
+  padding-block: var(--ks-space-3);
+}
+
+.chevron {
+  position: absolute;
+  inset-inline-end: var(--ks-space-3);
+  display: inline-flex;
+  color: var(--ks-color-text-muted);
+  pointer-events: none;
+}
+
+/*
+ * Customizable select: where the browser supports `appearance: base-select`, the popup
+ * itself is styled from tokens too. Elsewhere the OS picker is used, which is fine.
+ */
+@supports (appearance: base-select) {
+  .select,
+  .select::picker(select) {
+    appearance: base-select;
+  }
+
+  .select::picker-icon {
+    display: none;
+  }
+
+  .select::picker(select) {
+    margin-block: var(--ks-space-1);
+    border: 1px solid var(--ks-color-border);
+    border-radius: var(--ks-radius-md);
+    padding: var(--ks-space-1);
+    background: var(--ks-color-surface);
+    color: var(--ks-color-text);
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--ks-color-text) 14%, transparent);
+    opacity: 1;
+    transition:
+      opacity var(--ks-motion-duration-fast) var(--ks-motion-easing-standard),
+      display var(--ks-motion-duration-fast) allow-discrete,
+      overlay var(--ks-motion-duration-fast) allow-discrete;
+  }
+
+  .select:not(:open)::picker(select) {
+    opacity: 0;
+  }
+
+  @starting-style {
+    .select:open::picker(select) {
+      opacity: 0;
+    }
+  }
+
+  .select option {
+    gap: var(--ks-space-2);
+    border-radius: var(--ks-radius-sm);
+    padding: var(--ks-space-2) var(--ks-space-3);
+    font-size: var(--ks-font-size-sm);
+    cursor: pointer;
+  }
+
+  .select option:hover,
+  .select option:focus-visible {
+    background: var(--ks-color-surface-raised);
+    outline: none;
+  }
+
+  .select option:focus-visible {
+    box-shadow: inset 0 0 0 2px var(--ks-color-focus);
+  }
+
+  .select optgroup {
+    padding-block-start: var(--ks-space-1);
+    font-size: var(--ks-font-size-xs);
+    font-weight: var(--ks-font-weight-semibold);
+    color: var(--ks-color-text-muted);
+  }
+
+  .select option:checked {
+    font-weight: var(--ks-font-weight-medium);
+  }
+
+  .select option::checkmark {
+    color: var(--ks-color-accent);
+  }
+
+  .select option:disabled {
+    color: var(--ks-color-text-muted);
+    cursor: not-allowed;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .select::picker(select) {
+    transition: none;
+  }
+}

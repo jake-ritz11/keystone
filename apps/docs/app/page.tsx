@@ -1,5 +1,5 @@
 import { color } from "@keystone-ui/tokens";
-import { Button, Input } from "@keystone-ui/ui";
+import { Button, Input, Select } from "@keystone-ui/ui";
 import { ThemeToggle } from "./ThemeToggle";
 
 const SearchIcon = () => (
@@ -8,6 +8,12 @@ const SearchIcon = () => (
     <path d="m10.5 10.5 3 3" strokeLinecap="round" />
   </svg>
 );
+
+const regions = [
+  <option key="eu" value="eu">Europe</option>,
+  <option key="us" value="us">United States</option>,
+  <option key="ap" value="ap">Asia Pacific</option>,
+];
 
 const kebab = (key: string) => key.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`);
 
@@ -57,6 +63,44 @@ export default function Home() {
         <Input label="Small" size="sm" placeholder="sm" />
         <Input label="Medium" size="md" placeholder="md" />
         <Input label="Large" size="lg" placeholder="lg" />
+      </div>
+
+      <h2>Select</h2>
+      <div className="grid">
+        <Select label="Region" defaultValue="eu">
+          {regions}
+        </Select>
+        <Select label="Plan" placeholder="Choose a plan" hint="You can change this later." required>
+          <option value="free">Free</option>
+          <option value="team">Team</option>
+          <option value="enterprise" disabled>
+            Enterprise (contact us)
+          </option>
+        </Select>
+        <Select label="Time zone" placeholder="Select a time zone" error="Pick a time zone to continue.">
+          <optgroup label="Europe">
+            <option value="lon">London</option>
+            <option value="ber">Berlin</option>
+          </optgroup>
+          <optgroup label="Americas">
+            <option value="nyc">New York</option>
+            <option value="sfo">San Francisco</option>
+          </optgroup>
+        </Select>
+        <Select label="Disabled" disabled defaultValue="us">
+          {regions}
+        </Select>
+      </div>
+      <div className="row">
+        <Select label="Small" size="sm" defaultValue="eu">
+          {regions}
+        </Select>
+        <Select label="Medium" size="md" defaultValue="eu">
+          {regions}
+        </Select>
+        <Select label="Large" size="lg" defaultValue="eu">
+          {regions}
+        </Select>
       </div>
 
       <h2>Color tokens</h2>

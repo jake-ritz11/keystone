@@ -80,6 +80,12 @@ h2 {
   gap: var(--ks-space-4);
 }
 
+.note {
+  margin: 0;
+  font-size: var(--ks-font-size-sm);
+  color: var(--ks-color-text-muted);
+}
+
 .swatches {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));

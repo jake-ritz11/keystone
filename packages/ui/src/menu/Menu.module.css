@@ -1,0 +1,112 @@
+.menu {
+  position-area: block-end span-inline-end;
+  position-try-fallbacks: flip-block, flip-inline;
+  inset: auto;
+  min-width: max(anchor-size(width), 200px);
+  margin: var(--ks-space-1) 0;
+  border: 1px solid var(--ks-color-border);
+  border-radius: var(--ks-radius-md);
+  padding: var(--ks-space-1);
+  background: var(--ks-color-surface);
+  color: var(--ks-color-text);
+  font-family: var(--ks-font-family-sans);
+  box-shadow: 0 8px 24px var(--ks-color-shadow);
+  opacity: 0;
+  transform: translateY(calc(var(--ks-space-1) * -1));
+  transition:
+    opacity var(--ks-motion-duration-fast) var(--ks-motion-easing-standard),
+    transform var(--ks-motion-duration-fast) var(--ks-motion-easing-standard),
+    display var(--ks-motion-duration-fast) allow-discrete,
+    overlay var(--ks-motion-duration-fast) allow-discrete;
+}
+
+.menu:popover-open {
+  display: flex;
+  flex-direction: column;
+  opacity: 1;
+  transform: none;
+}
+
+@starting-style {
+  .menu:popover-open {
+    opacity: 0;
+    transform: translateY(calc(var(--ks-space-1) * -1));
+  }
+}
+
+.end {
+  position-area: block-end span-inline-start;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--ks-space-2);
+  width: 100%;
+  border: 0;
+  border-radius: var(--ks-radius-sm);
+  padding: var(--ks-space-2) var(--ks-space-3);
+  background: transparent;
+  color: var(--ks-color-text);
+  font: inherit;
+  font-size: var(--ks-font-size-sm);
+  line-height: var(--ks-font-line-height-tight);
+  text-align: start;
+  cursor: pointer;
+}
+
+.item:hover:not([aria-disabled="true"]),
+.item:focus-visible {
+  background: var(--ks-color-surface-raised);
+}
+
+.item:focus-visible {
+  outline: 2px solid var(--ks-color-focus);
+  outline-offset: -2px;
+}
+
+.item[aria-disabled="true"] {
+  color: var(--ks-color-text-muted);
+  cursor: not-allowed;
+}
+
+.danger:not([aria-disabled="true"]) {
+  color: var(--ks-color-danger);
+}
+
+.icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: var(--ks-color-text-muted);
+}
+
+.danger .icon {
+  color: inherit;
+}
+
+.label {
+  flex: 1;
+}
+
+.shortcut {
+  margin-inline-start: var(--ks-space-4);
+  font-size: var(--ks-font-size-xs);
+  color: var(--ks-color-text-muted);
+}
+
+.separator {
+  height: 1px;
+  margin: var(--ks-space-1) 0;
+  background: var(--ks-color-border);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu,
+  .menu:popover-open {
+    transform: none;
+  }
+
+  .menu {
+    transition: none;
+  }
+}

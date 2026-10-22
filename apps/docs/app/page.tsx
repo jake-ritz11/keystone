@@ -2,6 +2,7 @@ import { color } from "@keystone-ui/tokens";
 import { Button, Input, Select } from "@keystone-ui/ui";
 import { ThemeToggle } from "./ThemeToggle";
 import { DialogDemo } from "./demos/DialogDemo";
+import { MenuDemo } from "./demos/MenuDemo";
 
 const SearchIcon = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -106,6 +107,9 @@ export default function Home() {
 
       <h2>Dialog</h2>
       <DialogDemo />
+
+      <h2>Menu</h2>
+      <MenuDemo />
 
       <h2>Color tokens</h2>
       <div className="swatches">

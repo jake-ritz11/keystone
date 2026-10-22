@@ -25,9 +25,9 @@ The behavior tests (`apps/docs/tests`) drive the production docs build in Chromi
 with Playwright: keyboard models, focus return, ARIA wiring, light dismiss, and the WCAG timing and
 hover rules for tooltips and toasts. Real engines rather than jsdom, because the components
 are built on `<dialog>`, `popover` and anchor positioning, which jsdom doesn't implement. The
-first run needs `npx -w apps/docs playwright install chromium webkit`. Firefox is configured
-too (`npm run test:e2e:firefox -w apps/docs`) but isn't in `check` yet: it won't launch on the
-Windows machine this was built on.
+first run needs `npx -w apps/docs playwright install chromium webkit`. CI runs `check` and the Firefox
+tests on every push. Firefox is left out of the local `check` because it won't launch on the
+Windows machine this was built on; run it with `npm run test:e2e:firefox -w apps/docs`.
 
 The MCP server is registered in [`.mcp.json`](.mcp.json), so Claude Code picks it up when it
 opens this folder. Other clients can run `node packages/mcp/src/server.ts` over stdio.

@@ -85,7 +85,7 @@ mouse users.
 
 **The call.** Behavior tests are Playwright specs in [`apps/docs/tests`](../apps/docs/tests).
 They run against the production build of the docs site, in Chromium and WebKit, as the last
-step of `npm run check`. There are 34 specs per engine, 68 in total.
+step of `npm run check`, and CI also runs them in Firefox. There are 34 specs per engine.
 
 **Why not jsdom.** jsdom implements neither `showModal()`, nor `popover`, nor anchor positioning.
 Tests there would exercise polyfills and mocks, which would prove the mocks work. The point of
@@ -131,9 +131,9 @@ seen it fail.
 
 ## What isn't proven yet
 
-- **Firefox.** It's configured in Playwright but won't launch on the Windows machine this was
-  built on (`spawn UNKNOWN`, although the binary runs from a shell). It isn't in `check` until
-  that's solved.
+- **Firefox locally.** Firefox passes all 34 specs in CI on Linux, but it won't launch on the
+  Windows machine this was built on (`spawn UNKNOWN`, although the binary runs from a shell),
+  so it stays out of the local `check`.
 - **Screen readers.** Tests check that live regions receive the right text and that roles and
   names are right. Nothing has been checked with VoiceOver or NVDA, which is the only way to
   know what is actually announced.

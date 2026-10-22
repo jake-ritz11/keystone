@@ -3,6 +3,7 @@ import { Button, Input, Select, Tab, TabList, TabPanel, Tabs, Tooltip } from "@k
 import { ThemeToggle } from "./ThemeToggle";
 import { DialogDemo } from "./demos/DialogDemo";
 import { MenuDemo } from "./demos/MenuDemo";
+import { ToastDemo } from "./demos/ToastDemo";
 
 const SearchIcon = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -172,6 +173,9 @@ export default function Home() {
         The search button is icon-only, so its tooltip is its accessible name. Escape dismisses
         any tooltip.
       </p>
+
+      <h2>Toast</h2>
+      <ToastDemo />
 
       <h2>Color tokens</h2>
       <div className="swatches">

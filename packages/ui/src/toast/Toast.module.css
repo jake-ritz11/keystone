@@ -1,0 +1,115 @@
+.region {
+  inset: auto var(--ks-space-4) var(--ks-space-4) auto;
+  width: min(calc(100vw - var(--ks-space-8)), 380px);
+  margin: 0;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  overflow: visible;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ks-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ks-space-3);
+  border: 1px solid var(--ks-color-border);
+  border-radius: var(--ks-radius-md);
+  padding: var(--ks-space-3) var(--ks-space-3) var(--ks-space-3) var(--ks-space-4);
+  background: var(--ks-color-surface);
+  color: var(--ks-color-text);
+  font-family: var(--ks-font-family-sans);
+  box-shadow: 0 8px 24px var(--ks-color-shadow);
+  transition:
+    opacity var(--ks-motion-duration-fast) var(--ks-motion-easing-standard),
+    translate var(--ks-motion-duration-normal) var(--ks-motion-easing-emphasized);
+}
+
+@starting-style {
+  .toast {
+    opacity: 0;
+    translate: 0 var(--ks-space-4);
+  }
+}
+
+.toast[data-leaving] {
+  opacity: 0;
+  translate: var(--ks-space-6) 0;
+}
+
+.icon {
+  display: inline-flex;
+  margin-block-start: var(--ks-space-1);
+  color: var(--ks-color-text-muted);
+}
+
+.success .icon {
+  color: var(--ks-color-success);
+}
+
+.danger {
+  border-color: var(--ks-color-danger);
+}
+
+.danger .icon {
+  color: var(--ks-color-danger);
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+  padding-block: var(--ks-space-1);
+}
+
+.title,
+.description {
+  margin: 0;
+  font-size: var(--ks-font-size-sm);
+  line-height: var(--ks-font-line-height-normal);
+}
+
+.title {
+  font-weight: var(--ks-font-weight-semibold);
+}
+
+.description {
+  color: var(--ks-color-text-muted);
+}
+
+.close {
+  padding: var(--ks-space-1);
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Fade only. */
+  .toast {
+    transition: opacity var(--ks-motion-duration-fast) linear;
+  }
+
+  @starting-style {
+    .toast {
+      translate: none;
+    }
+  }
+
+  .toast[data-leaving] {
+    translate: none;
+  }
+}

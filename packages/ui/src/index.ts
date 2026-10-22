@@ -19,3 +19,6 @@ export type { TabListProps, TabPanelProps, TabProps, TabsProps, TabsVariant } fr
 
 export { Tooltip } from "./tooltip/Tooltip";
 export type { TooltipProps } from "./tooltip/Tooltip";
+
+export { ToastProvider, useToast } from "./toast/Toast";
+export type { ToastOptions, ToastProviderProps, ToastTone } from "./toast/Toast";

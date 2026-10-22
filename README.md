@@ -49,7 +49,8 @@ platform rather than a headless library: `<dialog>` and `showModal()` for Dialog
 attribute and CSS anchor positioning for Menu and Tooltip, and `appearance: base-select` for
 Select's popup where the browser supports it. Keystone adds the parts the platform leaves out:
 the menu and tabs keyboard models, controlled state, focus return, and live-region
-announcements for toasts.
+announcements for toasts. [docs/decisions.md](docs/decisions.md) records why, what broke, and
+what the tests do and don't prove.
 
 ## Generating components
 

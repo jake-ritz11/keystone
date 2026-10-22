@@ -1,0 +1,34 @@
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npx -w apps/docs playwright install --with-deps chromium webkit firefox
+      # Typecheck, unit tests, design-system audit, production build, and the behavior tests in
+      # Chromium and WebKit.
+      - run: npm run check
+      - name: Behavior tests in Firefox
+        run: npm run test:e2e:firefox -w apps/docs
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-results
+          path: apps/docs/test-results
+          retention-days: 7

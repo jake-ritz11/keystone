@@ -70,6 +70,7 @@ the agent (or person) still does the design work and reviews what lands.
 1. **The kit**: core components (input, select, dialog, menu, tabs, tooltip, toast), token
    docs, a "generate component" MCP tool, and a published package.
 2. **An agent interface built on the kit**: a web app for working with an AI agent (plans,
-   tool calls, diffs, approvals), with each interaction idea as a switchable variant.
+   tool calls, diffs, approvals), with each interaction idea as a switchable variant. See
+   [docs/phase-2-plan.md](docs/phase-2-plan.md).
 3. **A user study**: testers switch variants and suggest changes in the app, with consent-based
    logging. The results get published as a case study.

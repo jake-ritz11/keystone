@@ -135,8 +135,9 @@ seen it fail.
   Windows machine this was built on (`spawn UNKNOWN`, although the binary runs from a shell),
   so it stays out of the local `check`.
 - **Screen readers.** Tests check that live regions receive the right text and that roles and
-  names are right. Nothing has been checked with VoiceOver or NVDA, which is the only way to
-  know what is actually announced.
+  names are right. Nothing has been checked with VoiceOver or NVDA yet, which is the only way to
+  know what is actually announced. The pass is scripted in
+  [screen-reader-checklist.md](screen-reader-checklist.md).
 - **The anchor positioning fallback in a browser.** Its maths is unit-tested; its behavior in a
   browser without anchor positioning isn't.
 - **Touch.** Tooltips deliberately don't open on touch, and nothing yet tests the components

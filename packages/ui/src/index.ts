@@ -28,3 +28,6 @@ export type { TextareaProps } from "./textarea/Textarea";
 
 export { Badge } from "./badge/Badge";
 export type { BadgeProps, BadgeTone } from "./badge/Badge";
+
+export { DiffView } from "./diff-view/DiffView";
+export type { DiffViewHunk, DiffViewLine, DiffViewProps } from "./diff-view/DiffView";

@@ -111,6 +111,20 @@ export const api: Record<string, ComponentApi> = {
       },
     ],
   },
+  "diff-view": {
+    parts: [
+      {
+        interface: "DiffViewProps",
+        source: "packages/ui/src/diff-view/DiffView.tsx",
+        extends: "every <section> attribute. Hunks match agent-core's diffHunks() output",
+        props: [
+          { name: "path", type: "string", required: true, description: "The file the change is to. Also names the section." },
+          { name: "hunks", type: "DiffViewHunk[]", required: true, description: "Changed regions, each with its lines and their numbers on both sides." },
+          { name: "actions", type: "ReactNode", description: "Header content after the path and counts, such as Approve and Reject." },
+        ],
+      },
+    ],
+  },
   select: {
     parts: [
       {

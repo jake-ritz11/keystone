@@ -27,3 +27,13 @@ test("composer: Enter sends, Shift+Enter adds a line", async ({ page }) => {
   await expect(box).toHaveValue("");
   await expect(page.getByText("Sent 1 message.")).toBeVisible();
 });
+
+test("a diff says what changed in words, not only in color", async ({ page }) => {
+  await open(page, "/components/diff-view");
+  const diff = page.getByRole("region", { name: "styles.css", exact: true });
+  await expect(diff).toContainText("Added: .plans-scroll {");
+  await expect(diff).toContainText("Removed:   min-width: 720px;");
+  await expect(diff).toContainText("lines added");
+  await diff.getByRole("button", { name: "Approve" }).click();
+  await expect(diff.getByText("Approved")).toBeVisible();
+});

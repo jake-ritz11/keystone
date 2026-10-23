@@ -41,6 +41,8 @@ test("opening focuses the first item; arrows skip disabled items and wrap", asyn
 
 test("typeahead jumps to the next item starting with the letter", async ({ page }) => {
   await trigger(page).click();
+  // Focus moves in on the popover's async toggle event; type only once it has.
+  await expect(item(page, "Rename")).toBeFocused();
   await page.keyboard.press("d");
   await expect(item(page, "Duplicate")).toBeFocused();
   await page.keyboard.press("d");
@@ -65,6 +67,7 @@ test("Escape closes and returns focus to the trigger", async ({ page }) => {
 
 test("choosing an item runs it, closes, and returns focus", async ({ page }) => {
   await trigger(page).click();
+  await expect(item(page, "Rename")).toBeFocused();
   await page.keyboard.press("ArrowDown");
   await page.keyboard.press("Enter");
   await expect(menu(page)).toBeHidden();
@@ -84,6 +87,7 @@ test("a disabled item does nothing", async ({ page }) => {
 
 test("Tab and outside clicks close it", async ({ page }) => {
   await trigger(page).click();
+  await expect(item(page, "Rename")).toBeFocused();
   await page.keyboard.press("Tab");
   await expect(menu(page)).toBeHidden();
   await trigger(page).click();

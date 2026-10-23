@@ -19,6 +19,7 @@ const USES: Record<keyof typeof color.light, string> = {
   accentHover: "Hover on accent fills.",
   accentText: "Text on accent and danger fills.",
   danger: "Errors and destructive actions.",
+  dangerHover: "Hover on danger fills.",
   success: "Success icons.",
   focus: "Focus rings, everywhere.",
   scrim: "Behind modal dialogs.",

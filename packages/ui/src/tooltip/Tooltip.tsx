@@ -68,10 +68,16 @@ export function Tooltip({ content, children, side = "top", kind = "description",
     }
     if (!open) return;
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpen(false);
+      if (event.key !== "Escape") return;
+      // Escape dismisses only the tooltip. Without this, the same key press would also close a
+      // dialog or menu the trigger sits in.
+      event.preventDefault();
+      event.stopPropagation();
+      setOpen(false);
     };
-    document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
+    // Capture phase, so this runs before anything else hears the key.
+    document.addEventListener("keydown", onKeyDown, true);
+    return () => document.removeEventListener("keydown", onKeyDown, true);
   }, [open, side]);
 
   useEffect(() => () => clearTimeout(timer.current), []);

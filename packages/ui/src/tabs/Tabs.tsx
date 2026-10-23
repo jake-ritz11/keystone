@@ -91,10 +91,12 @@ export const TabList = forwardRef<HTMLDivElement, TabListProps>(function TabList
   ref,
 ) {
   const { orientation, variant, activation, select } = useTabs("TabList");
-  const [prev, next] = orientation === "horizontal" ? ["ArrowLeft", "ArrowRight"] : ["ArrowUp", "ArrowDown"];
-
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     onKeyDown?.(event);
+    // In right-to-left text, the tab "after" this one is to its left.
+    const rtl = getComputedStyle(event.currentTarget).direction === "rtl";
+    const [prev, next] =
+      orientation === "vertical" ? ["ArrowUp", "ArrowDown"] : rtl ? ["ArrowRight", "ArrowLeft"] : ["ArrowLeft", "ArrowRight"];
     const tabs = Array.from(event.currentTarget.querySelectorAll<HTMLButtonElement>('[role="tab"]:not(:disabled)'));
     const current = tabs.indexOf(document.activeElement as HTMLButtonElement);
     if (current === -1) return;

@@ -9,6 +9,11 @@
   position-try-fallbacks: flip-block, flip-inline;
   inset: auto;
   min-width: max(anchor-size(width), 200px);
+  /* Never taller or wider than the screen; long menus scroll. */
+  max-inline-size: min(320px, calc(100vw - var(--ks-space-8)));
+  max-block-size: min(480px, calc(100dvh - var(--ks-space-8)));
+  overflow-y: auto;
+  overscroll-behavior: contain;
   margin: var(--ks-space-1) 0;
   border: 1px solid var(--ks-color-border);
   border-radius: var(--ks-radius-md);
@@ -29,16 +34,19 @@
   opacity: 1;
   transition:
     opacity var(--ks-motion-duration-fast) var(--ks-motion-easing-standard),
-    transform var(--ks-motion-duration-fast) var(--ks-motion-easing-standard),
     display var(--ks-motion-duration-fast) allow-discrete,
     overlay var(--ks-motion-duration-fast) allow-discrete;
 }
 
+/* Fade only: the menu can flip above its trigger, and a slide would then come from the wrong side. */
 @starting-style {
   .menu:popover-open {
     opacity: 0;
-    transform: translateY(calc(var(--ks-space-1) * -1));
   }
+}
+
+.menu:focus {
+  outline: none;
 }
 
 .end {
@@ -60,11 +68,13 @@
   line-height: var(--ks-font-line-height-tight);
   text-align: start;
   cursor: pointer;
+  touch-action: manipulation;
 }
 
-.item:hover:not([aria-disabled="true"]),
-.item:focus-visible {
+/* One highlight: the pointer moves focus (see MenuItem), so focus is what gets painted. */
+.item:focus:not([aria-disabled="true"]) {
   background: var(--ks-color-surface-raised);
+  outline: none;
 }
 
 .item:focus-visible {
@@ -96,6 +106,7 @@
 }
 
 .shortcut {
+  font-variant-numeric: tabular-nums;
   margin-inline-start: var(--ks-space-4);
   font-size: var(--ks-font-size-xs);
   color: var(--ks-color-text-muted);
@@ -111,11 +122,5 @@
   .menu,
   .menu:popover-open {
     transition: none;
-  }
-
-  @starting-style {
-    .menu:popover-open {
-      transform: none;
-    }
   }
 }

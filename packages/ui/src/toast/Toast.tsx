@@ -5,6 +5,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -75,6 +76,8 @@ export function ToastProvider({ children, duration = 5000 }: ToastProviderProps)
   const [paused, setPaused] = useState(false);
   const [announcement, setAnnouncement] = useState({ polite: "", assertive: "" });
   const regionRef = useRef<HTMLElement>(null);
+  const listRef = useRef<HTMLOListElement>(null);
+  const positions = useRef(new Map<string, number>());
   const [container, setContainer] = useState<HTMLDialogElement | null>(null);
 
   const dismiss = useCallback((id: string) => {
@@ -116,10 +119,34 @@ export function ToastProvider({ children, duration = 5000 }: ToastProviderProps)
       setPaused(false);
       return;
     }
-    // Re-showing moves the stack to the top of the top layer, above a dialog opened since.
-    if (isOpen) region.hidePopover();
-    region.showPopover();
+    // Shown once and left open: hiding and re-showing would replay every toast's entrance.
+    // A modal opened since is handled by moving the layer into it (see openModal).
+    if (!isOpen) region.showPopover();
   }, [count, container]);
+
+  // When a toast arrives or leaves, the others glide to their new place instead of jumping:
+  // compare each one's layout position with the last render's and animate the difference.
+  useLayoutEffect(() => {
+    const list = listRef.current;
+    if (!list) return;
+    const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const seen = new Set<string>();
+    for (const el of Array.from(list.children) as HTMLElement[]) {
+      const id = el.dataset.id;
+      if (!id) continue;
+      seen.add(id);
+      const top = el.offsetTop;
+      const before = positions.current.get(id);
+      if (before !== undefined && before !== top && !still) {
+        el.animate([{ transform: `translateY(${before - top}px)` }, { transform: "none" }], {
+          duration: 200,
+          easing: "cubic-bezier(0.2, 0, 0, 1)",
+        });
+      }
+      positions.current.set(id, top);
+    }
+    for (const id of positions.current.keys()) if (!seen.has(id)) positions.current.delete(id);
+  });
 
   const api = useMemo(() => ({ toast, dismiss }), [toast, dismiss]);
 
@@ -143,7 +170,7 @@ export function ToastProvider({ children, duration = 5000 }: ToastProviderProps)
           if (!event.currentTarget.contains(event.relatedTarget)) setPaused(false);
         }}
       >
-        <ol className={styles.list}>
+        <ol ref={listRef} className={styles.list}>
           {toasts.map((item) => (
             <ToastView key={item.id} item={item} paused={paused} onDismiss={dismiss} />
           ))}
@@ -189,7 +216,7 @@ function ToastView({
   }, [paused, leaving, id, onDismiss]);
 
   return (
-    <li className={[styles.toast, styles[tone]].join(" ")} data-leaving={leaving || undefined}>
+    <li className={[styles.toast, styles[tone]].join(" ")} data-id={id} data-leaving={leaving || undefined}>
       <span className={styles.icon} aria-hidden="true">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
           <circle cx="8" cy="8" r="6.25" />

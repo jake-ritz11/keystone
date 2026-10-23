@@ -11,6 +11,11 @@
   outline: none;
 }
 
+/* Digits line up in number fields. */
+.input[type="number"] {
+  font-variant-numeric: tabular-nums;
+}
+
 .input::placeholder {
   color: var(--ks-color-text-muted);
   opacity: 1;

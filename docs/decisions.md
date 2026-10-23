@@ -146,6 +146,31 @@ first version pass even with the fix removed. Playwright's `--hide-scrollbars` f
 dropped for Chromium, and the test skips (saying why) in WebKit, which draws overlay scrollbars
 that take no space. With the fix removed, it fails.
 
+## 7. A second pair of eyes
+
+After the layout fixes, an independent review of the kit, done without seeing my reasoning,
+found 13 more defects. All were real. The ones worth remembering:
+
+- **Animation re-layout.** Dialog and Menu scoped their layout to `[open]` / `:popover-open`.
+  During the exit fade the element is no longer open but still displayed, so its contents
+  re-laid out side by side for 200ms. Layout now lives on the base rule and only `display`
+  toggles. Exits are plain fades; entrances rise without scaling, since scaled text blurs.
+- **Precedence.** Hovering an invalid field turned its red border grey, because the hover rule
+  out-ranked the invalid one.
+- **Escape leaking.** Escape on a tooltip inside a dialog closed the dialog too. The tooltip
+  now handles the key in the capture phase and stops it.
+- **Two highlights in a menu.** Hover and keyboard focus painted separately, so two rows could
+  look selected. The pointer now moves focus, so there's one highlight.
+- **Touch, RTL and overflow.** Hover styles stuck after a tap on phones (now behind
+  `@media (hover: hover)`). Physical left/right properties broke right-to-left layouts, and
+  the tab arrow keys didn't mirror. Long tab lists, menus, titles and labels could push past
+  the screen. Toasts jumped when one arrived or left; they now glide into place.
+- **Leaking page CSS.** The docs site's global `th`/`td` rules restyled DiffView's table. Kit
+  components now set their own table boxes explicitly, and the docs scope their table styles.
+
+Each behavioral fix has a spec in [`polish.spec.ts`](../apps/docs/tests/polish.spec.ts) or
+[`layout.spec.ts`](../apps/docs/tests/layout.spec.ts).
+
 ## What isn't proven yet
 
 - **Firefox locally.** Firefox passes all 34 specs in CI on Linux, but it won't launch on the

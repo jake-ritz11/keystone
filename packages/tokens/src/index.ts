@@ -17,6 +17,7 @@ export const color = {
     accentHover: "#2f4bc2",
     accentText: "#ffffff",
     danger: "#c92a2a",
+    dangerHover: "#a61e1e",
     success: "#2b8a3e",
     focus: "#3b5bdb",
     /** Behind modal layers. */
@@ -36,6 +37,7 @@ export const color = {
     accentHover: "#97abf8",
     accentText: "#0f1220",
     danger: "#ff6b6b",
+    dangerHover: "#ff8787",
     success: "#69db7c",
     focus: "#97abf8",
     scrim: "#000000a6",

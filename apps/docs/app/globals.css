@@ -173,8 +173,10 @@ kbd {
   text-decoration: none;
 }
 
-.nav-link:hover {
-  background: var(--ks-color-surface-raised);
+@media (hover: hover) {
+  .nav-link:hover {
+    background: var(--ks-color-surface-raised);
+  }
 }
 
 .nav-link[aria-current="page"] {
@@ -302,8 +304,9 @@ h3 {
 }
 
 /* Layout wrappers and Tabs fill the preview; bare buttons keep their size. */
-.example-preview > div {
+.example-preview > :where(div, section, form) {
   flex: 1 1 100%;
+  min-width: 0;
 }
 
 .example-code {
@@ -346,21 +349,22 @@ h3 {
   border-radius: var(--ks-radius-lg);
 }
 
-table {
+/* Scoped to the docs' own tables, so they never restyle a component's table. */
+.table-scroll table {
   width: 100%;
   border-collapse: collapse;
   font-size: var(--ks-font-size-sm);
 }
 
-th,
-td {
+.table-scroll th,
+.table-scroll td {
   border-bottom: 1px solid var(--ks-color-border);
   padding: var(--ks-space-3) var(--ks-space-4);
   text-align: left;
   vertical-align: top;
 }
 
-thead th {
+.table-scroll thead th {
   background: var(--ks-color-surface-raised);
   color: var(--ks-color-text-muted);
   font-size: var(--ks-font-size-xs);
@@ -368,16 +372,16 @@ thead th {
   white-space: nowrap;
 }
 
-tbody tr:last-child > * {
+.table-scroll tbody tr:last-child > * {
   border-bottom: 0;
 }
 
-tbody th {
+.table-scroll tbody th {
   font-weight: var(--ks-font-weight-regular);
   white-space: nowrap;
 }
 
-td code {
+.table-scroll td code {
   overflow-wrap: anywhere;
 }
 
@@ -459,8 +463,10 @@ td code {
   text-decoration: none;
 }
 
-.card:hover {
-  border-color: var(--ks-color-text-muted);
+@media (hover: hover) {
+  .card:hover {
+    border-color: var(--ks-color-border-strong);
+  }
 }
 
 .card-title {

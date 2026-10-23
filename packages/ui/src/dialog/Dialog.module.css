@@ -1,7 +1,7 @@
 /*
  * Layout lives on the base rule, not the open one: while the dialog fades out it's no longer
  * [open], and anything scoped to [open] would re-lay out mid-animation. Only display changes.
- * Entrance scales and rises a little; exit is a quick plain fade.
+ * Entrance rises a little; exit is a quick plain fade.
  */
 .dialog {
   flex-direction: column;
@@ -49,7 +49,8 @@
 @starting-style {
   .dialog[open] {
     opacity: 0;
-    transform: translateY(var(--ks-space-2)) scale(0.98);
+    /* A rise, no scale: scaling text blurs it mid-animation. */
+    transform: translateY(var(--ks-space-2));
   }
 
   .dialog[open]::backdrop {
@@ -74,6 +75,8 @@
 
 .heading {
   flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
   display: flex;
   flex-direction: column;
   gap: var(--ks-space-1);

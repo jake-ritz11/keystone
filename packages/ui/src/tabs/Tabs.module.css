@@ -1,5 +1,7 @@
 .tabs {
   display: flex;
+  /* Allowed to be narrower than its tabs, so a long list scrolls instead of stretching it. */
+  min-width: 0;
   gap: var(--ks-space-4);
   font-family: var(--ks-font-family-sans);
   color: var(--ks-color-text);
@@ -15,6 +17,13 @@
 
 .list {
   display: flex;
+  max-width: 100%;
+}
+
+/* More tabs than fit scroll inside the list rather than widening the page. */
+.horizontal .list {
+  overflow-x: auto;
+  scrollbar-width: thin;
 }
 
 .vertical .list {
@@ -38,14 +47,21 @@
   line-height: var(--ks-font-line-height-tight);
   white-space: nowrap;
   cursor: pointer;
+  touch-action: manipulation;
   transition:
     color var(--ks-motion-duration-fast) var(--ks-motion-easing-standard),
-    background-color var(--ks-motion-duration-fast) var(--ks-motion-easing-standard);
+    background-color var(--ks-motion-duration-fast) var(--ks-motion-easing-standard),
+    box-shadow var(--ks-motion-duration-fast) var(--ks-motion-easing-standard);
 }
 
-.tab:hover:not(:disabled),
 .tab[aria-selected="true"] {
   color: var(--ks-color-text);
+}
+
+@media (hover: hover) {
+  .tab:hover:not(:disabled) {
+    color: var(--ks-color-text);
+  }
 }
 
 .tab:focus-visible {
@@ -65,8 +81,10 @@
   box-shadow: inset 0 -1px 0 var(--ks-color-border);
 }
 
+/* A real border on the inline end, so it sits beside the panel in either direction. */
 .vertical .underline {
-  box-shadow: inset -1px 0 0 var(--ks-color-border);
+  box-shadow: none;
+  border-inline-end: 1px solid var(--ks-color-border);
 }
 
 .underline .tab::after {
@@ -85,7 +103,8 @@
 }
 
 .vertical .underline .tab::after {
-  inset: var(--ks-space-1) 0 var(--ks-space-1) auto;
+  inset-block: var(--ks-space-1);
+  inset-inline: auto 0;
   width: 2px;
   height: auto;
   transform: scaleY(0);

@@ -144,6 +144,8 @@ export function Menu({ trigger, children, align = "start", className, style, ...
         id={menuId}
         popover="auto"
         role="menu"
+        // Focusable itself, so moving the pointer off an item can clear the highlight.
+        tabIndex={-1}
         className={[styles.menu, styles[align], className].filter(Boolean).join(" ")}
         style={{ ...positionedStyle(anchor), ...style }}
         onKeyDown={onMenuKeyDown}
@@ -164,7 +166,7 @@ export interface MenuItemProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 /** A menu action. The menu closes after `onClick` unless the handler calls `preventDefault()`. */
 export const MenuItem = forwardRef<HTMLButtonElement, MenuItemProps>(function MenuItem(
-  { iconStart, shortcut, tone = "default", disabled, className, children, onClick, ...rest },
+  { iconStart, shortcut, tone = "default", disabled, className, children, onClick, onPointerMove, onPointerLeave, ...rest },
   ref,
 ) {
   const menu = useContext(MenuContext);
@@ -177,6 +179,16 @@ export const MenuItem = forwardRef<HTMLButtonElement, MenuItemProps>(function Me
       // aria-disabled keeps the item announced in place; the arrow keys skip it.
       aria-disabled={disabled || undefined}
       className={[styles.item, tone === "danger" && styles.danger, className].filter(Boolean).join(" ")}
+      // The pointer moves focus, so hover and keyboard share one highlight instead of two.
+      onPointerMove={(event) => {
+        onPointerMove?.(event);
+        if (!disabled && document.activeElement !== event.currentTarget) event.currentTarget.focus({ preventScroll: true });
+      }}
+      onPointerLeave={(event) => {
+        onPointerLeave?.(event);
+        const menu = event.currentTarget.closest<HTMLElement>('[role="menu"]');
+        if (document.activeElement === event.currentTarget) menu?.focus({ preventScroll: true });
+      }}
       onClick={(event) => {
         if (disabled) return;
         onClick?.(event);

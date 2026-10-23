@@ -16,11 +16,11 @@
   font-size: var(--ks-font-size-xs);
   font-weight: var(--ks-font-weight-medium);
   line-height: var(--ks-font-line-height-normal);
+  overflow-wrap: anywhere;
   overflow: visible;
   opacity: 0;
   transition:
     opacity var(--ks-motion-duration-fast) var(--ks-motion-easing-standard),
-    translate var(--ks-motion-duration-fast) var(--ks-motion-easing-standard),
     display var(--ks-motion-duration-fast) allow-discrete,
     overlay var(--ks-motion-duration-fast) allow-discrete;
 }
@@ -29,7 +29,8 @@
   opacity: 1;
 }
 
-/* Entrance rises from the trigger's side; exit is a plain fade, with no movement. */
+/* Fade only, both ways: the tooltip flips sides when there's no room, and a slide would then
+   come from the wrong direction. */
 .top {
   position-area: block-start;
   position-try-fallbacks: flip-block;
@@ -41,22 +42,13 @@
 }
 
 @starting-style {
-  .top:popover-open {
+  .tooltip:popover-open {
     opacity: 0;
-    translate: 0 var(--ks-space-1);
-  }
-
-  .bottom:popover-open {
-    opacity: 0;
-    translate: 0 calc(var(--ks-space-1) * -1);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  @starting-style {
-    .top:popover-open,
-    .bottom:popover-open {
-      translate: none;
-    }
+  .tooltip {
+    transition-duration: 0s;
   }
 }

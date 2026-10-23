@@ -9,7 +9,10 @@
   font-family: var(--ks-font-family-sans);
   font-weight: var(--ks-font-weight-medium);
   line-height: var(--ks-font-line-height-tight);
+  max-width: 100%;
   cursor: pointer;
+  /* No double-tap zoom delay on touch screens. */
+  touch-action: manipulation;
   transition:
     background-color var(--ks-motion-duration-fast) var(--ks-motion-easing-standard),
     border-color var(--ks-motion-duration-fast) var(--ks-motion-easing-standard),
@@ -51,9 +54,6 @@
   color: var(--ks-color-accent-text);
 }
 
-.primary:hover:not(:disabled, [aria-disabled="true"]) {
-  background: var(--ks-color-accent-hover);
-}
 
 .secondary {
   background: var(--ks-color-surface);
@@ -61,18 +61,12 @@
   color: var(--ks-color-text);
 }
 
-.secondary:hover:not(:disabled, [aria-disabled="true"]) {
-  background: var(--ks-color-surface-raised);
-}
 
 .ghost {
   background: transparent;
   color: var(--ks-color-text);
 }
 
-.ghost:hover:not(:disabled, [aria-disabled="true"]) {
-  background: var(--ks-color-surface-raised);
-}
 
 .danger {
   background: var(--ks-color-danger);
@@ -83,14 +77,44 @@
   display: inline-flex;
   align-items: center;
   gap: inherit;
+  min-width: 0;
 }
 
 .content[data-hidden] {
   opacity: 0;
 }
 
+/* Hover only where there is a real hover: on touch screens it would stick after a tap. */
+@media (hover: hover) {
+  .primary:hover:not(:disabled, [aria-disabled="true"]) {
+    background: var(--ks-color-accent-hover);
+  }
+
+  .secondary:hover:not(:disabled, [aria-disabled="true"]) {
+    background: var(--ks-color-surface-raised);
+  }
+
+  .ghost:hover:not(:disabled, [aria-disabled="true"]) {
+    background: var(--ks-color-surface-raised);
+  }
+
+  .danger:hover:not(:disabled, [aria-disabled="true"]) {
+    background: var(--ks-color-danger-hover);
+  }
+}
+
+/* Long labels truncate instead of overflowing; the full text stays the accessible name. */
 .label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* Icons, including an icon passed as the only child, sit centred instead of on the baseline. */
+.button svg {
+  display: block;
+  flex-shrink: 0;
 }
 
 .spinner {

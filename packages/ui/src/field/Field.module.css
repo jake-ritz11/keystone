@@ -15,7 +15,7 @@
 
 .required {
   color: var(--ks-color-danger);
-  margin-left: var(--ks-space-1);
+  margin-inline-start: var(--ks-space-1);
 }
 
 /* Always at least one line tall, so a message appearing doesn't move what's below. */
@@ -67,8 +67,12 @@
  * One line at every state, as in Claude's own fields: hover darkens the border; focus turns it
  * the focus color and adds a soft blurred glow (no solid second ring).
  */
-.control:hover:not([data-disabled]):not(:focus-within) {
-  border-color: var(--ks-color-border-strong);
+/* Not on invalid fields (the red border must stay), read-only ones (they aren't editable) or
+   touch screens (hover would stick after a tap). */
+@media (hover: hover) {
+  .control:hover:not([data-disabled], [data-invalid], [data-readonly], :focus-within) {
+    border-color: var(--ks-color-border-strong);
+  }
 }
 
 /* focus-within, not focus-visible: a select clicked with the mouse should show focus too. */

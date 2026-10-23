@@ -66,7 +66,16 @@
   line-height: var(--ks-font-line-height-normal);
 }
 
-.hunk th {
+/* Explicit cell box, so a page's global th/td styles can't change the diff's rhythm. */
+.table th,
+.table td {
+  border: 0;
+  padding-block: 0;
+  vertical-align: top;
+  text-align: start;
+}
+
+.table .hunk th {
   border-block: 1px solid var(--ks-color-border);
   padding: var(--ks-space-1) var(--ks-space-3);
   background: var(--ks-color-surface-raised);
@@ -76,11 +85,11 @@
   text-align: start;
 }
 
-.hunk:first-child th {
+.table .hunk:first-child th {
   border-top: 0;
 }
 
-.num {
+.table .num {
   width: 1%;
   padding: 0 var(--ks-space-2);
   color: var(--ks-color-text-muted);
@@ -90,13 +99,13 @@
   white-space: nowrap;
 }
 
-.sign {
+.table .sign {
   width: 1%;
   padding-inline-end: var(--ks-space-2);
   user-select: none;
 }
 
-.code {
+.table .code {
   padding-inline-end: var(--ks-space-4);
   white-space: pre;
 }

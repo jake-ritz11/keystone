@@ -14,6 +14,7 @@
   font: inherit;
   line-height: var(--ks-font-line-height-tight);
   cursor: pointer;
+  touch-action: manipulation;
   outline: none;
 }
 
@@ -44,10 +45,22 @@
 
 .chevron {
   position: absolute;
-  inset-inline-end: var(--ks-space-3);
   display: inline-flex;
   color: var(--ks-color-text-muted);
   pointer-events: none;
+}
+
+/* Lines up with each size's padding, like an Input's end icon. */
+.chevron-sm {
+  inset-inline-end: var(--ks-space-2);
+}
+
+.chevron-md {
+  inset-inline-end: var(--ks-space-3);
+}
+
+.chevron-lg {
+  inset-inline-end: var(--ks-space-4);
 }
 
 /*
@@ -97,10 +110,15 @@
     cursor: pointer;
   }
 
-  .select option:hover,
   .select option:focus-visible {
     background: var(--ks-color-surface-raised);
     outline: none;
+  }
+
+  @media (hover: hover) {
+    .select option:hover {
+      background: var(--ks-color-surface-raised);
+    }
   }
 
   .select option:focus-visible {

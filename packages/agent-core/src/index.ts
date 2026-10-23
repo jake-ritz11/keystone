@@ -4,3 +4,5 @@ export * from "./diff.ts";
 export * from "./session.ts";
 export * from "./prompt.ts";
 export { SAMPLE_SITE, SAMPLE_TASKS, type SampleTask } from "./sample/site.ts";
+export * from "./transport.ts";
+export { REPLAYS } from "./sample/replays.ts";

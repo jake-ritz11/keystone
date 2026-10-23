@@ -79,3 +79,22 @@ test("aborting a replay stops it mid-stream", async () => {
   });
   assert.equal(events, 3);
 });
+
+test("dark-mode replay moves every color into variables with dark values", async () => {
+  const state = await play("dark-mode", "auto");
+  const css = state.workspace["styles.css"] ?? "";
+  assert.match(css, /@media \(prefers-color-scheme: dark\)/);
+  // Outside the two variable blocks, no literal colors remain.
+  const rules = css.replace(/:root \{[^}]*\}/g, "").replace(/@media \(prefers-color-scheme: dark\) \{[^}]*\}\s*\}/g, "");
+  assert.doesNotMatch(rules, /#[0-9a-f]{3,8}\b/i);
+});
+
+test("accessibility replay meets its rubric and leaves the broken link alone", async () => {
+  const state = await play("accessibility", "auto");
+  const html = state.workspace["index.html"] ?? "";
+  assert.match(html, /class="hero-image" alt="[^"]+"/);
+  assert.doesNotMatch(html, /<th><\/th>/);
+  assert.equal((html.match(/<th scope="row">/g) ?? []).length, 4);
+  assert.doesNotMatch(state.workspace["styles.css"] ?? "", /#b0b0b0|#aaaaaa/);
+  assert.match(html, /abuot\.html/, "a separate task: not touched");
+});

@@ -5,13 +5,25 @@ import { diffHunks, paths, type Workspace } from "@keystone-ui/agent-core";
 import { Badge, DiffView, SegmentedControl, Select, Tab, TabList, TabPanel, Tabs } from "@keystone-ui/ui";
 import styles from "./session.module.css";
 
+/**
+ * The preview's chosen scheme, applied to the page's own media queries: always-true for the
+ * chosen one, always-false for the other. Browsers differ on whether an iframe's color-scheme
+ * reaches the page inside it, so this doesn't rely on it.
+ */
+function withScheme(html: string, scheme: "light" | "dark"): string {
+  return html.replace(/\(\s*prefers-color-scheme\s*:\s*(light|dark)\s*\)/g, (_, wanted: string) =>
+    wanted === scheme ? "(min-width: 0px)" : "(max-width: 0px)",
+  );
+}
+
 /** Inlines a page's linked stylesheets, so it renders from the in-memory workspace. */
-function pageDocument(workspace: Workspace, page: string): string {
+function pageDocument(workspace: Workspace, page: string, scheme: "light" | "dark"): string {
   const html = workspace[page] ?? "<p>This page doesn't exist.</p>";
-  return html.replace(/<link\s+rel="stylesheet"\s+href="([^"]+)"\s*\/?>/g, (tag, href: string) => {
+  const inlined = html.replace(/<link\s+rel="stylesheet"\s+href="([^"]+)"\s*\/?>/g, (tag, href: string) => {
     const css = workspace[href.replace(/^\.?\//, "")];
     return css === undefined ? tag : `<style>\n${css}\n</style>`;
   });
+  return withScheme(inlined, scheme);
 }
 
 function Preview({ workspace, baseline }: { workspace: Workspace; baseline: Workspace }) {
@@ -20,8 +32,9 @@ function Preview({ workspace, baseline }: { workspace: Workspace; baseline: Work
   const [page, setPage] = useState(pages.includes("index.html") ? "index.html" : (pages[0] ?? "index.html"));
   const [side, setSide] = useState<"after" | "before">("after");
   const [width, setWidth] = useState<"desktop" | "phone">("desktop");
+  const [scheme, setScheme] = useState<"light" | "dark">("light");
   const source = side === "after" ? workspace : baseline;
-  const doc = useMemo(() => pageDocument(source, page), [source, page]);
+  const doc = useMemo(() => pageDocument(source, page, scheme), [source, page, scheme]);
 
   return (
     <div className={styles.preview}>
@@ -44,6 +57,16 @@ function Preview({ workspace, baseline }: { workspace: Workspace; baseline: Work
           ]}
         />
         <SegmentedControl
+          aria-label="Color scheme"
+          size="sm"
+          value={scheme}
+          onValueChange={setScheme}
+          options={[
+            { value: "light", label: "Light" },
+            { value: "dark", label: "Dark" },
+          ]}
+        />
+        <SegmentedControl
           aria-label="Width"
           size="sm"
           value={width}
@@ -56,7 +79,9 @@ function Preview({ workspace, baseline }: { workspace: Workspace; baseline: Work
       </div>
       <div className={styles.frameWrap} data-width={width}>
         {/* No scripts, no same-origin: the agent's HTML can render but can't do anything. */}
-        <iframe className={styles.frame} title={`Preview of ${page}`} sandbox="" srcDoc={doc} />
+        {/* The frame's color-scheme becomes the page's prefers-color-scheme, so a site's dark
+            mode can be previewed without changing the app's theme. */}
+        <iframe className={styles.frame} title={`Preview of ${page}`} sandbox="" srcDoc={doc} style={{ colorScheme: scheme }} />
       </div>
     </div>
   );

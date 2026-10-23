@@ -20,10 +20,23 @@ async function setVariants(page: Page, choices: { planning?: string; visibility?
 const startTask = (page: Page, title: string) => page.getByRole("button", { name: new RegExp(title) }).click();
 const conversation = (page: Page) => page.getByRole("list", { name: "Conversation" });
 
-test("tasks without a replay say they need live mode", async ({ page }) => {
+test("every task has a replay, so each one runs without a key", async ({ page }) => {
   await open(page);
-  await expect(page.getByRole("button", { name: /Add a dark mode/ })).toBeDisabled();
-  await expect(page.getByRole("button", { name: /Fix the broken link/ })).toBeEnabled();
+  for (const name of [/Fix the pricing table/, /Fix the broken link/, /Add a dark mode/, /Fix accessibility problems/]) {
+    await expect(page.getByRole("button", { name })).toBeEnabled();
+  }
+});
+
+test("dark mode: the preview shows the site's own dark mode", async ({ page }) => {
+  await open(page);
+  await setVariants(page, { approval: "Apply automatically" });
+  await startTask(page, "Add a dark mode");
+  await expect(status(page)).toHaveText("Done");
+  const frame = page.frameLocator('iframe[title="Preview of index.html"]');
+  const bg = () => frame.locator("body").evaluate((b) => getComputedStyle(b).backgroundColor);
+  expect(await bg()).toBe("rgb(255, 255, 255)");
+  await page.getByRole("radio", { name: "Dark" }).click();
+  await expect.poll(bg).toBe("rgb(22, 24, 29)");
 });
 
 test("approve each edit: the run waits, approval applies it, the run finishes", async ({ page }) => {

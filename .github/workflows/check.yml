@@ -13,6 +13,12 @@ jobs:
   check:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    # Browsers and their system libraries come baked into Playwright's image, so the job never
+    # waits on apt mirrors (a slow mirror once ate the whole time budget). Keep the tag in step
+    # with @playwright/test; the first step fails if they drift.
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.1-noble
+      options: --ipc=host
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -20,7 +26,8 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
-      - run: npx -w apps/docs playwright install --with-deps chromium webkit firefox
+      - name: Playwright matches the image
+        run: test "$(node -p "require('@playwright/test/package.json').version")" = "1.64.1"
       # Typecheck, unit tests, design-system audit, production build, and the behavior tests in
       # Chromium and WebKit.
       - run: npm run check

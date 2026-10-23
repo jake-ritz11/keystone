@@ -30,9 +30,14 @@ if (typeof document !== "undefined") {
 }
 
 function openerElement(): HTMLElement | null {
-  const active = document.activeElement;
-  if (active instanceof HTMLElement && active !== document.body) return active;
-  return lastPressed?.isConnected ? lastPressed : null;
+  const active = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+  const pressed = lastPressed?.isConnected ? lastPressed : null;
+  // When the pressed control can't take focus, Safari focuses its nearest focusable ancestor
+  // (often <main tabindex="-1">) or <body>. Either way, the control itself is the opener.
+  if (pressed && (!active || active === document.body || (active !== pressed && active.contains(pressed)))) {
+    return pressed;
+  }
+  return active && active !== document.body ? active : null;
 }
 
 export interface DialogProps extends Omit<DialogHTMLAttributes<HTMLDialogElement>, "open" | "title"> {

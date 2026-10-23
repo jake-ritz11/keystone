@@ -75,16 +75,22 @@ export function Menu({ trigger, children, align = "start", className, style, ...
         const list = items();
         (focusOnOpen.current === "last" ? list.at(-1) : list[0])?.focus();
         focusOnOpen.current = "first";
-      } else if (menu.contains(document.activeElement) || document.activeElement === document.body) {
-        // Escape, or an item was chosen: put focus back where the user started.
-        trigger?.focus();
       }
     };
     menu.addEventListener("toggle", onToggle);
     return () => menu.removeEventListener("toggle", onToggle);
   }, []);
 
-  const close = () => menuRef.current?.hidePopover();
+  /**
+   * Closes from the keyboard or an item choice, then returns focus to the trigger explicitly:
+   * the browser's own restore picks whatever had focus before, which in Safari is often <main>
+   * or <body>, since clicking a button there doesn't focus it. A light-dismiss click elsewhere
+   * doesn't come through here, so it never pulls focus back from where the user clicked.
+   */
+  const close = () => {
+    menuRef.current?.hidePopover();
+    triggerElement()?.focus();
+  };
 
   const onTriggerKeyDown = (event: KeyboardEvent<HTMLSpanElement>) => {
     if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
@@ -112,6 +118,7 @@ export function Menu({ trigger, children, align = "start", className, style, ...
       case "End":
         focusAt(list.length - 1);
         break;
+      case "Escape":
       case "Tab":
         close();
         break;

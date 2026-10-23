@@ -57,6 +57,11 @@ export default function InputPage() {
               Required fields use the native <code>required</code> attribute, which is what gets
               announced; the asterisk is hidden from assistive tech.
             </>,
+            <>
+              There's only ever one line: hover darkens the border, and focus turns it the focus
+              color with a soft blurred glow. In Windows high contrast mode, which drops shadows,
+              focus falls back to a real outline.
+            </>,
           ]}
         />
       </Section>

@@ -53,20 +53,40 @@
   border-radius: var(--ks-radius-md);
   background: var(--ks-color-surface);
   color: var(--ks-color-text);
-  transition: border-color var(--ks-motion-duration-fast) var(--ks-motion-easing-standard);
+  transition:
+    border-color var(--ks-motion-duration-fast) var(--ks-motion-easing-standard),
+    box-shadow var(--ks-motion-duration-fast) var(--ks-motion-easing-standard);
 }
 
-.control:hover:not([data-disabled]) {
-  border-color: var(--ks-color-text-muted);
+/*
+ * One line at every state, as in Claude's own fields: hover darkens the border; focus turns it
+ * the focus color and adds a soft blurred glow (no solid second ring).
+ */
+.control:hover:not([data-disabled]):not(:focus-within) {
+  border-color: var(--ks-color-border-strong);
 }
 
-.control:has(:focus-visible) {
-  outline: 2px solid var(--ks-color-focus);
-  outline-offset: 1px;
+/* focus-within, not focus-visible: a select clicked with the mouse should show focus too. */
+.control:focus-within {
+  border-color: var(--ks-color-focus);
+  box-shadow: 0 0 6px 1px color-mix(in srgb, var(--ks-color-focus) 40%, transparent);
 }
 
 .control[data-invalid] {
   border-color: var(--ks-color-danger);
+}
+
+.control[data-invalid]:focus-within {
+  border-color: var(--ks-color-danger);
+  box-shadow: 0 0 6px 1px color-mix(in srgb, var(--ks-color-danger) 40%, transparent);
+}
+
+/* Windows high contrast drops box-shadow, so give it a real outline there. */
+@media (forced-colors: active) {
+  .control:focus-within {
+    outline: 2px solid CanvasText;
+    outline-offset: 1px;
+  }
 }
 
 .control[data-readonly] {

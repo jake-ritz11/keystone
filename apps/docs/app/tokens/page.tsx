@@ -12,6 +12,7 @@ const USES: Record<keyof typeof color.light, string> = {
   surface: "Cards, inputs, dialogs, menus.",
   surfaceRaised: "Hover fills, read-only fields, table headers.",
   border: "Dividers and control outlines.",
+  borderStrong: "Field and control outlines on hover.",
   text: "Body text. Also the tooltip background, inverted.",
   textMuted: "Secondary text, placeholders, icons.",
   accent: "Primary actions, links, selection.",

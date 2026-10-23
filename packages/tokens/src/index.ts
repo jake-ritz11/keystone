@@ -9,6 +9,8 @@ export const color = {
     surface: "#ffffff",
     surfaceRaised: "#f3f1ed",
     border: "#e2ded6",
+    /** Hover borders on fields and other outlined controls. */
+    borderStrong: "#c9c3b8",
     text: "#1d1b18",
     textMuted: "#6b665e",
     accent: "#3b5bdb",
@@ -27,6 +29,7 @@ export const color = {
     surface: "#1c1b19",
     surfaceRaised: "#262421",
     border: "#38352f",
+    borderStrong: "#4f4b44",
     text: "#f1eee8",
     textMuted: "#a39d92",
     accent: "#7c95f5",

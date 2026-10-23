@@ -17,10 +17,27 @@ import {
  * Runs an agent session in the browser: the reducer holds the state, and whenever it says
  * "ready" this sends the next turn through the transport. The user's Stop aborts the stream.
  */
-export function useSession(transport: Transport, workspace: Workspace, variant: Variant, firstMessage: string) {
-  const [state, dispatch] = useReducer(reduce, undefined, () =>
+export function useSession(
+  transport: Transport,
+  workspace: Workspace,
+  variant: Variant,
+  firstMessage: string,
+  /** Sees every action with the exact state it's applied to, e.g. for study logging. */
+  onAction?: (action: Action, before: SessionState) => void,
+) {
+  const [state, rawDispatch] = useReducer(reduce, undefined, () =>
     reduce(createSession(workspace, variant), { type: "user_message", text: firstMessage }),
   );
+  // A shadow of the state, advanced on every dispatch: many actions arrive between renders while
+  // a turn streams, and each needs the state it was really applied to.
+  const shadow = useRef(state);
+  const onActionRef = useRef(onAction);
+  onActionRef.current = onAction;
+  const dispatch = useCallback((action: Action) => {
+    onActionRef.current?.(action, shadow.current);
+    shadow.current = reduce(shadow.current, action);
+    rawDispatch(action);
+  }, []);
   const controller = useRef<AbortController | null>(null);
   const sent = useRef<SessionState["messages"] | null>(null);
 
@@ -54,9 +71,7 @@ export function useSession(transport: Transport, workspace: Workspace, variant: 
     controller.current?.abort(new DOMException("Stopped by the user", "AbortError"));
     controller.current = null;
     dispatch({ type: "interrupt" });
-  }, []);
+  }, [dispatch]);
 
-  const send = useCallback((action: Action) => dispatch(action), []);
-
-  return { state, dispatch: send, stop } satisfies { state: SessionState; dispatch: (a: Action) => void; stop: () => void };
+  return { state, dispatch, stop } satisfies { state: SessionState; dispatch: (a: Action) => void; stop: () => void };
 }

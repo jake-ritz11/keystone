@@ -82,4 +82,5 @@ the agent (or person) still does the design work and reviews what lands.
    [docs/phase-2-plan.md](docs/phase-2-plan.md) and the reasoning behind each variant in
    [docs/variants.md](docs/variants.md).
 3. **A user study**: testers switch variants and suggest changes in the app, with consent-based
-   logging. The results get published as a case study.
+   logging. The results get published as a case study. The plan, measures and data dictionary
+   are in [docs/study-plan.md](docs/study-plan.md); the instrumentation is built.

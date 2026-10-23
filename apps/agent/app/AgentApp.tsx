@@ -6,10 +6,20 @@ import { Badge, Button, SegmentedControl, Tooltip } from "@keystone-ui/ui";
 import { ThemeToggle } from "./ThemeToggle";
 import { AgentSession } from "./session/AgentSession";
 import { VariantsDialog } from "./session/VariantsDialog";
+import { StudyButton } from "./study/StudyDialogs";
+import { StudyProvider } from "./study/StudyProvider";
 import styles from "./session/session.module.css";
 
 /** The app shell: pick a task, then watch and steer the agent on it. */
 export function AgentApp({ fast }: { fast: boolean }) {
+  return (
+    <StudyProvider>
+      <Shell fast={fast} />
+    </StudyProvider>
+  );
+}
+
+function Shell({ fast }: { fast: boolean }) {
   const [task, setTask] = useState<SampleTask | null>(null);
   const [variant, setVariant] = useState<Variant>(DEFAULT_VARIANT);
   const [run, setRun] = useState(0);
@@ -48,6 +58,7 @@ export function AgentApp({ fast }: { fast: boolean }) {
               New task
             </Button>
           )}
+          <StudyButton context={{ task: task?.id, variant }} />
           <VariantsDialog
             variant={variant}
             onApply={(next) => {
@@ -60,7 +71,7 @@ export function AgentApp({ fast }: { fast: boolean }) {
       </header>
       <main className={styles.main}>
         {task && transport ? (
-          <AgentSession key={`${task.id}-${run}`} task={task} variant={variant} transport={transport} />
+          <AgentSession key={`${task.id}-${run}`} task={task} variant={variant} transport={transport} mode={mode} />
         ) : (
           <TaskPicker
             mode={mode}

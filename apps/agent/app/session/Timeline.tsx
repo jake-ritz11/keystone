@@ -3,6 +3,7 @@
 import type { Action, Item, SessionState, ToolItem } from "@keystone-ui/agent-core";
 import { Disclosure } from "@keystone-ui/ui";
 import { isWrite, summarize, describeTool } from "./describe";
+import { useSessionLog } from "../study/SessionLog";
 import { RichText } from "./RichText";
 import { ToolRow } from "./ToolRow";
 import styles from "./session.module.css";
@@ -41,6 +42,7 @@ export function Timeline({ state, dispatch }: { state: SessionState; dispatch: (
 }
 
 function Entry({ row, approval, dispatch }: { row: Row; approval: SessionState["variant"]["approval"]; dispatch: (a: Action) => void }) {
+  const log = useSessionLog();
   switch (row.type) {
     case "user":
       return <p className={styles.user}>{row.text}</p>;
@@ -61,7 +63,7 @@ function Entry({ row, approval, dispatch }: { row: Row; approval: SessionState["
       );
     case "group":
       return (
-        <Disclosure summary={summarize(row.items)}>
+        <Disclosure summary={summarize(row.items)} onOpenChange={(open) => open && log({ kind: "expand", data: { tool: "group", count: row.items.length } })}>
           <ul className={styles.groupList}>
             {row.items.map((item) => (
               <li key={item.id}>{describeTool(item)}</li>

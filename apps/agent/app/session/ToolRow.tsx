@@ -3,11 +3,13 @@
 import { useState } from "react";
 import { diffHunks, type Action, type Approval, type ToolItem } from "@keystone-ui/agent-core";
 import { Badge, Button, DiffView, Disclosure, Input } from "@keystone-ui/ui";
+import { useSessionLog } from "../study/SessionLog";
 import { describeTool, isWrite, STATUS, toolPath } from "./describe";
 import styles from "./session.module.css";
 
 /** One tool call. Reads expand to show their output; writes show their diff and decision. */
 export function ToolRow({ item, approval, dispatch }: { item: ToolItem; approval: Approval; dispatch: (a: Action) => void }) {
+  const log = useSessionLog();
   const status = STATUS[item.status];
   const badge = status && !(item.status === "applied" && approval === "auto") && (
     <Badge tone={status.tone} dot>
@@ -18,7 +20,7 @@ export function ToolRow({ item, approval, dispatch }: { item: ToolItem; approval
   if (isWrite(item)) return <WriteRow item={item} badge={badge} dispatch={dispatch} />;
 
   return (
-    <Disclosure summary={describeTool(item)} meta={badge || undefined}>
+    <Disclosure summary={describeTool(item)} meta={badge || undefined} onOpenChange={(open) => open && log({ kind: "expand", data: { tool: item.name } })}>
       <pre className={styles.toolOutput} tabIndex={0} aria-label={`Output of: ${describeTool(item)}`}>
         {item.output ?? item.error ?? "…"}
       </pre>

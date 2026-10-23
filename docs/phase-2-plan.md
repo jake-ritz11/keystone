@@ -104,7 +104,7 @@ yet run against the API itself, which needs a key. Next: 5, the remaining kit co
 4. **Variants:** all three dimensions switchable, each with a written rationale.
 5. **New kit components:** extracted and documented as the app needs them.
 6. **Study instrumentation** (start of phase 3): consent screen, opt-in event logging,
-   in-app suggestions.
+   in-app suggestions. Built; see [study-plan.md](study-plan.md).
 
 ## Cost and safety
 

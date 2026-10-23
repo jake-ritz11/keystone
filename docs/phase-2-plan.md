@@ -86,7 +86,9 @@ specs, the same way the phase 1 components did.
 
 ## Milestones
 
-Done: 1 (core) and 2 (replay end to end, with specs for every variant). Next: 3, live mode.
+Done: 1 (core), 2 (replay end to end, with specs for every variant) and 3 (live mode). Live
+mode's client path is tested against an intercepted route that serves real SSE frames; it hasn't
+yet run against the API itself, which needs a key. Next: 4, variant rationales, then 5.
 
 
 1. **Core:** `agent-core` with workspace, tools, diffs and the reducer, fully unit-tested;

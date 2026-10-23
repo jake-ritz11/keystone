@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { DEFAULT_VARIANT, REPLAYS, replayTransport, SAMPLE_TASKS, type SampleTask, type Variant } from "@keystone-ui/agent-core";
-import { Badge, Button } from "@keystone-ui/ui";
+import { useEffect, useMemo, useState } from "react";
+import { DEFAULT_VARIANT, liveTransport, REPLAYS, replayTransport, SAMPLE_TASKS, type SampleTask, type Variant } from "@keystone-ui/agent-core";
+import { Badge, Button, Tooltip } from "@keystone-ui/ui";
 import { ThemeToggle } from "./ThemeToggle";
 import { AgentSession } from "./session/AgentSession";
 import { VariantsDialog } from "./session/VariantsDialog";
@@ -13,22 +13,36 @@ export function AgentApp({ fast }: { fast: boolean }) {
   const [task, setTask] = useState<SampleTask | null>(null);
   const [variant, setVariant] = useState<Variant>(DEFAULT_VARIANT);
   const [run, setRun] = useState(0);
+  const [mode, setMode] = useState<"replay" | "live">("replay");
+  const [server, setServer] = useState<{ live: boolean; model?: string } | null>(null);
 
-  // A fresh replay per session: replays are stateful (they serve turns in order).
-  const transport = useMemo(
-    () => (task && REPLAYS[task.id] ? replayTransport(REPLAYS[task.id]!, fast ? { chunkDelay: 0, firstDelay: 0 } : {}) : null),
-    // `run` restarts the replay for a new session on the same task.
-    [task, fast, run],
-  );
+  // Ask the server whether live mode is set up (it needs an API key there, never here).
+  useEffect(() => {
+    fetch("/api/turn")
+      .then((r) => (r.ok ? r.json() : { live: false }))
+      .then(setServer, () => setServer({ live: false }));
+  }, []);
+
+  // A fresh transport per session: replays are stateful (they serve turns in order).
+  const transport = useMemo(() => {
+    if (!task) return null;
+    if (mode === "live") return liveTransport();
+    const script = REPLAYS[task.id];
+    return script ? replayTransport(script, fast ? { chunkDelay: 0, firstDelay: 0 } : {}) : null;
+    // `run` restarts the transport for a new session on the same task.
+  }, [task, fast, run, mode]);
 
   return (
     <div className={styles.app}>
       <header className={styles.header}>
         <div className={styles.brand}>
           <span className={styles.title}>Keystone Agent</span>
-          <Badge tone="accent">Replay</Badge>
+          <Badge tone={mode === "live" ? "success" : "accent"}>{mode === "live" ? `Live · ${server?.model ?? "Claude"}` : "Replay"}</Badge>
         </div>
         <div className={styles.headerActions}>
+          {!task && (
+            <ModeSwitch mode={mode} live={server?.live ?? false} onChange={setMode} />
+          )}
           {task && (
             <Button variant="ghost" size="sm" onClick={() => setTask(null)}>
               New task
@@ -49,6 +63,7 @@ export function AgentApp({ fast }: { fast: boolean }) {
           <AgentSession key={`${task.id}-${run}`} task={task} variant={variant} transport={transport} />
         ) : (
           <TaskPicker
+            mode={mode}
             onPick={(t) => {
               setTask(t);
               setRun((r) => r + 1);
@@ -60,17 +75,40 @@ export function AgentApp({ fast }: { fast: boolean }) {
   );
 }
 
-function TaskPicker({ onPick }: { onPick: (task: SampleTask) => void }) {
+/** Replay or live. Live is offered only when the server has a key; the reason says so. */
+function ModeSwitch({ mode, live, onChange }: { mode: "replay" | "live"; live: boolean; onChange: (m: "replay" | "live") => void }) {
+  return (
+    <Tooltip content={live ? "Live sessions call Claude and cost tokens." : "Live mode needs ANTHROPIC_API_KEY on the server."}>
+      <div className={styles.toggle} role="group" aria-label="Mode">
+        <button type="button" className={styles.toggleButton} aria-pressed={mode === "replay"} onClick={() => onChange("replay")}>
+          Replay
+        </button>
+        <button
+          type="button"
+          className={styles.toggleButton}
+          aria-pressed={mode === "live"}
+          aria-disabled={!live || undefined}
+          onClick={() => live && onChange("live")}
+        >
+          Live
+        </button>
+      </div>
+    </Tooltip>
+  );
+}
+
+function TaskPicker({ mode, onPick }: { mode: "replay" | "live"; onPick: (task: SampleTask) => void }) {
   return (
     <div className={styles.picker}>
       <h1 className={styles.pickerTitle}>What should the agent work on?</h1>
       <p className={styles.panelText}>
-        It works on a small marketing site for a notes app, in a sandbox. These sessions are recorded replays, so they
-        run without an API key; live mode comes next.
+        {mode === "live"
+          ? "It works on a small marketing site for a notes app, in a sandbox. Live sessions call Claude, so every run is different."
+          : "It works on a small marketing site for a notes app, in a sandbox. Replays are recorded sessions: they run without an API key, and assume their edits get approved."}
       </p>
       <ul className={styles.tasks}>
         {SAMPLE_TASKS.map((task) => {
-          const available = Boolean(REPLAYS[task.id]);
+          const available = mode === "live" || Boolean(REPLAYS[task.id]);
           return (
             <li key={task.id}>
               <button type="button" className={styles.task} disabled={!available} onClick={() => onPick(task)}>

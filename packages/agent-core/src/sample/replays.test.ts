@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { createSession, reduce, type Action, type SessionState } from "../session.ts";
+import { createSession, DEFAULT_VARIANT, reduce, type Action, type SessionState } from "../session.ts";
 import { replayTransport, ReplayFinished, streamTurn } from "../transport.ts";
 import { systemPrompt } from "../prompt.ts";
 import { REPLAYS } from "./replays.ts";
@@ -22,7 +22,7 @@ async function play(task: string, approval: "each" | "end" | "auto" = "each"): P
       continue;
     }
     if (state.status !== "ready") break;
-    await streamTurn(transport, { system: systemPrompt(state.variant), messages: state.messages }, dispatch, new AbortController().signal);
+    await streamTurn(transport, { system: systemPrompt(state.variant), messages: state.messages, variant: state.variant }, dispatch, new AbortController().signal);
   }
   return state;
 }
@@ -64,7 +64,7 @@ test("pricing replay removes the 720px floor and wraps the table", async () => {
 test("a finished replay says so instead of hanging", async () => {
   const transport = replayTransport([], { chunkDelay: 0, firstDelay: 0 });
   await assert.rejects(async () => {
-    for await (const _ of transport({ system: "", messages: [] }, new AbortController().signal)) void _;
+    for await (const _ of transport({ system: "", messages: [], variant: DEFAULT_VARIANT }, new AbortController().signal)) void _;
   }, ReplayFinished);
 });
 
@@ -73,7 +73,7 @@ test("aborting a replay stops it mid-stream", async () => {
   const controller = new AbortController();
   let events = 0;
   await assert.rejects(async () => {
-    for await (const _ of transport({ system: "", messages: [] }, controller.signal)) {
+    for await (const _ of transport({ system: "", messages: [], variant: DEFAULT_VARIANT }, controller.signal)) {
       if (++events === 3) controller.abort(new Error("stopped"));
     }
   });

@@ -4,11 +4,12 @@
  * scripted session with the same chunking and timing a real stream has.
  */
 import type Anthropic from "@anthropic-ai/sdk";
-import type { Action, StreamEvent } from "./session.ts";
+import type { Action, StreamEvent, Variant } from "./session.ts";
 
 export interface TurnRequest {
   system: string;
   messages: Anthropic.MessageParam[];
+  variant: Variant;
 }
 
 export type Transport = (request: TurnRequest, signal: AbortSignal) => AsyncIterable<StreamEvent>;

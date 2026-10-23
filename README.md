@@ -24,6 +24,11 @@ npm run dev:agent  # agent app at http://localhost:3001 (replays; no API key nee
 npm run check      # typecheck, unit tests, audit, package build, docs build, behavior tests
 ```
 
+For live sessions in the agent app, copy `apps/agent/.env.example` to `apps/agent/.env.local`
+and set `ANTHROPIC_API_KEY`. The key stays on the server: the browser sends only the
+conversation, and the route builds the prompt and tools itself, rate-limits, and enforces a
+daily token budget.
+
 `npm run build:packages` compiles `@keystone-ui/tokens` and `@keystone-ui/ui` into each
 package's `dist/`: ESM, type declarations, `tokens.css` and one `styles.css` with scoped class
 names, so the published packages work in any React setup without extra config. Smoke tests

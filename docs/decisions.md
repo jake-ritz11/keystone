@@ -184,3 +184,6 @@ Each behavioral fix has a spec in [`polish.spec.ts`](../apps/docs/tests/polish.s
   browser without anchor positioning isn't.
 - **Touch.** Tooltips deliberately don't open on touch, and nothing yet tests the components
   on a touch device.
+- **Live mode against the real API.** The route typechecks against the SDK and its client path
+  is tested end to end with intercepted, real-format SSE, but no session has run against Claude
+  yet: it needs an API key on the server.

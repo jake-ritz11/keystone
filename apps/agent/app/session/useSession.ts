@@ -33,7 +33,7 @@ export function useSession(transport: Transport, workspace: Workspace, variant: 
     sent.current = state.messages;
     const current = new AbortController();
     controller.current = current;
-    void streamTurn(transport, { system: systemPrompt(state.variant), messages: state.messages }, dispatch, current.signal);
+    void streamTurn(transport, { system: systemPrompt(state.variant), messages: state.messages, variant: state.variant }, dispatch, current.signal);
     // No cleanup: the status change this causes ("streaming") must not abort the turn.
   }, [state.status, state.messages, state.variant, transport]);
 

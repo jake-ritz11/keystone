@@ -115,8 +115,14 @@ export function ToastProvider({ children, duration = 5000 }: ToastProviderProps)
 
   const count = toasts.length;
   useEffect(() => {
+    // The modal holding the layer was removed from the page rather than closed (so no close
+    // event came): move back out before touching the popover, which can't show while detached.
+    if (container && !container.isConnected) {
+      setContainer(openModal());
+      return;
+    }
     const region = regionRef.current;
-    if (!region) return;
+    if (!region?.isConnected) return;
     const isOpen = region.matches(":popover-open");
     if (count === 0) {
       if (isOpen) region.hidePopover();

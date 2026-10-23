@@ -1,0 +1,20 @@
+{
+  "name": "@keystone-ui/agent-core",
+  "version": "0.0.0",
+  "private": true,
+  "description": "The agent interface's logic: a sandboxed workspace, tools, diffs and the session reducer. No React.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "node --test \"src/**/*.test.ts\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "zod": "^4.6.7"
+  },
+  "peerDependencies": {
+    "@anthropic-ai/sdk": ">=1.1.0"
+  }
+}

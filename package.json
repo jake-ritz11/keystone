@@ -2,6 +2,7 @@
   "name": "keystone",
   "private": true,
   "description": "A token-driven React design system with an MCP server and Claude skills that generate and audit components.",
+  "type": "module",
   "workspaces": [
     "packages/*",
     "apps/*"
@@ -12,16 +13,19 @@
   "scripts": {
     "dev": "npm run dev -w apps/docs",
     "build": "npm run build -w apps/docs",
-    "typecheck": "npm run typecheck --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present && tsc -p scripts",
     "test": "npm run test --workspaces --if-present",
     "audit:ui": "node packages/mcp/src/cli.ts packages/ui/src",
-    "check": "npm run typecheck && npm test && npm run audit:ui && npm run build && npm run test:e2e",
-    "test:e2e": "npm run test:e2e -w apps/docs"
+    "check": "npm run typecheck && npm test && npm run audit:ui && npm run build:packages && npm run test:packages && npm run build && npm run test:e2e",
+    "test:e2e": "npm run test:e2e -w apps/docs",
+    "build:packages": "node scripts/build-packages.ts",
+    "test:packages": "node --test \"scripts/*.test.ts\""
   },
   "devDependencies": {
     "@types/node": "^26.6.5",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
+    "esbuild": "^0.28.2",
     "typescript": "^7.0.2"
   }
 }

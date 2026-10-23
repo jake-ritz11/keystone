@@ -1,5 +1,6 @@
 import { forwardRef, type InputHTMLAttributes, type ReactNode } from "react";
-import { Field, fieldStyles, useFieldIds, type FieldOwnProps } from "../field/Field";
+import { Field, useFieldIds, type FieldOwnProps } from "../field/Field";
+import fieldStyles from "../field/Field.module.css";
 import styles from "./Input.module.css";
 
 export interface InputProps

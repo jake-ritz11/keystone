@@ -18,8 +18,14 @@ Requires Node 24 (see `.nvmrc`).
 ```bash
 npm install
 npm run dev        # docs site at http://localhost:3000
-npm run check      # typecheck, unit tests, audit, production build, behavior tests
+npm run check      # typecheck, unit tests, audit, package build, docs build, behavior tests
 ```
+
+`npm run build:packages` compiles `@keystone-ui/tokens` and `@keystone-ui/ui` into each
+package's `dist/`: ESM, type declarations, `tokens.css` and one `styles.css` with scoped class
+names, so the published packages work in any React setup without extra config. Smoke tests
+render every component from the built bundle and type-check a consumer against the built
+declarations. Publish with `npm publish packages/ui/dist`.
 
 The behavior tests (`apps/docs/tests`) drive the production docs build in Chromium and WebKit
 with Playwright: keyboard models, focus return, ARIA wiring, light dismiss, and the WCAG timing and

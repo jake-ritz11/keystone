@@ -75,5 +75,3 @@ export function Field({
     </div>
   );
 }
-
-export { styles as fieldStyles };

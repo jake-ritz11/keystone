@@ -13,8 +13,8 @@
     "test": "node --test \"app/**/*.test.ts\""
   },
   "dependencies": {
-    "@keystone-ui/tokens": "0.0.0",
-    "@keystone-ui/ui": "0.0.0",
+    "@keystone-ui/tokens": "0.1.0",
+    "@keystone-ui/ui": "0.1.0",
     "next": "^16.4.2",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"

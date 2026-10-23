@@ -73,7 +73,11 @@ const openModal = () =>
  */
 export function ToastProvider({ children, duration = 5000 }: ToastProviderProps) {
   const [toasts, setToasts] = useState<ToastItem[]>([]);
-  const [paused, setPaused] = useState(false);
+  // Paused while the pointer is over the stack or focus is inside it, tracked separately: the
+  // pointer leaving mustn't resume timers while a keyboard user is still in a toast.
+  const [hovered, setHovered] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const paused = hovered || focused;
   const [announcement, setAnnouncement] = useState({ polite: "", assertive: "" });
   const regionRef = useRef<HTMLElement>(null);
   const listRef = useRef<HTMLOListElement>(null);
@@ -116,13 +120,25 @@ export function ToastProvider({ children, duration = 5000 }: ToastProviderProps)
     const isOpen = region.matches(":popover-open");
     if (count === 0) {
       if (isOpen) region.hidePopover();
-      setPaused(false);
+      setHovered(false);
+      setFocused(false);
       return;
     }
     // Shown once and left open: hiding and re-showing would replay every toast's entrance.
     // A modal opened since is handled by moving the layer into it (see openModal).
     if (!isOpen) region.showPopover();
   }, [count, container]);
+
+  // A missed pointerleave (the stack can move out from under a still pointer as toasts come and
+  // go) would leave it paused for good, so while hovered, confirm on every move.
+  useEffect(() => {
+    if (!hovered) return;
+    const onMove = (event: PointerEvent) => {
+      if (!regionRef.current?.contains(event.target as Node)) setHovered(false);
+    };
+    document.addEventListener("pointermove", onMove);
+    return () => document.removeEventListener("pointermove", onMove);
+  }, [hovered]);
 
   // When a toast arrives or leaves, the others glide to their new place instead of jumping:
   // compare each one's layout position with the last render's and animate the difference.
@@ -163,11 +179,12 @@ export function ToastProvider({ children, duration = 5000 }: ToastProviderProps)
         popover="manual"
         aria-label="Notifications"
         className={styles.region}
-        onPointerEnter={() => setPaused(true)}
-        onPointerLeave={() => setPaused(false)}
-        onFocus={() => setPaused(true)}
+        data-paused={paused || undefined}
+        onPointerEnter={() => setHovered(true)}
+        onPointerLeave={() => setHovered(false)}
+        onFocus={() => setFocused(true)}
         onBlur={(event) => {
-          if (!event.currentTarget.contains(event.relatedTarget)) setPaused(false);
+          if (!event.currentTarget.contains(event.relatedTarget)) setFocused(false);
         }}
       >
         <ol ref={listRef} className={styles.list}>

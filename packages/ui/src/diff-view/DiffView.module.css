@@ -1,4 +1,6 @@
 .diff {
+  /* Contains the visually hidden labels, which would otherwise escape scroll containers. */
+  position: relative;
   overflow: hidden;
   border: 1px solid var(--ks-color-border);
   border-radius: var(--ks-radius-md);
@@ -9,6 +11,7 @@
 
 .header {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--ks-space-3);
   min-width: 0;

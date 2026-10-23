@@ -1,4 +1,6 @@
 .field {
+  /* Contains a visually hidden label, which would otherwise escape scroll containers. */
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--ks-space-1);

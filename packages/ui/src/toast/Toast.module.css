@@ -91,8 +91,12 @@
   padding: var(--ks-space-1);
 }
 
+/* Fixed, not absolute: these live in the body, and an absolute box there would add a pixel of
+   scrollable overflow below a full-height app. */
 .visuallyHidden {
-  position: absolute;
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline-start: 0;
   width: 1px;
   height: 1px;
   overflow: hidden;

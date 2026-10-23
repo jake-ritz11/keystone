@@ -36,9 +36,12 @@ test("dismisses itself after its duration", async ({ page }) => {
 test("hovering the stack pauses the timer (WCAG 2.2.1)", async ({ page }) => {
   await show(page, "Neutral");
   await region(page).getByRole("listitem").hover();
+  await expect(region(page)).toHaveAttribute("data-paused", "true");
   await page.clock.fastForward(20_000);
   await expect(region(page).getByRole("listitem")).toHaveCount(1);
   await page.mouse.move(5, 5);
+  // Wait for the resume to be committed before moving the fake clock on.
+  await expect(region(page)).not.toHaveAttribute("data-paused");
   await page.clock.fastForward(5_500);
   await expect(region(page).getByRole("listitem")).toHaveCount(0);
 });
@@ -67,4 +70,14 @@ test("over a modal dialog it can be used without closing the dialog", async ({ p
   await region(page).getByRole("button", { name: "Dismiss: Shown above the dialog" }).click();
   await expect(region(page).getByRole("listitem")).toHaveCount(0);
   await expect(dialog).toBeVisible();
+});
+
+test("focus inside the stack keeps it paused even after the pointer leaves", async ({ page }) => {
+  await show(page, "Neutral");
+  const toast = region(page).getByRole("listitem");
+  await toast.hover();
+  await region(page).getByRole("button", { name: "Dismiss: Draft saved" }).focus();
+  await page.mouse.move(5, 5);
+  await page.clock.fastForward(20_000);
+  await expect(toast).toHaveCount(1);
 });

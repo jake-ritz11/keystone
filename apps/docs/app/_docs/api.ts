@@ -83,6 +83,21 @@ export const api: Record<string, ComponentApi> = {
       FIELD,
     ],
   },
+  textarea: {
+    parts: [
+      {
+        interface: "TextareaProps",
+        source: "packages/ui/src/textarea/Textarea.tsx",
+        extends: "FieldOwnProps and every <textarea> attribute; className goes on the wrapper, everything else and the ref on the <textarea>",
+        props: [
+          { name: "autoResize", type: "boolean", default: "true", description: "Grow with the text, from minRows to maxRows, then scroll." },
+          { name: "minRows", type: "number", default: "3", description: "Height when empty, in lines." },
+          { name: "maxRows", type: "number", default: "12", description: "Tallest it grows before scrolling, in lines." },
+        ],
+      },
+      FIELD,
+    ],
+  },
   select: {
     parts: [
       {

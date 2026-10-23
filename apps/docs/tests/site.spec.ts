@@ -5,7 +5,7 @@ import { open } from "./open";
 const PAGES = [
   "/",
   "/tokens",
-  ...["button", "input", "select", "dialog", "menu", "tabs", "tooltip", "toast"].map((c) => `/components/${c}`),
+  ...["button", "input", "textarea", "select", "dialog", "menu", "tabs", "tooltip", "toast"].map((c) => `/components/${c}`),
 ];
 
 for (const path of PAGES) {

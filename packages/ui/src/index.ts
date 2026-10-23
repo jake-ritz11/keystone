@@ -22,3 +22,6 @@ export type { TooltipProps } from "./tooltip/Tooltip";
 
 export { ToastProvider, useToast } from "./toast/Toast";
 export type { ToastOptions, ToastProviderProps, ToastTone } from "./toast/Toast";
+
+export { Textarea } from "./textarea/Textarea";
+export type { TextareaProps } from "./textarea/Textarea";

@@ -1,0 +1,29 @@
+import { expect, test } from "@playwright/test";
+import { open } from "./open";
+
+test("textarea grows with its content, then stops at maxRows", async ({ page, browserName }) => {
+  await open(page, "/components/textarea");
+  const box = page.getByRole("textbox", { name: "Message" });
+  const empty = (await box.boundingBox())!.height;
+  await box.fill("one\ntwo\nthree\nfour");
+  const four = (await box.boundingBox())!.height;
+  const supported = await page.evaluate(() => CSS.supports("field-sizing", "content"));
+  test.skip(!supported, `${browserName} doesn't support field-sizing yet; it falls back to rows and a resize handle.`);
+  expect(four).toBeGreaterThan(empty);
+  await box.fill(Array.from({ length: 30 }, (_, i) => `line ${i}`).join("\n"));
+  const capped = (await box.boundingBox())!.height;
+  await box.fill(Array.from({ length: 40 }, (_, i) => `line ${i}`).join("\n"));
+  expect((await box.boundingBox())!.height).toBe(capped);
+});
+
+test("composer: Enter sends, Shift+Enter adds a line", async ({ page }) => {
+  await open(page, "/components/textarea");
+  const box = page.getByRole("textbox", { name: "Message" });
+  await box.fill("first line");
+  await box.press("Shift+Enter");
+  await box.pressSequentially("second");
+  await expect(box).toHaveValue("first line\nsecond");
+  await box.press("Enter");
+  await expect(box).toHaveValue("");
+  await expect(page.getByText("Sent 1 message.")).toBeVisible();
+});

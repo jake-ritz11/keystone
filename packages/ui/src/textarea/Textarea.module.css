@@ -1,0 +1,50 @@
+.control {
+  align-items: stretch;
+}
+
+.textarea {
+  flex: 1;
+  min-width: 0;
+  /* content-box, so the row limits below are in lines of text, not including padding. */
+  box-sizing: content-box;
+  min-block-size: calc(var(--ks-textarea-min-rows) * 1lh);
+  margin: 0;
+  border: 0;
+  padding-inline: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: var(--ks-font-line-height-normal);
+  outline: none;
+  resize: vertical;
+}
+
+.textarea::placeholder {
+  color: var(--ks-color-text-muted);
+  opacity: 1;
+}
+
+/* Grows with its content up to maxRows, then scrolls. Browsers without field-sizing fall back
+   to the rows attribute and a manual resize handle. */
+.auto {
+  max-block-size: calc(var(--ks-textarea-max-rows) * 1lh);
+}
+
+@supports (field-sizing: content) {
+  .auto {
+    field-sizing: content;
+    resize: none;
+  }
+}
+
+.sm {
+  padding-block: var(--ks-space-1);
+}
+
+.md {
+  padding-block: var(--ks-space-2);
+}
+
+.lg {
+  padding-block: var(--ks-space-3);
+}

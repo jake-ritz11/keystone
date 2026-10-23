@@ -441,6 +441,25 @@ h3 {
   font-size: var(--ks-font-size-sm);
 }
 
+/* Disclosure examples */
+
+.disclosure-output {
+  margin: 0;
+  padding: var(--ks-space-3);
+  font-size: var(--ks-font-size-xs);
+}
+
+.disclosure-text {
+  margin: 0;
+  padding: var(--ks-space-3);
+  color: var(--ks-color-text-muted);
+}
+
+.disclosure-answer {
+  margin: 0;
+  color: var(--ks-color-text-muted);
+}
+
 /* Overview */
 
 .cards {

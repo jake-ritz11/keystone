@@ -37,3 +37,19 @@ test("a diff says what changed in words, not only in color", async ({ page }) =>
   await diff.getByRole("button", { name: "Approve" }).click();
   await expect(diff.getByText("Approved")).toBeVisible();
 });
+
+test("disclosure: native toggle from the keyboard, and exclusive groups", async ({ page }) => {
+  await open(page, "/components/disclosure");
+  const read = page.locator(".example-preview details").filter({ hasText: "Read styles.css" });
+  await expect(read).not.toHaveAttribute("open");
+  await read.locator("summary").focus();
+  await page.keyboard.press("Enter");
+  await expect(read).toHaveAttribute("open");
+  await expect(read.locator("summary")).toContainText("Done");
+
+  const faq = page.locator('.example-preview details[name="faq"]');
+  await expect(faq.nth(0)).toHaveAttribute("open");
+  await faq.nth(1).locator("summary").click();
+  await expect(faq.nth(1)).toHaveAttribute("open");
+  await expect(faq.nth(0)).not.toHaveAttribute("open");
+});

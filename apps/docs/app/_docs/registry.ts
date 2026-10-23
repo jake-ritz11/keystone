@@ -20,6 +20,7 @@ export const components: DocLink[] = [
   { href: "/components/tabs", title: "Tabs", summary: "Underline or segmented, horizontal or vertical, automatic or manual." },
   { href: "/components/segmented-control", title: "SegmentedControl", summary: "One choice from a few, side by side, as a keyboard-friendly radio group." },
   { href: "/components/tooltip", title: "Tooltip", summary: "Hover and focus hints that follow WCAG's rules for content on hover." },
+  { href: "/components/disclosure", title: "Disclosure", summary: "Show and hide a section, on the native details element." },
   { href: "/components/badge", title: "Badge", summary: "A short, static label for a status or a category." },
   { href: "/components/diff-view", title: "DiffView", summary: "A unified diff for reviewing a change, readable by screen readers." },
   { href: "/components/toast", title: "Toast", summary: "Announced notifications that pause on hover and work over a modal." },

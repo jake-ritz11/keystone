@@ -98,6 +98,27 @@ export const api: Record<string, ComponentApi> = {
       FIELD,
     ],
   },
+  disclosure: {
+    parts: [
+      {
+        interface: "DisclosureProps",
+        source: "packages/ui/src/disclosure/Disclosure.tsx",
+        extends: "every <details> attribute, including name for exclusive groups",
+        props: [
+          { name: "summary", type: "ReactNode", required: true, description: "The always-visible line that opens and closes it." },
+          { name: "meta", type: "ReactNode", description: "Shown at the end of the summary, e.g. a Badge; read as part of it." },
+          { name: "open", type: "boolean", description: "Whether it's open, when controlled." },
+          { name: "defaultOpen", type: "boolean", default: "false", description: "Whether it starts open, when uncontrolled." },
+          { name: "onOpenChange", type: "(open: boolean) => void", description: "Called when the user opens or closes it." },
+          { name: "variant", type: '"bordered" | "plain"', default: '"bordered"', description: "A bordered box, or a plain line for lists like FAQs." },
+        ],
+      },
+    ],
+    keyboard: [
+      { keys: "Tab", action: "To the summary." },
+      { keys: "Enter, Space", action: "Opens or closes it (native)." },
+    ],
+  },
   badge: {
     parts: [
       {

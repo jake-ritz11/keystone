@@ -34,3 +34,6 @@ export type { DiffViewHunk, DiffViewLine, DiffViewProps } from "./diff-view/Diff
 
 export { SegmentedControl } from "./segmented-control/SegmentedControl";
 export type { SegmentedControlProps, SegmentedOption } from "./segmented-control/SegmentedControl";
+
+export { Disclosure } from "./disclosure/Disclosure";
+export type { DisclosureProps } from "./disclosure/Disclosure";

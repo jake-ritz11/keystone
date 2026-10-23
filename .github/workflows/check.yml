@@ -25,10 +25,12 @@ jobs:
       # Chromium and WebKit.
       - run: npm run check
       - name: Behavior tests in Firefox
-        run: npm run test:e2e:firefox -w apps/docs
+        run: npm run test:e2e:firefox -w apps/docs && npm run test:e2e:firefox -w apps/agent
       - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: playwright-results
-          path: apps/docs/test-results
+          path: |
+            apps/docs/test-results
+            apps/agent/test-results
           retention-days: 7

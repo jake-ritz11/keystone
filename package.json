@@ -12,14 +12,15 @@
   },
   "scripts": {
     "dev": "npm run dev -w apps/docs",
-    "build": "npm run build -w apps/docs",
+    "build": "npm run build -w apps/docs && npm run build -w apps/agent",
     "typecheck": "npm run typecheck --workspaces --if-present && tsc -p scripts",
     "test": "npm run test --workspaces --if-present",
     "audit:ui": "node packages/mcp/src/cli.ts packages/ui/src",
     "check": "npm run typecheck && npm test && npm run audit:ui && npm run build:packages && npm run test:packages && npm run build && npm run test:e2e",
-    "test:e2e": "npm run test:e2e -w apps/docs",
+    "test:e2e": "npm run test:e2e -w apps/docs && npm run test:e2e -w apps/agent",
     "build:packages": "node scripts/build-packages.ts",
-    "test:packages": "node --test \"scripts/*.test.ts\""
+    "test:packages": "node --test \"scripts/*.test.ts\"",
+    "dev:agent": "npm run dev -w apps/agent"
   },
   "devDependencies": {
     "@types/node": "^26.6.5",

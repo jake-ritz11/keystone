@@ -86,6 +86,9 @@ specs, the same way the phase 1 components did.
 
 ## Milestones
 
+Done: 1 (core) and 2 (replay end to end, with specs for every variant). Next: 3, live mode.
+
+
 1. **Core:** `agent-core` with workspace, tools, diffs and the reducer, fully unit-tested;
    the sample site and three tasks.
 2. **Replay end to end:** the app runs a recorded session through the real UI. Playwright

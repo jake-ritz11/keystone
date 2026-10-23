@@ -1,0 +1,37 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light dark;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ks-color-bg);
+  color: var(--ks-color-text);
+  font-family: var(--ks-font-family-sans);
+  font-size: var(--ks-font-size-md);
+  line-height: var(--ks-font-line-height-normal);
+}
+
+code,
+pre {
+  font-family: var(--ks-font-family-mono);
+  font-size: 0.875em;
+}

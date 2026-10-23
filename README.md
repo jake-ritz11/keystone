@@ -9,6 +9,8 @@ components *from* the system and check its own work against it.
 | [`packages/ui`](packages/ui) | React components built only from tokens: accessible, themeable, reduced-motion aware |
 | [`packages/mcp`](packages/mcp) | MCP server: `get_tokens`, `audit_component`, `generate_component`, plus a CLI audit |
 | [`apps/docs`](apps/docs) | Next.js docs site and component playground |
+| [`apps/agent`](apps/agent) | The agent interface (phase 2): work with a coding agent, with switchable interaction variants |
+| [`packages/agent-core`](packages/agent-core) | The agent's logic, without React: sandboxed workspace, tools, diffs, session reducer, replays |
 | [`.claude/skills`](.claude/skills) | Claude skills that teach the rules (`keystone-components`) |
 
 ## Run it
@@ -18,6 +20,7 @@ Requires Node 24 (see `.nvmrc`).
 ```bash
 npm install
 npm run dev        # docs site at http://localhost:3000
+npm run dev:agent  # agent app at http://localhost:3001 (replays; no API key needed)
 npm run check      # typecheck, unit tests, audit, package build, docs build, behavior tests
 ```
 

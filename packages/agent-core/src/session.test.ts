@@ -197,3 +197,19 @@ test("a note added mid-run reaches the agent even if the turn ends without tools
   assert.equal(s.status, "ready");
   assert.match(String(s.messages.at(-1)?.content), /Keep the old link working too/);
 });
+
+test("the reducer is pure: the same actions give the same state, ids included", () => {
+  const actions: Action[] = [
+    { type: "user_message", text: "Fix the broken link" },
+    { type: "turn_start" },
+    { type: "stream", event: { type: "block_start", index: 0, block: "text" } },
+    { type: "stream", event: { type: "text_delta", index: 0, text: "Looking." } },
+    { type: "interrupt" },
+    { type: "note", text: "a note" },
+  ];
+  const once = run(createSession(WS), ...actions);
+  const twice = run(createSession(WS), ...actions);
+  assert.deepEqual(twice, once);
+  const ids = once.items.map((i) => i.id);
+  assert.equal(new Set(ids).size, ids.length, "ids are unique");
+});

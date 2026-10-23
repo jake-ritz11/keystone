@@ -85,6 +85,8 @@ export interface SessionState {
   usage: { input: number; output: number };
   /** Stream block index to the item it fills, for the turn in flight. */
   blocks: Record<number, string>;
+  /** Counter for generated item ids, kept in the state so the reducer stays pure. */
+  seq: number;
   error?: string;
 }
 
@@ -124,11 +126,12 @@ export function createSession(workspace: Workspace, variant: Variant = DEFAULT_V
     notes: [],
     usage: { input: 0, output: 0 },
     blocks: {},
+    seq: 0,
   };
 }
 
-let nextId = 0;
-const id = (prefix: string) => `${prefix}-${++nextId}`;
+/** The next generated id. Whatever adds the item also advances `seq`. */
+const id = (state: SessionState, prefix: string) => `${prefix}-${state.seq + 1}`;
 
 function updateItem(state: SessionState, itemId: string, patch: (item: Item) => Item): SessionState {
   return { ...state, items: state.items.map((item) => (item.id === itemId ? patch(item) : item)) };
@@ -147,7 +150,8 @@ export function reduce(state: SessionState, action: Action): SessionState {
         status: "ready",
         error: undefined,
         messages: [...state.messages, { role: "user", content: text }],
-        items: [...state.items, { type: "user", id: id("user"), text }],
+        items: [...state.items, { type: "user", id: id(state, "user"), text }],
+        seq: state.seq + 1,
       };
     }
 
@@ -216,7 +220,8 @@ export function reduce(state: SessionState, action: Action): SessionState {
       return {
         ...state,
         notes: [...state.notes, text],
-        items: [...state.items, { type: "user", id: id("note"), text }],
+        items: [...state.items, { type: "user", id: id(state, "note"), text }],
+        seq: state.seq + 1,
       };
     }
 
@@ -226,7 +231,7 @@ export function reduce(state: SessionState, action: Action): SessionState {
         const items = state.items
           .filter((i) => !(i.type === "tool" && i.turn === state.turn && i.status === "streaming"))
           .map((i) => (i.type === "text" && i.streaming ? { ...i, streaming: false } : i));
-        return { ...state, status: "stopped", items: [...items, notice("info", "Stopped. Send a message to continue.")] };
+        return { ...state, status: "stopped", items: [...items, notice(state, "info", "Stopped. Send a message to continue.")], seq: state.seq + 1 };
       }
       if (state.status === "waiting") {
         let next = state;
@@ -238,7 +243,7 @@ export function reduce(state: SessionState, action: Action): SessionState {
           }));
         }
         next = settleTurn(next);
-        return { ...next, status: "stopped", items: [...next.items, notice("info", "Stopped. Send a message to continue.")] };
+        return { ...next, status: "stopped", items: [...next.items, notice(next, "info", "Stopped. Send a message to continue.")], seq: next.seq + 1 };
       }
       return state;
     }
@@ -251,10 +256,10 @@ export function reduce(state: SessionState, action: Action): SessionState {
   }
 }
 
-const notice = (tone: "info" | "danger", text: string): Item => ({ type: "notice", id: id("notice"), tone, text });
+const notice = (state: SessionState, tone: "info" | "danger", text: string): Item => ({ type: "notice", id: id(state, "notice"), tone, text });
 
 function withBlock(state: SessionState, index: number, item: Item): SessionState {
-  return { ...state, items: [...state.items, item], blocks: { ...state.blocks, [index]: item.id } };
+  return { ...state, items: [...state.items, item], blocks: { ...state.blocks, [index]: item.id }, seq: state.seq + 1 };
 }
 
 function onStream(state: SessionState, event: StreamEvent): SessionState {
@@ -262,8 +267,8 @@ function onStream(state: SessionState, event: StreamEvent): SessionState {
   const turn = state.turn;
   switch (event.type) {
     case "block_start": {
-      if (event.block === "text") return withBlock(state, event.index, { type: "text", id: id("text"), text: "", streaming: true, turn });
-      if (event.block === "thinking") return withBlock(state, event.index, { type: "progress", id: id("progress"), text: "", turn });
+      if (event.block === "text") return withBlock(state, event.index, { type: "text", id: id(state, "text"), text: "", streaming: true, turn });
+      if (event.block === "thinking") return withBlock(state, event.index, { type: "progress", id: id(state, "progress"), text: "", turn });
       return withBlock(state, event.index, {
         type: "tool",
         id: event.block.id,
@@ -289,7 +294,7 @@ function onStream(state: SessionState, event: StreamEvent): SessionState {
       return updateItem(state, target, (i) => (i.type === "tool" ? { ...i, partialInput: i.partialInput + event.json } : i));
     }
     case "turn_error":
-      return { ...state, status: "error", error: event.message, items: [...state.items, notice("danger", event.message)] };
+      return { ...state, status: "error", error: event.message, items: [...state.items, notice(state, "danger", event.message)], seq: state.seq + 1 };
     case "turn_end":
       return onTurnEnd(state, event.message);
   }
@@ -312,12 +317,18 @@ function onTurnEnd(state: SessionState, message: Pick<Anthropic.Message, "conten
 
   if (message.stop_reason === "refusal") {
     const resolved = resolveUnrun(next, calls, "The request was declined, so this call was not run.");
-    return { ...resolved, status: "error", error: "The model declined this request.", items: [...resolved.items, notice("danger", "The model declined this request.")] };
+    return { ...resolved, status: "error", error: "The model declined this request.", items: [...resolved.items, notice(resolved, "danger", "The model declined this request.")], seq: resolved.seq + 1 };
   }
   if (message.stop_reason === "max_tokens" && calls.length > 0) {
     // A truncated tool input can still parse, so nothing from this turn runs.
     const resolved = resolveUnrun(next, calls, "The response was cut off before this call was complete, so it was not run.");
-    return { ...resolved, status: "error", error: "The response was cut off.", items: [...resolved.items, notice("danger", "The response was cut off before the agent finished a tool call.")] };
+    return {
+      ...resolved,
+      status: "error",
+      error: "The response was cut off.",
+      items: [...resolved.items, notice(resolved, "danger", "The response was cut off before the agent finished a tool call.")],
+      seq: resolved.seq + 1,
+    };
   }
 
   for (const call of calls) next = runCall(next, call, turn);

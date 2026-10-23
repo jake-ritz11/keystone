@@ -62,8 +62,8 @@ export default function Overview() {
             <Link href="/tokens">Tokens</Link>: the full scale, in both themes.
           </li>
           <li>
-            <a href={`${REPO}/blob/main/docs/decisions.md`}>Decisions</a>: why it's built this way,
-            what broke, and what the tests do and don't prove.
+            <Link href="/writing/decisions">Decisions</Link>: why it's built this way, what broke,
+            and what the tests do and don't prove. More in <Link href="/writing">Writing</Link>.
           </li>
           <li>
             <a href={REPO}>Source on GitHub</a>, including the MCP server and its{" "}

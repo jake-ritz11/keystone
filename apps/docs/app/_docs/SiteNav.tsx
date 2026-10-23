@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import { components, foundations, type DocLink } from "./registry";
+import { components, foundations, writing, type DocLink } from "./registry";
 
 function Group({ label, links, pathname }: { label: string; links: DocLink[]; pathname: string }) {
   return (
@@ -35,6 +35,7 @@ export function SiteNav() {
     <nav ref={navRef} className="site-nav" aria-label="Docs">
       <Group label="Foundations" links={foundations} pathname={pathname} />
       <Group label="Components" links={components} pathname={pathname} />
+      <Group label="Writing" links={writing} pathname={pathname} />
     </nav>
   );
 }

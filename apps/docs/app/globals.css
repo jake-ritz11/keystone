@@ -460,6 +460,80 @@ h3 {
   color: var(--ks-color-text-muted);
 }
 
+/* Writing: rendered Markdown */
+
+.prose {
+  max-width: 72ch;
+  margin-top: var(--ks-space-8);
+  line-height: 1.65;
+}
+
+.prose > :first-child {
+  margin-top: 0;
+}
+
+.prose h2 {
+  margin: var(--ks-space-10) 0 var(--ks-space-3);
+  font-size: var(--ks-font-size-xl);
+  scroll-margin-top: var(--ks-space-12);
+}
+
+.prose h3 {
+  margin: var(--ks-space-6) 0 var(--ks-space-2);
+  font-size: var(--ks-font-size-md);
+  scroll-margin-top: var(--ks-space-12);
+}
+
+.prose p,
+.prose ul,
+.prose ol {
+  margin: 0 0 var(--ks-space-4);
+}
+
+.prose ul,
+.prose ol {
+  padding-inline-start: var(--ks-space-6);
+}
+
+.prose li + li {
+  margin-top: var(--ks-space-1);
+}
+
+.prose li > ul,
+.prose li > ol {
+  margin: var(--ks-space-1) 0 0;
+}
+
+.prose :not(pre) > code {
+  border-radius: var(--ks-radius-sm);
+  padding: 0 var(--ks-space-1);
+  background: var(--ks-color-surface-raised);
+  overflow-wrap: anywhere;
+}
+
+.prose .table-scroll {
+  margin: 0 0 var(--ks-space-6);
+}
+
+.prose-code {
+  margin: 0 0 var(--ks-space-4);
+  overflow: auto;
+  border: 1px solid var(--ks-color-border);
+  border-radius: var(--ks-radius-md);
+  padding: var(--ks-space-4);
+  background: var(--ks-color-surface-raised);
+  line-height: var(--ks-font-line-height-normal);
+}
+
+.prose-code:focus-visible {
+  outline: 2px solid var(--ks-color-focus);
+  outline-offset: 2px;
+}
+
+.prose strong {
+  font-weight: var(--ks-font-weight-semibold);
+}
+
 /* Overview */
 
 .cards {

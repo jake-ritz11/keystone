@@ -6,6 +6,8 @@ const PAGES = [
   "/",
   "/tokens",
   ...["button", "input", "textarea", "select", "dialog", "menu", "tabs", "segmented-control", "tooltip", "disclosure", "badge", "diff-view", "toast"].map((c) => `/components/${c}`),
+  "/writing",
+  ...["decisions", "variants", "study-plan", "phase-2-plan", "screen-reader-checklist"].map((w) => `/writing/${w}`),
 ];
 
 for (const path of PAGES) {

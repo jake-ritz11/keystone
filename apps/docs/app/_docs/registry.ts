@@ -27,3 +27,24 @@ export const components: DocLink[] = [
 ];
 
 export const REPO = "https://github.com/jake-ritz11/keystone";
+
+export interface Writing {
+  slug: string;
+  file: string;
+  title: string;
+  summary: string;
+}
+
+/** The write-ups in docs/, rendered as pages under /writing. */
+export const WRITING: Writing[] = [
+  { slug: "decisions", file: "decisions.md", title: "Decisions", summary: "Why it's built this way, what broke, and what the tests do and don't prove." },
+  { slug: "variants", file: "variants.md", title: "Interaction variants", summary: "The three open questions the study compares, with expectations written before testing." },
+  { slug: "study-plan", file: "study-plan.md", title: "Study plan", summary: "The protocol, measures, data dictionary and analysis, set before any sessions run." },
+  { slug: "phase-2-plan", file: "phase-2-plan.md", title: "Phase 2 plan", summary: "The agent interface's architecture, tools, variants and milestones." },
+  { slug: "screen-reader-checklist", file: "screen-reader-checklist.md", title: "Screen-reader checklist", summary: "The scripted NVDA pass, check by check." },
+];
+
+export const writing: DocLink[] = [
+  { href: "/writing", title: "Overview", summary: "All the write-ups." },
+  ...WRITING.map((w) => ({ href: `/writing/${w.slug}`, title: w.title, summary: w.summary })),
+];

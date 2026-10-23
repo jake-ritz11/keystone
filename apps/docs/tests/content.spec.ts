@@ -53,3 +53,19 @@ test("disclosure: native toggle from the keyboard, and exclusive groups", async 
   await expect(faq.nth(1)).toHaveAttribute("open");
   await expect(faq.nth(0)).not.toHaveAttribute("open");
 });
+
+test("write-ups: links between them stay on the site; links into the code go to GitHub", async ({ page, request }) => {
+  await open(page, "/writing/decisions");
+  await expect(page.getByRole("heading", { level: 1, name: "Decisions" })).toBeVisible();
+  // Headings get ids, so sections can be linked to.
+  await expect(page.locator('h2[id="1-built-on-the-platform-not-on-radix"]')).toBeVisible();
+  const internal = page.locator('.prose a[href^="/writing/"]');
+  expect(await internal.count()).toBeGreaterThan(0);
+  for (const href of await internal.evaluateAll((as) => as.map((a) => a.getAttribute("href")!.split("#")[0]!))) {
+    expect((await request.get(href)).status(), href).toBe(200);
+  }
+  const github = page.locator('.prose a[href^="https://github.com/jake-ritz11/keystone/blob/main/"]');
+  expect(await github.count()).toBeGreaterThan(0);
+  // No relative links left over from the Markdown.
+  expect(await page.locator('.prose a[href$=".md"], .prose a[href^="../"]').count()).toBe(0);
+});

@@ -125,10 +125,10 @@ test("preview: page, before and after, and phone width", async ({ page }) => {
   await expect(status(page)).toHaveText("Done");
   const frame = page.frameLocator('iframe[title="Preview of index.html"]');
   await expect(frame.locator(".plans-scroll")).toHaveCount(1);
-  await page.getByRole("button", { name: "Before" }).click();
+  await page.getByRole("radio", { name: "Before" }).click();
   await expect(frame.locator(".plans-scroll")).toHaveCount(0);
-  await page.getByRole("button", { name: "Phone" }).click();
-  await expect(page.getByRole("button", { name: "Phone" })).toHaveAttribute("aria-pressed", "true");
+  await page.getByRole("radio", { name: "Phone" }).click();
+  await expect(page.getByRole("radio", { name: "Phone" })).toHaveAttribute("aria-checked", "true");
   const width = await page.locator('iframe[title="Preview of index.html"]').evaluate((f) => f.getBoundingClientRect().width);
   expect(width).toBeLessThanOrEqual(390);
 });

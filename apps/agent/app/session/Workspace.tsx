@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { diffHunks, paths, type Workspace } from "@keystone-ui/agent-core";
-import { Badge, DiffView, Select, Tab, TabList, TabPanel, Tabs } from "@keystone-ui/ui";
+import { Badge, DiffView, SegmentedControl, Select, Tab, TabList, TabPanel, Tabs } from "@keystone-ui/ui";
 import styles from "./session.module.css";
 
 /** Inlines a page's linked stylesheets, so it renders from the in-memory workspace. */
@@ -12,18 +12,6 @@ function pageDocument(workspace: Workspace, page: string): string {
     const css = workspace[href.replace(/^\.?\//, "")];
     return css === undefined ? tag : `<style>\n${css}\n</style>`;
   });
-}
-
-function Toggle<T extends string>({ label, value, options, onChange }: { label: string; value: T; options: [T, string][]; onChange: (v: T) => void }) {
-  return (
-    <div className={styles.toggle} role="group" aria-label={label}>
-      {options.map(([v, text]) => (
-        <button key={v} type="button" className={styles.toggleButton} aria-pressed={value === v} onClick={() => onChange(v)}>
-          {text}
-        </button>
-      ))}
-    </div>
-  );
 }
 
 function Preview({ workspace, baseline }: { workspace: Workspace; baseline: Workspace }) {
@@ -45,8 +33,26 @@ function Preview({ workspace, baseline }: { workspace: Workspace; baseline: Work
             </option>
           ))}
         </Select>
-        <Toggle label="Version" value={side} options={[["after", "Now"], ["before", "Before"]]} onChange={setSide} />
-        <Toggle label="Width" value={width} options={[["desktop", "Desktop"], ["phone", "Phone"]]} onChange={setWidth} />
+        <SegmentedControl
+          aria-label="Version"
+          size="sm"
+          value={side}
+          onValueChange={setSide}
+          options={[
+            { value: "after", label: "Now" },
+            { value: "before", label: "Before" },
+          ]}
+        />
+        <SegmentedControl
+          aria-label="Width"
+          size="sm"
+          value={width}
+          onValueChange={setWidth}
+          options={[
+            { value: "desktop", label: "Desktop" },
+            { value: "phone", label: "Phone" },
+          ]}
+        />
       </div>
       <div className={styles.frameWrap} data-width={width}>
         {/* No scripts, no same-origin: the agent's HTML can render but can't do anything. */}

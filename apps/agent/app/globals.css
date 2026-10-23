@@ -30,6 +30,17 @@ body {
   line-height: var(--ks-font-line-height-normal);
 }
 
+a {
+  color: var(--ks-color-accent);
+  text-underline-offset: 0.2em;
+}
+
+a:focus-visible {
+  border-radius: var(--ks-radius-sm);
+  outline: 2px solid var(--ks-color-focus);
+  outline-offset: 2px;
+}
+
 code,
 pre {
   font-family: var(--ks-font-family-mono);

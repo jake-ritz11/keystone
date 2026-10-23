@@ -72,6 +72,14 @@ export function VariantsDialog({ variant, onApply }: { variant: Variant; onApply
         }
       >
         <div className={styles.variantFields}>
+          <p className={styles.panelText}>
+            Why these three, and what the study will measure:{" "}
+            {/* A new tab, so following it doesn't throw away the session in progress. */}
+            <a href="https://github.com/jake-ritz11/keystone/blob/main/docs/variants.md" target="_blank" rel="noopener noreferrer">
+              the reasoning behind each variant<span className={styles.visuallyHidden}> (opens in a new tab)</span>
+            </a>
+            .
+          </p>
           <Choice label="Planning" value={draft.planning} options={PLANNING} onChange={(planning) => setDraft({ ...draft, planning })} />
           <Choice label="Tool calls" value={draft.visibility} options={VISIBILITY} onChange={(visibility) => setDraft({ ...draft, visibility })} />
           <Choice label="Approval" value={draft.approval} options={APPROVAL} onChange={(approval) => setDraft({ ...draft, approval })} />

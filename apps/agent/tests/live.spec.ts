@@ -16,10 +16,10 @@ test("without an API key, live mode is offered but disabled, and the route says 
   expect((await post.json()).error).toMatch(/isn't configured/);
 
   await open(page);
-  const live = page.getByRole("group", { name: "Mode" }).getByRole("button", { name: "Live" });
+  const live = page.getByRole("radiogroup", { name: "Mode" }).getByRole("radio", { name: "Live" });
   await expect(live).toHaveAttribute("aria-disabled", "true");
   await live.click({ force: true });
-  await expect(page.getByRole("group", { name: "Mode" }).getByRole("button", { name: "Replay" })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByRole("radiogroup", { name: "Mode" }).getByRole("radio", { name: "Replay" })).toHaveAttribute("aria-checked", "true");
 });
 
 /** A turn the way the route streams it: block starts, deltas, then the final message. */
@@ -63,7 +63,7 @@ test("live mode: the client streams turns from the route, runs tools, and sends 
   });
 
   await open(page);
-  await page.getByRole("group", { name: "Mode" }).getByRole("button", { name: "Live" }).click();
+  await page.getByRole("radiogroup", { name: "Mode" }).getByRole("radio", { name: "Live" }).click();
   await expect(page.getByText("Live · claude-opus-5-5")).toBeVisible();
   // In live mode every task is available, including ones without a replay.
   await expect(page.getByRole("button", { name: /Add a dark mode/ })).toBeEnabled();
@@ -93,7 +93,7 @@ test("live mode: a route error is shown, not thrown", async ({ page }) => {
       : route.fulfill({ status: 429, json: { error: "Today's budget for live sessions is used up. Replays still work." } }),
   );
   await open(page);
-  await page.getByRole("group", { name: "Mode" }).getByRole("button", { name: "Live" }).click();
+  await page.getByRole("radiogroup", { name: "Mode" }).getByRole("radio", { name: "Live" }).click();
   await page.getByRole("button", { name: /Fix the broken link/ }).click();
   await expect(status(page)).toHaveText("Something went wrong");
   await expect(page.getByText("Today's budget for live sessions is used up.")).toBeVisible();

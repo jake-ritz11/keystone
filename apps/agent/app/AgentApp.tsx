@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { DEFAULT_VARIANT, liveTransport, REPLAYS, replayTransport, SAMPLE_TASKS, type SampleTask, type Variant } from "@keystone-ui/agent-core";
-import { Badge, Button, Tooltip } from "@keystone-ui/ui";
+import { Badge, Button, SegmentedControl, Tooltip } from "@keystone-ui/ui";
 import { ThemeToggle } from "./ThemeToggle";
 import { AgentSession } from "./session/AgentSession";
 import { VariantsDialog } from "./session/VariantsDialog";
@@ -75,24 +75,20 @@ export function AgentApp({ fast }: { fast: boolean }) {
   );
 }
 
-/** Replay or live. Live is offered only when the server has a key; the reason says so. */
+/** Replay or live. Live is offered only when the server has a key; the tooltip says why. */
 function ModeSwitch({ mode, live, onChange }: { mode: "replay" | "live"; live: boolean; onChange: (m: "replay" | "live") => void }) {
   return (
     <Tooltip content={live ? "Live sessions call Claude and cost tokens." : "Live mode needs ANTHROPIC_API_KEY on the server."}>
-      <div className={styles.toggle} role="group" aria-label="Mode">
-        <button type="button" className={styles.toggleButton} aria-pressed={mode === "replay"} onClick={() => onChange("replay")}>
-          Replay
-        </button>
-        <button
-          type="button"
-          className={styles.toggleButton}
-          aria-pressed={mode === "live"}
-          aria-disabled={!live || undefined}
-          onClick={() => live && onChange("live")}
-        >
-          Live
-        </button>
-      </div>
+      <SegmentedControl
+        aria-label="Mode"
+        size="sm"
+        value={mode}
+        onValueChange={onChange}
+        options={[
+          { value: "replay", label: "Replay" },
+          { value: "live", label: "Live", disabled: !live },
+        ]}
+      />
     </Tooltip>
   );
 }

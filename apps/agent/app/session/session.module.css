@@ -472,54 +472,6 @@ summary.toolSummary:focus-visible {
   gap: var(--ks-space-3);
 }
 
-.toggle {
-  display: inline-flex;
-  gap: var(--ks-space-1);
-  border-radius: var(--ks-radius-md);
-  padding: var(--ks-space-1);
-  background: var(--ks-color-surface-raised);
-}
-
-.toggleButton {
-  border: 0;
-  border-radius: var(--ks-radius-sm);
-  padding: var(--ks-space-1) var(--ks-space-3);
-  background: transparent;
-  color: var(--ks-color-text-muted);
-  font: inherit;
-  font-size: var(--ks-font-size-sm);
-  font-weight: var(--ks-font-weight-medium);
-  cursor: pointer;
-  touch-action: manipulation;
-  transition:
-    background-color var(--ks-motion-duration-fast) var(--ks-motion-easing-standard),
-    color var(--ks-motion-duration-fast) var(--ks-motion-easing-standard);
-}
-
-.toggleButton[aria-pressed="true"] {
-  background: var(--ks-color-surface);
-  box-shadow:
-    0 1px 2px var(--ks-color-shadow),
-    inset 0 0 0 1px var(--ks-color-border);
-  color: var(--ks-color-text);
-}
-
-.toggleButton[aria-disabled="true"] {
-  cursor: not-allowed;
-  opacity: 0.55;
-}
-
-.toggleButton:focus-visible {
-  outline: 2px solid var(--ks-color-focus);
-  outline-offset: -2px;
-}
-
-@media (hover: hover) {
-  .toggleButton:hover:not([aria-disabled="true"]) {
-    color: var(--ks-color-text);
-  }
-}
-
 .frameWrap {
   min-height: 480px;
   overflow: hidden;
@@ -592,8 +544,7 @@ summary.toolSummary:focus-visible {
     animation: none;
   }
 
-  .task,
-  .toggleButton {
+  .task {
     transition: none;
   }
 }

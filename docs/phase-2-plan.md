@@ -60,6 +60,9 @@ Read tools run immediately. Write tools go through the approval variant.
 
 ## Variants
 
+The reasoning for each one, with expectations written down before any testing, is in
+[variants.md](variants.md).
+
 Three dimensions, each switchable at runtime from a panel. A session's variant is recorded
 with its events for the study.
 
@@ -86,9 +89,10 @@ specs, the same way the phase 1 components did.
 
 ## Milestones
 
-Done: 1 (core), 2 (replay end to end, with specs for every variant) and 3 (live mode). Live
+Done: 1 (core), 2 (replay end to end, with specs for every variant), 3 (live mode) and 4
+(variant rationales, in [variants.md](variants.md)). Live
 mode's client path is tested against an intercepted route that serves real SSE frames; it hasn't
-yet run against the API itself, which needs a key. Next: 4, variant rationales, then 5.
+yet run against the API itself, which needs a key. Next: 5, the remaining kit components.
 
 
 1. **Core:** `agent-core` with workspace, tools, diffs and the reducer, fully unit-tested;

@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 /**
- * Keystone MCP server (stdio). Gives Claude the design tokens and the audit, so it can
- * build components from the system and check its own output before handing it over.
+ * Keystone MCP server (stdio). Gives Claude the design tokens, the component reference and the
+ * audit, so it can build with the system and check its own output before handing it over.
  */
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 import { color, font, motion, radius, space, cssVariables } from "@keystone-ui/tokens";
+import { describeComponent, listComponents } from "./components.ts";
 import { auditSource, formatFindings, RULES } from "./audit.ts";
 import { ELEMENTS, GenerateError, SIZES, generateComponent } from "./generate.ts";
 
@@ -33,6 +34,28 @@ server.registerTool(
       },
     ],
   }),
+);
+
+server.registerTool(
+  "get_component",
+  {
+    title: "Get a component's reference",
+    description:
+      "Explains how to use a Keystone component: what it's for, what to import, every prop with " +
+      "its type, default and why it exists, and the keyboard behavior it already handles. Leave " +
+      "out the name to list every component. Reach for an existing component before writing a new one.",
+    inputSchema: {
+      name: z.string().optional().describe('Component name, e.g. "Dialog" or "SegmentedControl"'),
+    },
+  },
+  async ({ name }) => {
+    if (!name) return { content: [{ type: "text", text: listComponents() }] };
+    const text = describeComponent(name);
+    if (text) return { content: [{ type: "text", text }] };
+    return { content: [{ type: "text", text: `No component named "${name}".
+
+${listComponents()}` }], isError: true };
+  },
 );
 
 server.registerTool(

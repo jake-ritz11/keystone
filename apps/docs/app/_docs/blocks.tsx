@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { ReactNode } from "react";
-import { api } from "./api";
+import { api } from "@keystone-ui/ui/docs";
 import { CodeBlock } from "./CodeBlock";
 import { REPO } from "./registry";
 
@@ -111,6 +111,7 @@ export function PropsTables({ component }: { component: string }) {
             </tbody>
           </ScrollTable>
           {part.extends && <p className="props-extends">Also accepts {part.extends}.</p>}
+          {part.note && <p className="props-extends">{part.note}</p>}
         </div>
       ))}
     </>

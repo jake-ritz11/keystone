@@ -67,7 +67,8 @@ export default function Overview() {
           </li>
           <li>
             <a href={REPO}>Source on GitHub</a>, including the MCP server and its{" "}
-            <code>generate_component</code> and <code>audit_component</code> tools.
+            <code>get_component</code>, <code>generate_component</code> and{" "}
+            <code>audit_component</code> tools.
           </li>
         </ul>
       </section>

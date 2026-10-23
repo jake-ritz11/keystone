@@ -7,7 +7,7 @@ components *from* the system and check its own work against it.
 | --- | --- |
 | [`packages/tokens`](packages/tokens) | Design tokens (color for light and dark, space, radius, type, motion), the single source of truth |
 | [`packages/ui`](packages/ui) | React components built only from tokens: accessible, themeable, reduced-motion aware |
-| [`packages/mcp`](packages/mcp) | MCP server: `get_tokens`, `audit_component`, `generate_component`, plus a CLI audit |
+| [`packages/mcp`](packages/mcp) | MCP server: `get_tokens`, `get_component`, `audit_component`, `generate_component`, plus a CLI audit |
 | [`apps/docs`](apps/docs) | Next.js docs site and component playground |
 | [`apps/agent`](apps/agent) | The agent interface (phase 2): work with a coding agent, with switchable interaction variants |
 | [`packages/agent-core`](packages/agent-core) | The agent's logic, without React: sandboxed workspace, tools, diffs, session reducer, replays |
@@ -72,6 +72,11 @@ what the tests do and don't prove.
 construction: tokens only, a forwarded ref, native props spread through, and focus-visible and
 reduced-motion styles for buttons and links. It returns the files instead of writing them, so
 the agent (or person) still does the design work and reviews what lands.
+
+`get_component` hands Claude the reference for an existing component: what to import, every
+prop with its default and the reason it exists, and the keyboard behavior already built in. It
+reads the same data the docs pages render (`packages/ui/docs/api.ts`), whose tests fail if a
+props table drifts from its interface, so the agent and the docs can't disagree.
 
 ## Roadmap
 

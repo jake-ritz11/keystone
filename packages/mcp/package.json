@@ -17,6 +17,7 @@
   "dependencies": {
     "@keystone-ui/tokens": "0.1.0",
     "@modelcontextprotocol/sdk": "^1.32.1",
-    "zod": "^4.6.7"
+    "zod": "^4.6.7",
+    "@keystone-ui/ui": "0.1.0"
   }
 }

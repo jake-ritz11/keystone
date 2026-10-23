@@ -1,7 +1,36 @@
 /**
- * Props and keyboard reference for each component page. Hand-written so the descriptions can
- * say why, not just what; `api.test.ts` fails if a table drifts from the interface it documents.
+ * The component reference: what each one is for, its props and its keyboard model. Hand-written
+ * so the descriptions can say why, not just what; `api.test.ts` fails if a table drifts from the
+ * interface it documents. The docs site renders it, and the MCP server hands it to Claude. It
+ * isn't part of the published package.
  */
+
+export interface ComponentSummary {
+  /** URL segment on the docs site, and the key into `api`. */
+  slug: string;
+  /** The component's name in the docs. */
+  name: string;
+  /** What to import from "@keystone-ui/ui" to use it. */
+  imports: string[];
+  summary: string;
+}
+
+/** Every component, in docs order. */
+export const COMPONENTS: ComponentSummary[] = [
+  { slug: "button", name: "Button", imports: ["Button"], summary: "Actions, in four variants, with a loading state that keeps focus." },
+  { slug: "input", name: "Input", imports: ["Input"], summary: "A labelled text field with hint and error text wired for screen readers." },
+  { slug: "textarea", name: "Textarea", imports: ["Textarea"], summary: "Multi-line text that grows as you type, up to a limit, then scrolls." },
+  { slug: "select", name: "Select", imports: ["Select"], summary: "A native select, with a token-styled popup where the browser allows it." },
+  { slug: "dialog", name: "Dialog", imports: ["Dialog"], summary: "A modal on the native <dialog>, with React in control of open state." },
+  { slug: "menu", name: "Menu", imports: ["Menu", "MenuItem", "MenuSeparator"], summary: "An actions menu on the popover API, with the full menu keyboard model." },
+  { slug: "tabs", name: "Tabs", imports: ["Tabs", "TabList", "Tab", "TabPanel"], summary: "Underline or segmented, horizontal or vertical, automatic or manual." },
+  { slug: "segmented-control", name: "SegmentedControl", imports: ["SegmentedControl"], summary: "One choice from a few, side by side, as a keyboard-friendly radio group." },
+  { slug: "tooltip", name: "Tooltip", imports: ["Tooltip"], summary: "Hover and focus hints that follow WCAG's rules for content on hover." },
+  { slug: "disclosure", name: "Disclosure", imports: ["Disclosure"], summary: "Show and hide a section, on the native details element." },
+  { slug: "badge", name: "Badge", imports: ["Badge"], summary: "A short, static label for a status or a category." },
+  { slug: "diff-view", name: "DiffView", imports: ["DiffView"], summary: "A unified diff for reviewing a change, readable by screen readers." },
+  { slug: "toast", name: "Toast", imports: ["ToastProvider", "useToast"], summary: "Announced notifications that pause on hover and work over a modal." },
+];
 
 export interface PropDoc {
   name: string;
@@ -18,6 +47,8 @@ export interface PropsPart {
   source: string;
   /** What else it accepts, e.g. "every <dialog> attribute". */
   extends?: string;
+  /** A sentence on how it's used, when the props alone don't say. */
+  note?: string;
   props: PropDoc[];
 }
 
@@ -318,7 +349,7 @@ export const api: Record<string, ComponentApi> = {
       {
         interface: "ToastOptions",
         source: "packages/ui/src/toast/Toast.tsx",
-        extends: "passed to toast() from useToast(), which returns the toast's id",
+        note: "Passed to toast() from useToast(), which returns the toast's id for dismiss().",
         props: [
           { name: "title", type: "string", required: true, description: "The message." },
           { name: "description", type: "string", description: "One more sentence of detail." },

@@ -7,6 +7,7 @@ import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { existsSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
+import { gzipSync } from "node:zlib";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { createElement as h } from "react";
@@ -109,5 +110,23 @@ test("the type declarations work for a consumer", () => {
     execFileSync(process.execPath, [tsc, "-p", join(dir, "tsconfig.json")], { encoding: "utf8" });
   } catch (error) {
     assert.fail(`consumer typecheck failed:\n${(error as { stdout?: string }).stdout ?? error}`);
+  }
+});
+
+/**
+ * Gzipped size budgets for what ships, about 15% above the size when they were set. Going over
+ * isn't wrong, but it should be a decision: raise the number in the same commit and say why.
+ */
+const BUDGETS: [dist: string, file: string, kB: number][] = [
+  [UI, "index.js", 13],
+  [UI, "styles.css", 5.5],
+  [TOKENS, "index.js", 1.5],
+  [TOKENS, "tokens.css", 1],
+];
+
+test("shipped files stay inside their gzipped size budgets", () => {
+  for (const [dist, file, kB] of BUDGETS) {
+    const size = gzipSync(readFileSync(join(dist, file))).length / 1000;
+    assert.ok(size <= kB, `${join(dist, file)} is ${size.toFixed(1)} kB gzipped, over its ${kB} kB budget`);
   }
 });

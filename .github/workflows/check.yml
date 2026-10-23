@@ -32,6 +32,10 @@ jobs:
       # Chromium and WebKit.
       - run: npm run check
       - name: Behavior tests in Firefox
+        # The container runs as root, and Firefox refuses to start when $HOME belongs to someone
+        # else (GitHub mounts it for the image's pwuser).
+        env:
+          HOME: /root
         run: npm run test:e2e:firefox -w apps/docs && npm run test:e2e:firefox -w apps/agent
       - uses: actions/upload-artifact@v7
         if: failure()

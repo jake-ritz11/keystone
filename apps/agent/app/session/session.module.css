@@ -252,17 +252,6 @@
   padding: var(--ks-space-2) var(--ks-space-3);
 }
 
-summary.toolSummary {
-  cursor: pointer;
-  touch-action: manipulation;
-}
-
-summary.toolSummary:focus-visible {
-  border-radius: var(--ks-radius-md);
-  outline: 2px solid var(--ks-color-focus);
-  outline-offset: -2px;
-}
-
 .toolTitle {
   flex: 1;
   min-width: 0;
@@ -275,7 +264,6 @@ summary.toolSummary:focus-visible {
   max-height: 240px;
   margin: 0;
   overflow: auto;
-  border-top: 1px solid var(--ks-color-border);
   padding: var(--ks-space-3);
   font-size: var(--ks-font-size-xs);
   line-height: var(--ks-font-line-height-normal);
@@ -300,7 +288,6 @@ summary.toolSummary:focus-visible {
 
 .groupList {
   margin: 0;
-  border-top: 1px solid var(--ks-color-border);
   padding-block: var(--ks-space-2);
   padding-inline: var(--ks-space-6) var(--ks-space-3);
   color: var(--ks-color-text-muted);

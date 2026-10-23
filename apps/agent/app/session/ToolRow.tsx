@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { diffHunks, type Action, type Approval, type ToolItem } from "@keystone-ui/agent-core";
-import { Badge, Button, DiffView, Input } from "@keystone-ui/ui";
+import { Badge, Button, DiffView, Disclosure, Input } from "@keystone-ui/ui";
 import { describeTool, isWrite, STATUS, toolPath } from "./describe";
 import styles from "./session.module.css";
 
@@ -18,15 +18,11 @@ export function ToolRow({ item, approval, dispatch }: { item: ToolItem; approval
   if (isWrite(item)) return <WriteRow item={item} badge={badge} dispatch={dispatch} />;
 
   return (
-    <details className={styles.tool}>
-      <summary className={styles.toolSummary}>
-        <span className={styles.toolTitle}>{describeTool(item)}</span>
-        {badge}
-      </summary>
+    <Disclosure summary={describeTool(item)} meta={badge || undefined}>
       <pre className={styles.toolOutput} tabIndex={0} aria-label={`Output of: ${describeTool(item)}`}>
         {item.output ?? item.error ?? "…"}
       </pre>
-    </details>
+    </Disclosure>
   );
 }
 

@@ -1,6 +1,7 @@
 "use client";
 
 import type { Action, Item, SessionState, ToolItem } from "@keystone-ui/agent-core";
+import { Disclosure } from "@keystone-ui/ui";
 import { isWrite, summarize, describeTool } from "./describe";
 import { RichText } from "./RichText";
 import { ToolRow } from "./ToolRow";
@@ -60,16 +61,13 @@ function Entry({ row, approval, dispatch }: { row: Row; approval: SessionState["
       );
     case "group":
       return (
-        <details className={styles.tool}>
-          <summary className={styles.toolSummary}>
-            <span className={styles.toolTitle}>{summarize(row.items)}</span>
-          </summary>
+        <Disclosure summary={summarize(row.items)}>
           <ul className={styles.groupList}>
             {row.items.map((item) => (
               <li key={item.id}>{describeTool(item)}</li>
             ))}
           </ul>
-        </details>
+        </Disclosure>
       );
     case "tool":
       return <ToolRow item={row} approval={approval} dispatch={dispatch} />;

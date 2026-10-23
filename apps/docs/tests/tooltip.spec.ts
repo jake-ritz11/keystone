@@ -1,7 +1,8 @@
 import { expect, test } from "@playwright/test";
+import { open } from "./open";
 
 test.beforeEach(async ({ page }) => {
-  await page.goto("/");
+  await open(page, "/components/tooltip");
 });
 
 test("describes its trigger, and labels an icon-only one", async ({ page }) => {
@@ -47,5 +48,5 @@ test("keyboard focus shows it at once; Escape and blur hide it", async ({ page }
   await expect(tooltip).toBeVisible();
   await page.keyboard.press("Tab");
   await expect(tooltip).toBeHidden();
-  await expect(page.getByRole("tooltip", { name: "Search" })).toBeVisible();
+  await expect(page.getByRole("tooltip", { name: "Opens below, and flips if there is no room" })).toBeVisible();
 });

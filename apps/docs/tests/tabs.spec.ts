@@ -1,11 +1,12 @@
 import { expect, test, type Page } from "@playwright/test";
+import { open } from "./open";
 
 const list = (page: Page, name: string) => page.getByRole("tablist", { name });
 const tab = (page: Page, list: string, name: string) =>
   page.getByRole("tablist", { name: list }).getByRole("tab", { name, exact: true });
 
 test.beforeEach(async ({ page }) => {
-  await page.goto("/");
+  await open(page, "/components/tabs");
 });
 
 test("tabs and panels point at each other", async ({ page }) => {

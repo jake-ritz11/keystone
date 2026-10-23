@@ -1,11 +1,12 @@
 import { expect, test, type Page } from "@playwright/test";
+import { open } from "./open";
 
 const region = (page: Page) => page.getByRole("region", { name: "Notifications" });
 const show = (page: Page, name: string) => page.getByRole("button", { name, exact: true }).click();
 
 test.beforeEach(async ({ page }) => {
   await page.clock.install();
-  await page.goto("/");
+  await open(page, "/components/toast");
 });
 
 test("shows in the Notifications region and announces politely", async ({ page }) => {

@@ -1,7 +1,8 @@
 import { expect, test } from "@playwright/test";
+import { open } from "./open";
 
 test.beforeEach(async ({ page }) => {
-  await page.goto("/");
+  await open(page, "/components/dialog");
 });
 
 test("opens as a named modal and moves focus inside", async ({ page }) => {

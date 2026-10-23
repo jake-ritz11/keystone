@@ -1,11 +1,12 @@
 import { expect, test, type Page } from "@playwright/test";
+import { open } from "./open";
 
 const trigger = (page: Page) => page.getByRole("button", { name: "Actions", exact: true });
 const menu = (page: Page) => page.getByRole("menu", { name: "Actions" });
 const item = (page: Page, name: string) => menu(page).getByRole("menuitem", { name });
 
 test.beforeEach(async ({ page }) => {
-  await page.goto("/");
+  await open(page, "/components/menu");
 });
 
 test("trigger and menu are wired for assistive tech", async ({ page }) => {

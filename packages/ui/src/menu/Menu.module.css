@@ -2,7 +2,9 @@
   display: contents;
 }
 
+/* Layout on the base rule, so a closing menu doesn't re-lay out; exit is a plain fade. */
 .menu {
+  flex-direction: column;
   position-area: block-end span-inline-end;
   position-try-fallbacks: flip-block, flip-inline;
   inset: auto;
@@ -16,19 +18,20 @@
   font-family: var(--ks-font-family-sans);
   box-shadow: 0 8px 24px var(--ks-color-shadow);
   opacity: 0;
-  transform: translateY(calc(var(--ks-space-1) * -1));
   transition:
     opacity var(--ks-motion-duration-fast) var(--ks-motion-easing-standard),
-    transform var(--ks-motion-duration-fast) var(--ks-motion-easing-standard),
     display var(--ks-motion-duration-fast) allow-discrete,
     overlay var(--ks-motion-duration-fast) allow-discrete;
 }
 
 .menu:popover-open {
   display: flex;
-  flex-direction: column;
   opacity: 1;
-  transform: none;
+  transition:
+    opacity var(--ks-motion-duration-fast) var(--ks-motion-easing-standard),
+    transform var(--ks-motion-duration-fast) var(--ks-motion-easing-standard),
+    display var(--ks-motion-duration-fast) allow-discrete,
+    overlay var(--ks-motion-duration-fast) allow-discrete;
 }
 
 @starting-style {
@@ -107,10 +110,12 @@
 @media (prefers-reduced-motion: reduce) {
   .menu,
   .menu:popover-open {
-    transform: none;
+    transition: none;
   }
 
-  .menu {
-    transition: none;
+  @starting-style {
+    .menu:popover-open {
+      transform: none;
+    }
   }
 }

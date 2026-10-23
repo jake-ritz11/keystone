@@ -87,3 +87,32 @@ test("a loading button keeps its size", async ({ page }) => {
   expect(await box(button)).toEqual(before);
   await expect(button).toHaveAccessibleName("Save changes");
 });
+
+test.describe("with motion on", () => {
+  test.use({ contextOptions: { reducedMotion: "no-preference" } });
+
+  test("a closing dialog keeps its layout while it fades out", async ({ page }) => {
+    await open(page, "/components/dialog");
+    await page.getByRole("button", { name: "Edit profile" }).click();
+    const dialog = page.getByRole("dialog");
+    await page.waitForTimeout(400);
+    const layout = () =>
+      page.evaluate(() => {
+        const d = document.querySelector("dialog")!;
+        const header = d.firstElementChild!.getBoundingClientRect();
+        const footer = d.lastElementChild!.getBoundingClientRect();
+        return { stacked: footer.top >= header.bottom, footerWidth: Math.round(footer.width), dialogWidth: Math.round(d.getBoundingClientRect().width) };
+      });
+    const open_ = await layout();
+    expect(open_.stacked).toBe(true);
+    await dialog.getByRole("button", { name: "Save" }).click();
+    // Mid-exit: the element is no longer [open] but still displayed.
+    const closing = await page.evaluate(() => {
+      const d = document.querySelector("dialog")!;
+      return { open: d.open, display: getComputedStyle(d).display };
+    });
+    test.skip(closing.display === "none", "This engine doesn't animate the dialog's exit, so there's no mid-exit layout to check.");
+    expect(closing).toEqual({ open: false, display: "flex" });
+    expect(await layout()).toEqual(open_);
+  });
+});

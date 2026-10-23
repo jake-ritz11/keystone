@@ -1,4 +1,10 @@
+/*
+ * Layout lives on the base rule, not the open one: while the dialog fades out it's no longer
+ * [open], and anything scoped to [open] would re-lay out mid-animation. Only display changes.
+ * Entrance scales and rises a little; exit is a quick plain fade.
+ */
 .dialog {
+  flex-direction: column;
   width: min(calc(100vw - var(--ks-space-8)), 520px);
   max-height: calc(100dvh - var(--ks-space-12));
   margin: auto;
@@ -10,7 +16,15 @@
   font-family: var(--ks-font-family-sans);
   box-shadow: 0 16px 48px var(--ks-color-shadow);
   opacity: 0;
-  transform: translateY(var(--ks-space-2)) scale(0.98);
+  transition:
+    opacity var(--ks-motion-duration-fast) var(--ks-motion-easing-standard),
+    display var(--ks-motion-duration-fast) allow-discrete,
+    overlay var(--ks-motion-duration-fast) allow-discrete;
+}
+
+.dialog[open] {
+  display: flex;
+  opacity: 1;
   transition:
     opacity var(--ks-motion-duration-normal) var(--ks-motion-easing-standard),
     transform var(--ks-motion-duration-normal) var(--ks-motion-easing-standard),
@@ -18,24 +32,18 @@
     overlay var(--ks-motion-duration-normal) allow-discrete;
 }
 
-.dialog[open] {
-  display: flex;
-  flex-direction: column;
-  opacity: 1;
-  transform: none;
-}
-
 .dialog::backdrop {
   background: var(--ks-color-scrim);
   opacity: 0;
   transition:
-    opacity var(--ks-motion-duration-normal) var(--ks-motion-easing-standard),
-    display var(--ks-motion-duration-normal) allow-discrete,
-    overlay var(--ks-motion-duration-normal) allow-discrete;
+    opacity var(--ks-motion-duration-fast) var(--ks-motion-easing-standard),
+    display var(--ks-motion-duration-fast) allow-discrete,
+    overlay var(--ks-motion-duration-fast) allow-discrete;
 }
 
 .dialog[open]::backdrop {
   opacity: 1;
+  transition-duration: var(--ks-motion-duration-normal);
 }
 
 @starting-style {
@@ -109,10 +117,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  /* Fade only: no movement, and quicker. */
-  .dialog,
-  .dialog::backdrop {
-    transform: none;
+  /* Fade only, and quick, in both directions. */
+  .dialog[open],
+  .dialog[open]::backdrop {
     transition-duration: var(--ks-motion-duration-fast);
   }
 

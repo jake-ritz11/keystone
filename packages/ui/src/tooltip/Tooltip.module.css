@@ -27,19 +27,17 @@
 
 .tooltip:popover-open {
   opacity: 1;
-  translate: 0 0;
 }
 
+/* Entrance rises from the trigger's side; exit is a plain fade, with no movement. */
 .top {
   position-area: block-start;
   position-try-fallbacks: flip-block;
-  translate: 0 var(--ks-space-1);
 }
 
 .bottom {
   position-area: block-end;
   position-try-fallbacks: flip-block;
-  translate: 0 calc(var(--ks-space-1) * -1);
 }
 
 @starting-style {
@@ -55,14 +53,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .top,
-  .bottom,
-  .top:popover-open,
-  .bottom:popover-open {
-    translate: none;
-  }
-
-  .tooltip {
-    transition-property: opacity, display, overlay;
+  @starting-style {
+    .top:popover-open,
+    .bottom:popover-open {
+      translate: none;
+    }
   }
 }

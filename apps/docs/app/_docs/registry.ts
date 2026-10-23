@@ -19,6 +19,7 @@ export const components: DocLink[] = [
   { href: "/components/menu", title: "Menu", summary: "An actions menu on the popover API, with the full menu keyboard model." },
   { href: "/components/tabs", title: "Tabs", summary: "Underline or segmented, horizontal or vertical, automatic or manual." },
   { href: "/components/tooltip", title: "Tooltip", summary: "Hover and focus hints that follow WCAG's rules for content on hover." },
+  { href: "/components/badge", title: "Badge", summary: "A short, static label for a status or a category." },
   { href: "/components/toast", title: "Toast", summary: "Announced notifications that pause on hover and work over a modal." },
 ];
 

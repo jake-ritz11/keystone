@@ -25,3 +25,6 @@ export type { ToastOptions, ToastProviderProps, ToastTone } from "./toast/Toast"
 
 export { Textarea } from "./textarea/Textarea";
 export type { TextareaProps } from "./textarea/Textarea";
+
+export { Badge } from "./badge/Badge";
+export type { BadgeProps, BadgeTone } from "./badge/Badge";

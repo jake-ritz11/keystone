@@ -98,6 +98,19 @@ export const api: Record<string, ComponentApi> = {
       FIELD,
     ],
   },
+  badge: {
+    parts: [
+      {
+        interface: "BadgeProps",
+        source: "packages/ui/src/badge/Badge.tsx",
+        extends: "every <span> attribute",
+        props: [
+          { name: "tone", type: '"neutral" | "accent" | "success" | "danger"', default: '"neutral"', description: "Color. The text still has to carry the meaning." },
+          { name: "dot", type: "boolean", default: "false", description: "A leading dot, for statuses." },
+        ],
+      },
+    ],
+  },
   select: {
     parts: [
       {

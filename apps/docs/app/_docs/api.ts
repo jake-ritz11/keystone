@@ -242,6 +242,29 @@ export const api: Record<string, ComponentApi> = {
       { keys: "Enter, Space", action: "Selects the focused tab (manual activation)." },
     ],
   },
+  "segmented-control": {
+    parts: [
+      {
+        interface: "SegmentedControlProps",
+        source: "packages/ui/src/segmented-control/SegmentedControl.tsx",
+        extends: "every <div> attribute except onChange and defaultValue",
+        props: [
+          { name: "aria-label", type: "string", required: true, description: "Names the group, e.g. \"Preview width\"." },
+          { name: "options", type: "{ value, label, disabled? }[]", required: true, description: "The choices, in order." },
+          { name: "value", type: "string", description: "The selected value, when controlled." },
+          { name: "defaultValue", type: "string", default: "the first enabled option", description: "The first selected value, when uncontrolled." },
+          { name: "onValueChange", type: "(value) => void", description: "Called when the selection changes." },
+          { name: "size", type: '"sm" | "md"', default: '"md"', description: "Padding and text size." },
+        ],
+      },
+    ],
+    keyboard: [
+      { keys: "Tab", action: "Into the group, on the selected option; Tab again leaves it." },
+      { keys: "Right, Down", action: "Next option, selected at once; wraps and skips disabled ones. Mirrored in right-to-left text." },
+      { keys: "Left, Up", action: "Previous option." },
+      { keys: "Home, End", action: "First or last option." },
+    ],
+  },
   tooltip: {
     parts: [
       {

@@ -31,3 +31,6 @@ export type { BadgeProps, BadgeTone } from "./badge/Badge";
 
 export { DiffView } from "./diff-view/DiffView";
 export type { DiffViewHunk, DiffViewLine, DiffViewProps } from "./diff-view/DiffView";
+
+export { SegmentedControl } from "./segmented-control/SegmentedControl";
+export type { SegmentedControlProps, SegmentedOption } from "./segmented-control/SegmentedControl";

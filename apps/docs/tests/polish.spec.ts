@@ -63,3 +63,26 @@ test("right-to-left tabs: the left arrow moves to the next tab", async ({ page }
   await page.keyboard.press("ArrowLeft");
   await expect(list.getByRole("tab", { name: "Activity", exact: true })).toBeFocused();
 });
+
+test("segmented control: one tab stop, arrows select and skip disabled options", async ({ page }) => {
+  await open(page, "/components/segmented-control");
+  const width = page.getByRole("radiogroup", { name: "Preview width" });
+  const desktop = width.getByRole("radio", { name: "Desktop" });
+  await expect(desktop).toHaveAttribute("aria-checked", "true");
+  await expect(width.getByRole("radio", { name: "Tablet" })).toHaveAttribute("tabindex", "-1");
+  await desktop.focus();
+  await page.keyboard.press("ArrowRight");
+  await expect(width.getByRole("radio", { name: "Tablet" })).toBeFocused();
+  await expect(page.getByText("Previewing at tablet width.")).toBeVisible();
+  await page.keyboard.press("End");
+  await expect(page.getByText("Previewing at phone width.")).toBeVisible();
+  await page.keyboard.press("ArrowRight");
+  await expect(desktop).toHaveAttribute("aria-checked", "true");
+
+  const mode = page.getByRole("radiogroup", { name: "Mode" });
+  await mode.getByRole("radio", { name: "Replay" }).focus();
+  await page.keyboard.press("ArrowRight");
+  // Live is disabled, so the arrow wraps back to Replay.
+  await expect(mode.getByRole("radio", { name: "Replay" })).toHaveAttribute("aria-checked", "true");
+  await expect(mode.getByRole("radio", { name: "Live" })).toHaveAttribute("aria-disabled", "true");
+});

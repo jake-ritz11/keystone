@@ -12,6 +12,12 @@ export interface FieldOwnProps {
   /** Shown below the control, sets `aria-invalid`, and is announced with the field. */
   error?: ReactNode;
   size?: FieldSize;
+  /**
+   * Keep a line under the control for the hint or error even when there's neither, so an error
+   * that appears later doesn't push the content below it down. On by default; turn it off for
+   * fields that never show a message, like a search box in a toolbar.
+   */
+  reserveMessageSpace?: boolean;
 }
 
 /** Ids that tie the label, hint and error to the control. */
@@ -32,6 +38,7 @@ interface FieldProps {
   hideLabel?: boolean;
   hint?: ReactNode;
   error?: ReactNode;
+  reserveMessageSpace?: boolean;
   required?: boolean;
   className?: string;
   children: ReactNode;
@@ -46,6 +53,7 @@ export function Field({
   hideLabel,
   hint,
   error,
+  reserveMessageSpace = true,
   required,
   className,
   children,
@@ -62,15 +70,22 @@ export function Field({
         )}
       </label>
       {children}
-      {hint && (
-        <p id={hintId} className={styles.hint}>
-          {hint}
-        </p>
-      )}
-      {error && (
-        <p id={errorId} className={styles.error}>
-          {error}
-        </p>
+      {(hint || error || reserveMessageSpace) && (
+        // One slot for both messages: an error takes the hint's place instead of adding a
+        // line, so showing, changing or clearing it never moves anything on the page.
+        <div className={styles.message}>
+          {error && (
+            <p id={errorId} className={styles.error}>
+              {error}
+            </p>
+          )}
+          {hint && (
+            // Hidden, not removed, while there's an error: it's still read with the field.
+            <p id={hintId} className={error ? styles.visuallyHidden : styles.hint}>
+              {hint}
+            </p>
+          )}
+        </div>
       )}
     </div>
   );

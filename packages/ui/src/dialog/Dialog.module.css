@@ -49,11 +49,6 @@
   }
 }
 
-/* Keep the page behind a modal from scrolling. */
-:global(html):has(.dialog[open]) {
-  overflow: hidden;
-}
-
 .sm {
   width: min(calc(100vw - var(--ks-space-8)), 400px);
 }

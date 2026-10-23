@@ -129,6 +129,23 @@ two tests caught it straight away.
 your code turns out to be insurance. And a passing test only tells you something once you've
 seen it fail.
 
+## 6. Nothing moves under the pointer
+
+Content that jumps while you're aiming at it causes misclicks. Three places did it, and a
+review found all three:
+
+| Where | What moved | Fix |
+| --- | --- | --- |
+| Dialog | Locking scroll hid the scrollbar, so the page widened and centered content slid sideways (7px in the test). | While locked, the scrollbar's gutter stays reserved (`scrollbar-gutter: stable`), but only if the page had a scrollbar, so short pages don't gain an empty gutter instead. No JavaScript measuring. |
+| Input and Select | A validation error appeared under a field on blur, pushing down the field you were clicking. | One message line per field, reserved by default. An error takes the hint's place instead of adding a line; the hint stays in the field's description, visually hidden. Errors no longer disappear when the field is focused. |
+| Button | The loading spinner was added before the label, widening the button. | The spinner overlays the content, which stays laid out at zero opacity, so the width can't change and the accessible name stays. |
+
+[`layout.spec.ts`](../apps/docs/tests/layout.spec.ts) measures each one before and after. The
+dialog test needed real scrollbars: headless Chromium hides them by default, which made the
+first version pass even with the fix removed. Playwright's `--hide-scrollbars` flag is now
+dropped for Chromium, and the test skips (saying why) in WebKit, which draws overlay scrollbars
+that take no space. With the fix removed, it fails.
+
 ## What isn't proven yet
 
 - **Firefox locally.** Firefox passes all 34 specs in CI on Linux, but it won't launch on the

@@ -5,17 +5,17 @@ import { Input } from "@keystone-ui/ui";
 
 const TAKEN = ["ada", "admin", "root"];
 
+function check(value: string): string | undefined {
+  const name = value.trim().toLowerCase();
+  if (name === "") return "Choose a username.";
+  if (TAKEN.includes(name)) return "That username is taken.";
+  return undefined;
+}
+
 export function Validation() {
   const [value, setValue] = useState("ada");
+  // Start validated, so the example shows an error straight away.
   const [touched, setTouched] = useState(true);
-
-  const error = !touched
-    ? undefined
-    : value.trim() === ""
-      ? "Choose a username."
-      : TAKEN.includes(value.trim().toLowerCase())
-        ? "That username is taken."
-        : undefined;
 
   return (
     <div className="grid">
@@ -23,12 +23,14 @@ export function Validation() {
         label="Username"
         value={value}
         onChange={(event) => setValue(event.target.value)}
-        // Validate on blur, not on every keystroke, so the error doesn't shout while typing.
-        onFocus={() => setTouched(false)}
+        // First check on blur, so it doesn't complain mid-typing; after that, update as they
+        // type so the error clears the moment it's fixed. The message takes the hint's line,
+        // so none of this moves the fields around it.
         onBlur={() => setTouched(true)}
         hint="Letters and numbers only."
-        error={error}
+        error={touched ? check(value) : undefined}
       />
+      <Input label="Display name" placeholder="Shown on your profile" />
     </div>
   );
 }

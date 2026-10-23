@@ -47,9 +47,14 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       onClick={loading ? (event) => event.preventDefault() : onClick}
       {...rest}
     >
-      {loading ? <span className={styles.spinner} aria-hidden="true" /> : iconStart}
-      <span className={styles.label}>{children}</span>
-      {!loading && iconEnd}
+      {/* The content stays laid out while loading (just invisible), so the width never
+          changes; the spinner sits on top of it. Opacity, not visibility, keeps the name. */}
+      <span className={styles.content} data-hidden={loading || undefined}>
+        {iconStart}
+        <span className={styles.label}>{children}</span>
+        {iconEnd}
+      </span>
+      {loading && <span className={styles.spinner} aria-hidden="true" />}
     </button>
   );
 });

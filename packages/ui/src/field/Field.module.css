@@ -18,11 +18,16 @@
   margin-left: var(--ks-space-1);
 }
 
+/* Always at least one line tall, so a message appearing doesn't move what's below. */
+.message {
+  min-height: 1lh;
+  font-size: var(--ks-font-size-sm);
+  line-height: var(--ks-font-line-height-normal);
+}
+
 .hint,
 .error {
   margin: 0;
-  font-size: var(--ks-font-size-sm);
-  line-height: var(--ks-font-line-height-normal);
 }
 
 .hint {

@@ -21,6 +21,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     hideLabel,
     hint,
     error,
+    reserveMessageSpace,
     size = "md",
     iconStart,
     iconEnd,
@@ -47,6 +48,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       hideLabel={hideLabel}
       hint={hint}
       error={error}
+      reserveMessageSpace={reserveMessageSpace}
       required={required}
       className={className}
     >

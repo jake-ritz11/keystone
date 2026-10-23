@@ -22,6 +22,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
     hideLabel,
     hint,
     error,
+    reserveMessageSpace,
     size = "md",
     placeholder,
     id,
@@ -48,6 +49,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
       hideLabel={hideLabel}
       hint={hint}
       error={error}
+      reserveMessageSpace={reserveMessageSpace}
       required={required}
       className={className}
     >

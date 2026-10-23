@@ -29,6 +29,31 @@ if (typeof document !== "undefined") {
   );
 }
 
+/**
+ * Stops the page behind a modal from scrolling without letting it jump sideways: hiding the
+ * scrollbar would widen the page by the scrollbar's width, so the gutter stays reserved while
+ * locked. It's only reserved when the page actually had a scrollbar, so short pages don't gain
+ * an empty gutter instead. Counted, so stacked dialogs unlock once the last one closes.
+ */
+let locks = 0;
+let saved: { overflow: string; gutter: string } | null = null;
+
+function lockScroll(): () => void {
+  const root = document.documentElement;
+  if (locks++ === 0) {
+    saved = { overflow: root.style.overflow, gutter: root.style.scrollbarGutter };
+    const scrolls = root.scrollHeight > root.clientHeight;
+    if (scrolls) root.style.scrollbarGutter = "stable";
+    root.style.overflow = "hidden";
+  }
+  return () => {
+    if (--locks > 0 || !saved) return;
+    root.style.overflow = saved.overflow;
+    root.style.scrollbarGutter = saved.gutter;
+    saved = null;
+  };
+}
+
 function openerElement(): HTMLElement | null {
   const active = document.activeElement instanceof HTMLElement ? document.activeElement : null;
   const pressed = lastPressed?.isConnected ? lastPressed : null;
@@ -98,6 +123,8 @@ export const Dialog = forwardRef<HTMLDialogElement, DialogProps>(function Dialog
       dialog.close();
     }
   }, [open]);
+
+  useEffect(() => (open ? lockScroll() : undefined), [open]);
 
   // If the dialog unmounts while open, still hand focus back.
   useEffect(() => () => returnFocus.current?.focus(), []);

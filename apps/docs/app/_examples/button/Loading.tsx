@@ -13,8 +13,9 @@ export function Loading() {
 
   return (
     <div className="row">
+      {/* Keep the label the same while loading: changing it would change the width. */}
       <Button loading={saving} onClick={save}>
-        {saving ? "Saving" : "Save"}
+        Save changes
       </Button>
       <Button disabled>Disabled</Button>
     </div>

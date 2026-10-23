@@ -6,6 +6,9 @@
 
 html {
   color-scheme: light dark;
+  /* Reserve the scrollbar's space on every page, so moving between short and long pages
+     doesn't shift the layout sideways. */
+  scrollbar-gutter: stable;
 }
 
 :root[data-theme="light"] {

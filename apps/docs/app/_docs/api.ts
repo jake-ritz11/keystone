@@ -40,6 +40,12 @@ const FIELD: PropsPart = {
     { name: "hint", type: "ReactNode", description: "Help text below the control, linked with aria-describedby." },
     { name: "error", type: "ReactNode", description: "Error text. Sets aria-invalid and is read out with the field." },
     { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Control height and text size." },
+    {
+      name: "reserveMessageSpace",
+      type: "boolean",
+      default: "true",
+      description: "Keeps a line for the hint or error, so an error appearing later doesn't push the page down. Turn off for fields that never show one.",
+    },
   ],
 };
 
@@ -53,7 +59,7 @@ export const api: Record<string, ComponentApi> = {
         props: [
           { name: "variant", type: '"primary" | "secondary" | "ghost" | "danger"', default: '"primary"', description: "Visual weight. Keep one primary action per view." },
           { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Padding and text size." },
-          { name: "loading", type: "boolean", default: "false", description: "Shows a spinner and sets aria-busy. Clicks are ignored but the button keeps focus." },
+          { name: "loading", type: "boolean", default: "false", description: "Shows a spinner over the label and sets aria-busy. The width doesn't change, clicks are ignored, and the button keeps focus." },
           { name: "iconStart", type: "ReactNode", description: "Icon before the label. Hidden while loading." },
           { name: "iconEnd", type: "ReactNode", description: "Icon after the label." },
         ],

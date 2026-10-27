@@ -9,13 +9,12 @@ test.beforeEach(async ({ page }) => {
   await open(page, "/components/tabs");
 });
 
-test("tabs and panels point at each other", async ({ page }) => {
+test("each panel is named by its tab", async ({ page }) => {
   const overview = tab(page, "Project", "Overview");
   await expect(overview).toHaveAttribute("aria-selected", "true");
-  const panelId = await overview.getAttribute("aria-controls");
-  const panel = page.locator(`[id="${panelId}"]`);
-  await expect(panel).toHaveRole("tabpanel");
-  await expect(panel).toHaveAccessibleName("Overview");
+  // No aria-controls: it made NVDA announce each newly selected tab twice.
+  await expect(overview).not.toHaveAttribute("aria-controls");
+  const panel = page.getByRole("tabpanel", { name: "Overview" });
   await expect(panel).toBeVisible();
   await expect(page.getByRole("tabpanel", { name: "Activity" })).toHaveCount(0);
 });

@@ -200,11 +200,14 @@ The change was reverted; the spec records why.
 
 **Two double announcements, one fixed.** NVDA read the newly selected tab twice, and every
 dialog's name and description twice on open. Rather than guess, a throwaway page put the
-candidate fixes side by side and one CI run recorded what NVDA said for each:
+candidate fixes side by side, and CI recorded what NVDA said for each:
 
-- *Tabs.* Moving focus first and selecting after meant NVDA announced the focused tab, then
-  announced it again when it became selected. Committing the selection first (`flushSync`),
-  then focusing, gets one announcement. Tabs does that now, and the spec counts it.
+- *Tabs.* My first theory was order: focus moved, then the tab became selected, and NVDA
+  announced both. Selecting first didn't change a thing. A second run took the tab pattern
+  apart one attribute at a time: swapping panels, naming them, making them focusable, all read
+  once. Every variant with `aria-controls` read twice. NVDA doesn't use `aria-controls`
+  otherwise, so Tabs leaves it out; the panel is still named by its tab, and the spec counts
+  the announcement. The cost is JAWS's shortcut to a controlled panel.
 - *Dialogs.* Five native dialog variants all read twice: with and without a description, with
   focus placed by the `autofocus` attribute, by script in the same task, by script a frame
   later, and by the browser's own default. Nothing in the markup changes it, and others report

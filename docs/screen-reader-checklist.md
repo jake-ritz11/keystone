@@ -140,7 +140,7 @@ results are NVDA with Chrome on Windows Server 2025, and quote what NVDA said.
 | M4 | auto | ✅ | "Actions, menu button, collapsed, sub Menu" |
 | M5 | manual | ⬜ | |
 | T1 | auto | ✅ | "Project, tab control. Overview, tab, selected, 1 of 4" |
-| T2 | auto | ✅ | "Activity, tab, selected, 2 of 4", once. It was read twice until Tabs selected the tab before focusing it. |
+| T2 | auto | ✅ | "Activity, tab, selected, 2 of 4", once. It was read twice until Tabs dropped `aria-controls`. |
 | T3–T5 | manual | ⬜ | |
 | CM1 | auto | ✅ | "Commands, combo box, expanded, has auto complete, editable, Search commands…", after the dialog. The first run caught it skipping the field and reading "Esc"; fixed. |
 | CM2 | auto | ✅ | "Commands, list. Tasks, grouping. Stop the agent, 2 of 7" |

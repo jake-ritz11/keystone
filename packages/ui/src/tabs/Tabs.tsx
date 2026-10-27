@@ -10,7 +10,6 @@ import {
   type HTMLAttributes,
   type KeyboardEvent,
 } from "react";
-import { flushSync } from "react-dom";
 import styles from "./Tabs.module.css";
 
 export type TabsVariant = "underline" | "segmented";
@@ -110,11 +109,8 @@ export const TabList = forwardRef<HTMLDivElement, TabListProps>(function TabList
     if (!target) return;
 
     event.preventDefault();
-    // Select first, then move focus: focus lands on a tab that's already selected, so NVDA
-    // announces it once. Focusing first and selecting after made it read the tab twice.
-    const value = target.dataset.value;
-    if (activation === "automatic" && value) flushSync(() => select(value));
     target.focus();
+    if (activation === "automatic" && target.dataset.value) select(target.dataset.value);
   };
 
   return (
@@ -149,7 +145,6 @@ export const Tab = forwardRef<HTMLButtonElement, TabProps>(function Tab(
       id={id}
       data-value={value}
       aria-selected={selected}
-      aria-controls={`${tabs.baseId}-panel-${slug(value)}`}
       // Roving tabindex: only the selected tab is in the page's tab order.
       tabIndex={selected ? 0 : -1}
       className={[styles.tab, className].filter(Boolean).join(" ")}
@@ -177,7 +172,8 @@ export const TabPanel = forwardRef<HTMLDivElement, TabPanelProps>(function TabPa
     <div
       ref={ref}
       role="tabpanel"
-      id={`${tabs.baseId}-panel-${slug(value)}`}
+      // Named by its tab. The tab doesn't point back with aria-controls: NVDA with Chrome
+      // announced every newly selected tab twice when it did, and nothing else in NVDA uses it.
       aria-labelledby={`${tabs.baseId}-tab-${slug(value)}`}
       hidden={!selected}
       // Focusable so keyboard users can reach panels that have no focusable content.

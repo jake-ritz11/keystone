@@ -38,7 +38,11 @@ export default function TabsPage() {
         <Notes
           items={[
             <>One tab stop: only the selected tab is in the tab order, and Tab moves on to its panel.</>,
-            <>Each tab controls its panel and each panel is named by its tab, both by id.</>,
+            <>
+              Each panel is named by its tab. Tabs leave out <code>aria-controls</code>: with it, NVDA in Chrome
+              read every newly selected tab twice, and NVDA doesn&apos;t otherwise use it. JAWS offers a shortcut
+              to the controlled panel, which is the cost; Tab still moves straight to the panel.
+            </>,
             <>
               Panels are focusable, so keyboard users can reach a panel with nothing focusable in
               it.

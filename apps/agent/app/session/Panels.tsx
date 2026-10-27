@@ -5,7 +5,12 @@ import { appliedChanges, diffHunks, type Action, type SessionState } from "@keys
 import { Badge, Button, DiffView, Textarea } from "@keystone-ui/ui";
 import styles from "./session.module.css";
 
-const MARK = { done: "✓", in_progress: "•", pending: "" } as const;
+/** A check that draws itself in when its step completes; the ring around it is CSS. */
+const CHECK = (
+  <svg viewBox="0 0 16 16" className={styles.check}>
+    <path d="M4 8.5l2.5 2.5 5.5-6" />
+  </svg>
+);
 const SPOKEN = { done: "Done", in_progress: "In progress", pending: "To do" } as const;
 
 /** The agent's plan as a checklist. In plan-first, it's also where the user approves it. */
@@ -26,7 +31,7 @@ export function PlanPanel({ state, dispatch }: { state: SessionState; dispatch: 
         {state.plan.map((step, i) => (
           <li key={i} className={styles.step} data-status={step.status}>
             <span className={styles.stepMark} aria-hidden="true">
-              {MARK[step.status]}
+              {step.status === "done" && CHECK}
             </span>
             <span>
               <span className={styles.visuallyHidden}>{SPOKEN[step.status]}: </span>

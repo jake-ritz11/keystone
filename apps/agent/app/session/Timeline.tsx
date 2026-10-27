@@ -1,7 +1,7 @@
 "use client";
 
 import type { Action, Item, SessionState, ToolItem } from "@keystone-ui/agent-core";
-import { Disclosure } from "@keystone-ui/ui";
+import { Disclosure, Shimmer } from "@keystone-ui/ui";
 import { isWrite, summarize, describeTool } from "./describe";
 import { useSessionLog } from "../study/SessionLog";
 import { RichText } from "./RichText";
@@ -16,6 +16,7 @@ type Row = Item | { type: "group"; id: string; items: ToolItem[] };
  */
 export function Timeline({ state, dispatch }: { state: SessionState; dispatch: (a: Action) => void }) {
   const { visibility, approval } = state.variant;
+  const working = state.status === "streaming" || state.status === "ready";
   const rows: Row[] = [];
 
   for (const item of state.items) {
@@ -32,16 +33,17 @@ export function Timeline({ state, dispatch }: { state: SessionState; dispatch: (
 
   return (
     <ol className={styles.timeline} aria-label="Conversation">
-      {rows.map((row) => (
+      {rows.map((row, i) => (
         <li key={row.id} className={styles.entry} data-type={row.type}>
-          <Entry row={row} approval={approval} dispatch={dispatch} />
+          <Entry row={row} live={working && i === rows.length - 1} approval={approval} dispatch={dispatch} />
         </li>
       ))}
     </ol>
   );
 }
 
-function Entry({ row, approval, dispatch }: { row: Row; approval: SessionState["variant"]["approval"]; dispatch: (a: Action) => void }) {
+/** `live`: this is the newest row and the agent is still working on it. */
+function Entry({ row, live, approval, dispatch }: { row: Row; live: boolean; approval: SessionState["variant"]["approval"]; dispatch: (a: Action) => void }) {
   const log = useSessionLog();
   switch (row.type) {
     case "user":
@@ -54,7 +56,11 @@ function Entry({ row, approval, dispatch }: { row: Row; approval: SessionState["
         </p>
       );
     case "progress":
-      return <p className={styles.progress}>{row.text || "Thinking…"}</p>;
+      return (
+        <p className={styles.progress}>
+          <Shimmer active={live}>{row.text || "Thinking…"}</Shimmer>
+        </p>
+      );
     case "notice":
       return (
         <p className={styles.notice} data-tone={row.tone}>

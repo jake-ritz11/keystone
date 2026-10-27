@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { diffHunks, type Action, type Approval, type ToolItem } from "@keystone-ui/agent-core";
-import { Badge, Button, DiffView, Disclosure, Input } from "@keystone-ui/ui";
+import { Badge, Button, DiffView, Disclosure, Input, Shimmer } from "@keystone-ui/ui";
 import { useSessionLog } from "../study/SessionLog";
 import { describeTool, isWrite, STATUS, toolPath } from "./describe";
 import styles from "./session.module.css";
@@ -12,7 +12,7 @@ export function ToolRow({ item, approval, dispatch }: { item: ToolItem; approval
   const log = useSessionLog();
   const status = STATUS[item.status];
   const badge = status && !(item.status === "applied" && approval === "auto") && (
-    <Badge tone={status.tone} dot>
+    <Badge tone={status.tone} dot pulse={item.status === "streaming"}>
       {status.label}
     </Badge>
   );
@@ -20,7 +20,7 @@ export function ToolRow({ item, approval, dispatch }: { item: ToolItem; approval
   if (isWrite(item)) return <WriteRow item={item} badge={badge} dispatch={dispatch} />;
 
   return (
-    <Disclosure summary={describeTool(item)} meta={badge || undefined} onOpenChange={(open) => open && log({ kind: "expand", data: { tool: item.name } })}>
+    <Disclosure summary={<Shimmer active={item.status === "streaming"}>{describeTool(item)}</Shimmer>} meta={badge || undefined} onOpenChange={(open) => open && log({ kind: "expand", data: { tool: item.name } })}>
       <pre className={styles.toolOutput} tabIndex={0} aria-label={`Output of: ${describeTool(item)}`}>
         {item.output ?? item.error ?? "…"}
       </pre>
@@ -36,7 +36,9 @@ function WriteRow({ item, badge, dispatch }: { item: ToolItem; badge: React.Reac
     return (
       <div className={styles.tool} data-status={item.status}>
         <div className={styles.toolSummary}>
-          <span className={styles.toolTitle}>{describeTool(item)}</span>
+          <Shimmer className={styles.toolTitle} active={item.status === "streaming"}>
+            {describeTool(item)}
+          </Shimmer>
           {badge}
         </div>
         {item.error && <p className={styles.toolError}>{item.error}</p>}

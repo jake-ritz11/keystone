@@ -84,6 +84,11 @@ export const CommandMenu = forwardRef<HTMLDialogElement, CommandMenuProps>(funct
 
   const [query, setQuery] = useState("");
   const [active, setActive] = useState<string | null>(null);
+  // Until someone arrows into the list, the field itself is what's focused for assistive tech,
+  // so opening the menu or typing announces the search field, not a command. The best match is
+  // still highlighted and still what Enter runs (the APG's list autocomplete with automatic
+  // selection).
+  const [navigated, setNavigated] = useState(false);
   const results = useMemo(() => filterCommands(items, query), [items, query]);
   const enabled = results.filter((item) => !item.disabled);
   // The active command is always one that can run; when filtering drops it, the first one is.
@@ -109,6 +114,7 @@ export const CommandMenu = forwardRef<HTMLDialogElement, CommandMenuProps>(funct
       returnFocus.current = openerElement();
       setQuery("");
       setActive(null);
+      setNavigated(false);
       placed.current = false;
       pointer.current = null;
       dialog.showModal();
@@ -153,7 +159,10 @@ export const CommandMenu = forwardRef<HTMLDialogElement, CommandMenuProps>(funct
     const last = pointer.current;
     pointer.current = { x: event.clientX, y: event.clientY };
     if (!last || (last.x === event.clientX && last.y === event.clientY)) return;
-    if (!item.disabled && item.id !== activeId) setActive(item.id);
+    if (!item.disabled && item.id !== activeId) {
+      setActive(item.id);
+      setNavigated(true);
+    }
   };
 
   const move = (step: 1 | -1) => {
@@ -161,6 +170,7 @@ export const CommandMenu = forwardRef<HTMLDialogElement, CommandMenuProps>(funct
     const index = enabled.findIndex((item) => item.id === activeId);
     const next = enabled[(index + step + enabled.length) % enabled.length];
     if (next) setActive(next.id);
+    setNavigated(true);
   };
 
   const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
@@ -221,19 +231,23 @@ export const CommandMenu = forwardRef<HTMLDialogElement, CommandMenuProps>(funct
           aria-expanded="true"
           aria-controls={listId}
           aria-autocomplete="list"
-          aria-activedescendant={activeId ? optionId(activeId) : undefined}
+          aria-activedescendant={navigated && activeId ? optionId(activeId) : undefined}
           autoComplete="off"
           spellCheck={false}
           placeholder={placeholder}
           value={query}
           onChange={(event) => {
             setQuery(event.target.value);
-            // A new query means a new best match: start from the top again.
+            // A new query means a new best match: start from the top again, back in the field.
             setActive(null);
+            setNavigated(false);
           }}
           onKeyDown={onKeyDown}
         />
-        <kbd className={styles.esc}>Esc</kbd>
+        {/* A hint for sighted keyboard users; the dialog role already says Escape closes it. */}
+        <kbd className={styles.esc} aria-hidden="true">
+          Esc
+        </kbd>
       </div>
 
       <div ref={listRef} className={styles.list} id={listId} role="listbox" aria-label={label}>

@@ -5,9 +5,12 @@ import { open } from "./open";
 const menu = (page: Page) => page.getByRole("dialog", { name: "Commands" });
 const search = (page: Page) => menu(page).getByRole("combobox", { name: "Commands" });
 
-/** The command `aria-activedescendant` points at: the one Enter would run. */
+/** The selected command: the one highlighted, and the one Enter would run. */
 const current = (page: Page) =>
-  search(page).evaluate((input) => document.getElementById(input.getAttribute("aria-activedescendant") ?? "")?.textContent ?? null);
+  menu(page)
+    .locator('[role="option"][aria-selected="true"]')
+    .evaluate((option) => option.textContent)
+    .catch(() => null);
 
 async function openMenu(page: Page) {
   await open(page, "/components/command-menu");
@@ -22,6 +25,18 @@ test("opens as a named modal, focus in the search, the first command current", a
   await expect(menu(page).getByRole("group", { name: "Tasks" }).getByRole("option")).toHaveCount(3);
   const results = await new AxeBuilder({ page }).include("dialog[open]").analyze();
   expect(results.violations).toEqual([]);
+});
+
+test("the field stays focused for assistive tech until the arrows move into the list", async ({ page }) => {
+  await openMenu(page);
+  // On open, and after typing, the field is what a screen reader reports; the best match is selected.
+  await expect(search(page)).not.toHaveAttribute("aria-activedescendant");
+  expect(await current(page)).toContain("New task");
+  await page.keyboard.press("ArrowDown");
+  const id = await search(page).getAttribute("aria-activedescendant");
+  await expect(page.locator(`[id="${id}"]`)).toContainText("Stop the agent");
+  await page.keyboard.type("x");
+  await expect(search(page)).not.toHaveAttribute("aria-activedescendant");
 });
 
 test("arrows wrap and skip disabled commands", async ({ page }) => {

@@ -38,9 +38,10 @@ export default function CommandMenuPage() {
         <Notes
           items={[
             <>
-              Focus stays in the search field the whole time. The field is a <code>combobox</code>, and{" "}
-              <code>aria-activedescendant</code> points at the current command, so typing and choosing never fight
-              over focus.
+              Focus stays in the search field the whole time. The field is a <code>combobox</code>; once the arrow
+              keys move into the list, <code>aria-activedescendant</code> points at the current command. Before
+              that, a screen reader reports the field, so people know they can type. Found with NVDA: pointing at
+              the first command on open made it skip the field entirely.
             </>,
             <>The number of matching commands is read out as you type, not on every arrow key.</>,
             <>Groups are labelled groups, so a screen reader says which section a command is in.</>,

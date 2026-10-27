@@ -141,7 +141,10 @@ test("CM1–CM3: the command menu reads its field, each command, and the match c
   await open(page, nvda, "/components/command-menu");
   await reach(nvda, page.getByRole("button", { name: "Open commands" }), "CM1 trigger");
   await nvda.press("Enter");
-  expectSaid(await heard(nvda, "CM1"), "commands", /combo ?box|edit/i);
+  const opening = await heard(nvda, "CM1");
+  expectSaid(opening, "commands", "dialog", /combo ?box|edit/i);
+  // The key hint is for sighted users; it shouldn't be read as content.
+  expect(opening).not.toMatch(/\bEsc\b/);
   // Focus stays in the field; NVDA follows aria-activedescendant to each command.
   await nvda.press("ArrowDown");
   expectSaid(await heard(nvda, "CM2"), "stop the agent");

@@ -94,7 +94,7 @@ missing or announced twice.
 
 | # | Do | Expect |
 | --- | --- | --- |
-| CM1 | Activate Open commands | "Commands, dialog", then "Commands, combo box" (or "edit") |
+| CM1 | Activate Open commands | "Commands, dialog", then "Commands, combo box" (or "edit"); no "Esc" |
 | CM2 | Press Down | "Stop the agent" read while focus stays in the field |
 | CM3 | Type "dark" | "1 command" announced politely |
 

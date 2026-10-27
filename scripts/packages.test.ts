@@ -122,8 +122,12 @@ const BUDGETS: [dist: string, file: string, kB: number][] = [
   [UI, "index.js", 16],
   // Raised from 5.5 with it: Shimmer and CommandMenu took the CSS from 4.7 to 5.5 kB.
   [UI, "styles.css", 6.5],
-  [TOKENS, "index.js", 1.5],
-  [TOKENS, "tokens.css", 1],
+  // Raised from 1.5 and 1 when tokens split into a palette and semantic tiers and gained
+  // high-contrast themes (index.js to 2.6 kB, tokens.css to 1.2 kB). The DTCG
+  // converter stays out of the bundle; it only runs at build time.
+  [TOKENS, "index.js", 3],
+  [TOKENS, "tokens.css", 1.5],
+  [TOKENS, "tokens.json", 2.3],
 ];
 
 test("shipped files stay inside their gzipped size budgets", () => {

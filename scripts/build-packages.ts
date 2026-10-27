@@ -9,6 +9,7 @@ import { execFileSync } from "node:child_process";
 import { copyFileSync, existsSync, readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { build } from "esbuild";
+import { toDTCG } from "../packages/tokens/src/dtcg.ts";
 import { tokenStylesheet } from "../packages/tokens/src/index.ts";
 
 const ROOT = join(import.meta.dirname, "..");
@@ -66,9 +67,12 @@ async function buildTokens(): Promise<void> {
   });
   declarations("tokens");
   writeFileSync(join(dist, "tokens.css"), `${tokenStylesheet()}\n`);
+  // The same tokens in the W3C Design Tokens format, for tools that read it.
+  writeFileSync(join(dist, "tokens.json"), `${JSON.stringify(toDTCG(), null, 2)}\n`);
   manifest(read(join(ROOT, dir, "package.json")), dir, {
     ".": { types: "./types/index.d.ts", import: "./index.js" },
     "./tokens.css": "./tokens.css",
+    "./tokens.json": "./tokens.json",
   });
 }
 

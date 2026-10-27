@@ -1,49 +1,177 @@
 /**
- * Design tokens. Components never use raw values; they read these through CSS
- * variables (`var(--ks-color-accent)`), and the MCP audit flags anything that doesn't.
+ * Design tokens, in two tiers. The palette holds every raw color; the semantic tokens say what a
+ * color is for (`accent`, `textMuted`) and point at a palette step for each theme. Components
+ * only ever read the semantic tier, through CSS variables (`var(--ks-color-accent)`), and the
+ * MCP audit flags anything that doesn't.
  */
 
-export const color = {
-  light: {
-    bg: "#fbfaf8",
-    surface: "#ffffff",
-    surfaceRaised: "#f3f1ed",
-    border: "#e2ded6",
-    /** Hover borders on fields and other outlined controls. */
-    borderStrong: "#c9c3b8",
-    text: "#1d1b18",
-    textMuted: "#6b665e",
-    accent: "#3b5bdb",
-    accentHover: "#2f4bc2",
-    accentText: "#ffffff",
-    danger: "#c92a2a",
-    dangerHover: "#a61e1e",
-    success: "#2b8a3e",
-    focus: "#3b5bdb",
-    /** Behind modal layers. */
-    scrim: "#1d1b1866",
-    /** Elevation shadows for popovers and dialogs. */
-    shadow: "#1d1b1824",
+export { contrastRatio } from "./contrast.ts";
+
+/** Every raw color in the system. Steps run light (0) to dark (1000). */
+export const palette = {
+  neutral: {
+    0: "#ffffff",
+    25: "#fbfaf8",
+    50: "#f3f1ed",
+    75: "#f1eee8",
+    150: "#e2ded6",
+    250: "#c9c3b8",
+    400: "#a39d92",
+    500: "#8a847a",
+    550: "#77726a",
+    600: "#6b665e",
+    700: "#4f4b44",
+    800: "#38352f",
+    850: "#262421",
+    900: "#1c1b19",
+    950: "#141312",
+    1000: "#000000",
   },
+  blue: {
+    200: "#b8c6fa",
+    300: "#97abf8",
+    400: "#7c95f5",
+    600: "#3b5bdb",
+    700: "#2f4bc2",
+    800: "#233a9c",
+    900: "#1a2b75",
+    950: "#0f1220",
+  },
+  red: {
+    200: "#ffa8a8",
+    300: "#ff8787",
+    400: "#ff6b6b",
+    600: "#c92a2a",
+    700: "#a61e1e",
+    800: "#8a1414",
+  },
+  green: {
+    200: "#8ce99a",
+    300: "#69db7c",
+    600: "#2b8a3e",
+    700: "#22702f",
+  },
+} as const;
+
+type Palette = typeof palette;
+/** A palette step, written the way DTCG writes references: `{blue.600}`. */
+export type PaletteRef = { [H in keyof Palette]: `{${H}.${keyof Palette[H] & (string | number)}}` }[keyof Palette];
+type SemanticValue = PaletteRef | `#${string}`;
+
+const semanticLight = {
+  bg: "{neutral.25}",
+  surface: "{neutral.0}",
+  surfaceRaised: "{neutral.50}",
+  border: "{neutral.150}",
+  /** Hover borders on fields and other outlined controls. */
+  borderStrong: "{neutral.250}",
+  /** Outlines that identify a control, like a text field's: at least 3:1 against any surface. */
+  borderControl: "{neutral.500}",
+  borderControlHover: "{neutral.700}",
+  text: "{neutral.900}",
+  textMuted: "{neutral.600}",
+  accent: "{blue.600}",
+  accentHover: "{blue.700}",
+  accentText: "{neutral.0}",
+  danger: "{red.600}",
+  dangerHover: "{red.700}",
+  success: "{green.600}",
+  focus: "{blue.600}",
+  // Overlays are translucent, so they're the one place a semantic token holds its own value.
+  /** Behind modal layers. */
+  scrim: "#1c1b1966",
+  /** Elevation shadows for popovers and dialogs. */
+  shadow: "#1c1b1924",
+} as const satisfies Record<string, SemanticValue>;
+
+export type ColorToken = keyof typeof semanticLight;
+
+/** The semantic tier: what each color is for, per theme, as palette references. */
+export const semantic = {
+  light: semanticLight,
   dark: {
-    bg: "#141312",
-    surface: "#1c1b19",
-    surfaceRaised: "#262421",
-    border: "#38352f",
-    borderStrong: "#4f4b44",
-    text: "#f1eee8",
-    textMuted: "#a39d92",
-    accent: "#7c95f5",
-    accentHover: "#97abf8",
-    accentText: "#0f1220",
-    danger: "#ff6b6b",
-    dangerHover: "#ff8787",
-    success: "#69db7c",
-    focus: "#97abf8",
+    bg: "{neutral.950}",
+    surface: "{neutral.900}",
+    surfaceRaised: "{neutral.850}",
+    border: "{neutral.800}",
+    borderStrong: "{neutral.700}",
+    borderControl: "{neutral.550}",
+    borderControlHover: "{neutral.400}",
+    text: "{neutral.75}",
+    textMuted: "{neutral.400}",
+    accent: "{blue.400}",
+    accentHover: "{blue.300}",
+    accentText: "{blue.950}",
+    danger: "{red.400}",
+    dangerHover: "{red.300}",
+    success: "{green.300}",
+    focus: "{blue.300}",
     scrim: "#000000a6",
     shadow: "#00000080",
   },
-} as const;
+} as const satisfies Record<"light" | "dark", Record<ColorToken, SemanticValue>>;
+
+/**
+ * High contrast, for `prefers-contrast: more`: only what changes from each theme. Muted text and
+ * borders move toward the text color, so all text clears 7:1 and every outline 4.5:1.
+ */
+export const highContrast = {
+  light: {
+    border: "{neutral.600}",
+    borderStrong: "{neutral.700}",
+    borderControl: "{neutral.700}",
+    borderControlHover: "{neutral.900}",
+    textMuted: "{neutral.700}",
+    accent: "{blue.800}",
+    accentHover: "{blue.900}",
+    danger: "{red.700}",
+    dangerHover: "{red.800}",
+    success: "{green.700}",
+    focus: "{blue.800}",
+  },
+  dark: {
+    bg: "{neutral.1000}",
+    border: "{neutral.400}",
+    borderStrong: "{neutral.150}",
+    borderControl: "{neutral.250}",
+    borderControlHover: "{neutral.75}",
+    text: "{neutral.0}",
+    textMuted: "{neutral.250}",
+    accent: "{blue.300}",
+    accentHover: "{blue.200}",
+    danger: "{red.300}",
+    dangerHover: "{red.200}",
+    success: "{green.200}",
+    focus: "{blue.200}",
+  },
+} as const satisfies Record<"light" | "dark", Partial<Record<ColorToken, SemanticValue>>>;
+
+const REF = /^\{(\w+)\.(\w+)\}$/;
+
+/** The hex value behind a semantic value. */
+export function resolve(value: SemanticValue): string {
+  const ref = REF.exec(value);
+  if (!ref) return value;
+  const hue = palette[ref[1] as keyof Palette] as Record<string, string> | undefined;
+  const hex = hue?.[ref[2]!];
+  if (!hex) throw new Error(`Unknown palette reference ${value}`);
+  return hex;
+}
+
+const resolveAll = <K extends string>(tokens: Partial<Record<K, SemanticValue>>) =>
+  Object.fromEntries(Object.entries(tokens).map(([k, v]) => [k, resolve(v as SemanticValue)])) as Record<K, string>;
+
+/** Every semantic color resolved to hex, per theme: what the CSS variables end up holding. */
+export const color: Record<"light" | "dark", Record<ColorToken, string>> = {
+  light: resolveAll(semantic.light),
+  dark: resolveAll(semantic.dark),
+};
+
+/** The same, with the high-contrast changes applied. */
+export const colorHighContrast: Record<"light" | "dark", Record<ColorToken, string>> = {
+  light: { ...color.light, ...resolveAll<ColorToken>(highContrast.light) },
+  dark: { ...color.dark, ...resolveAll<ColorToken>(highContrast.dark) },
+};
 
 /** 4px base scale. */
 export const space = {
@@ -119,10 +247,18 @@ function flatten(prefix: string, values: Record<string, unknown>, out: Record<st
   }
 }
 
-/** Every token as a `--ks-*` CSS custom property, for the given color theme. */
-export function cssVariables(theme: Theme): Record<string, string> {
+const paletteVar = (value: SemanticValue) => {
+  const ref = REF.exec(value);
+  return ref ? `var(--ks-palette-${ref[1]}-${ref[2]})` : value;
+};
+
+const colorVariables = (tokens: Partial<Record<ColorToken, SemanticValue>>): Record<string, string> =>
+  Object.fromEntries(Object.entries(tokens).map(([k, v]) => [`--ks-color-${kebab(k)}`, paletteVar(v as SemanticValue)]));
+
+/** Every token as a `--ks-*` CSS custom property, resolved to raw values, for the given color theme. */
+export function cssVariables(theme: Theme, contrast: "normal" | "more" = "normal"): Record<string, string> {
   const out: Record<string, string> = {};
-  flatten("--ks-color", color[theme], out);
+  flatten("--ks-color", contrast === "more" ? colorHighContrast[theme] : color[theme], out);
   flatten("--ks-space", space, out);
   flatten("--ks-radius", radius, out);
   flatten("--ks-font", font, out);
@@ -135,15 +271,58 @@ const block = (selector: string, vars: Record<string, string>): string =>
     .map(([k, v]) => `${k}:${v};`)
     .join("")}}`;
 
+/** A rule inside zero or more nested media queries. */
+const rule = (media: string[], selector: string, vars: Record<string, string>): string =>
+  media.reduceRight((inner, query) => `@media ${query}{${inner}}`, block(selector, vars));
+
 /**
- * The full token stylesheet: light by default, dark under `prefers-color-scheme`
- * unless the page pins `data-theme="light"`, and dark when it pins `data-theme="dark"`.
+ * When each theme applies: by the system setting unless `data-theme` pins one. The two lists
+ * never match at the same time, so their rules can't fight over specificity.
+ */
+const THEME_WHEN: Record<Theme, [media: string[], selector: string][]> = {
+  light: [
+    [["(prefers-color-scheme: light)"], ':root:not([data-theme="dark"])'],
+    [[], ':root[data-theme="light"]'],
+  ],
+  dark: [
+    [["(prefers-color-scheme: dark)"], ':root:not([data-theme="light"])'],
+    [[], ':root[data-theme="dark"]'],
+  ],
+};
+
+/** When high contrast applies: by the system setting unless `data-contrast` pins it. */
+const MORE_CONTRAST_WHEN: [media: string[], suffix: string][] = [
+  [["(prefers-contrast: more)"], ':not([data-contrast="normal"])'],
+  [[], '[data-contrast="more"]'],
+];
+
+/**
+ * The full token stylesheet. The palette is declared once and semantic colors point at it, so
+ * dev tools show `--ks-color-accent: var(--ks-palette-blue-600)`. Light by default; dark under
+ * `prefers-color-scheme` unless `data-theme` pins a theme; high contrast under
+ * `prefers-contrast: more` unless `data-contrast` pins it.
  */
 export function tokenStylesheet(): string {
-  const dark = cssVariables("dark");
-  return [
-    block(":root", cssVariables("light")),
-    `@media (prefers-color-scheme: dark){${block(':root:not([data-theme="light"])', dark)}}`,
+  const base: Record<string, string> = {};
+  flatten("--ks-palette", palette, base);
+  Object.assign(base, colorVariables(semantic.light));
+  flatten("--ks-space", space, base);
+  flatten("--ks-radius", radius, base);
+  flatten("--ks-font", font, base);
+  flatten("--ks-motion", motion, base);
+  const dark = colorVariables(semantic.dark);
+  const rules = [
+    block(":root", base),
+    rule(["(prefers-color-scheme: dark)"], ':root:not([data-theme="light"])', dark),
     block(':root[data-theme="dark"]', dark),
-  ].join("\n");
+  ];
+  for (const theme of ["light", "dark"] as const) {
+    const vars = colorVariables(highContrast[theme]);
+    for (const [themeMedia, selector] of THEME_WHEN[theme]) {
+      for (const [contrastMedia, suffix] of MORE_CONTRAST_WHEN) {
+        rules.push(rule([...themeMedia, ...contrastMedia], selector + suffix, vars));
+      }
+    }
+  }
+  return rules.join("\n");
 }

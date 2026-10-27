@@ -56,7 +56,7 @@
   display: flex;
   align-items: center;
   gap: var(--ks-space-2);
-  border: 1px solid var(--ks-color-border);
+  border: 1px solid var(--ks-color-border-control);
   border-radius: var(--ks-radius-md);
   background: var(--ks-color-surface);
   color: var(--ks-color-text);
@@ -73,7 +73,7 @@
    touch screens (hover would stick after a tap). */
 @media (hover: hover) {
   .control:hover:not([data-disabled], [data-invalid], [data-readonly], :focus-within) {
-    border-color: var(--ks-color-border-strong);
+    border-color: var(--ks-color-border-control-hover);
   }
 }
 

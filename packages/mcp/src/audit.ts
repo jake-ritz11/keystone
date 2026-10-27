@@ -19,14 +19,17 @@ export type RuleId =
   | "clickable-non-button";
 
 export const RULES: Record<RuleId, string> = {
-  "hard-coded-color": "Colors come from --ks-color-* tokens, never hex, rgb() or hsl() literals.",
+  "hard-coded-color":
+    "Colors come from --ks-color-* tokens, never hex, rgb() or hsl() literals, and never --ks-palette-* " +
+    "steps, which don't change with the theme or high contrast.",
   "off-scale-spacing": "Padding, margin and gap use --ks-space-* tokens, never raw px.",
   "missing-focus-visible": "Anything with cursor: pointer has a :focus-visible style.",
   "missing-reduced-motion": "Transitions and animations have a prefers-reduced-motion fallback.",
   "clickable-non-button": "A div or span with onClick needs a role and keyboard handling; prefer <button>.",
 };
 
-const COLOR_LITERAL = /#[0-9a-fA-F]{3,8}\b|\b(?:rgb|rgba|hsl|hsla)\(/;
+// A palette step is as fixed as a literal: it skips the theme and high contrast.
+const COLOR_LITERAL = /#[0-9a-fA-F]{3,8}\b|\b(?:rgb|rgba|hsl|hsla)\(|--ks-palette-/;
 const RAW_SPACING =
   /(?:^|[\s{;])(?:padding|margin|gap|row-gap|column-gap)(?:-[a-z]+)?\s*:[^;}]*\b(?!0px)\d+(?:\.\d+)?px/;
 

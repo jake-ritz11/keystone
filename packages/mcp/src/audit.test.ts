@@ -7,6 +7,8 @@ const rules = (file: string, text: string) => auditSource(file, text).map((f) =>
 test("flags a hex color but not a token reference", () => {
   assert.deepEqual(rules("a.css", ".x { color: #ff0000; }"), ["hard-coded-color"]);
   assert.deepEqual(rules("a.css", ".x { color: var(--ks-color-text); }"), []);
+  // Palette steps bypass themes and high contrast, so they count as literals.
+  assert.deepEqual(rules("a.css", ".x { color: var(--ks-palette-blue-600); }"), ["hard-coded-color"]);
 });
 
 test("flags raw px spacing but not tokens or zero", () => {

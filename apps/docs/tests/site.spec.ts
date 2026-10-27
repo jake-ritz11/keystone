@@ -2,12 +2,17 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 import { open } from "./open";
 
+import { COMPONENTS } from "@keystone-ui/ui/docs";
+import { WRITING } from "../app/_docs/registry";
+
+// From the registries, so a new page can't be left out of these checks.
 const PAGES = [
   "/",
   "/tokens",
-  ...["button", "input", "textarea", "select", "dialog", "menu", "tabs", "segmented-control", "tooltip", "disclosure", "badge", "diff-view", "toast"].map((c) => `/components/${c}`),
+  "/motion",
+  ...COMPONENTS.map((c) => `/components/${c.slug}`),
   "/writing",
-  ...["decisions", "variants", "study-plan", "phase-2-plan", "screen-reader-checklist"].map((w) => `/writing/${w}`),
+  ...WRITING.map((w) => `/writing/${w.slug}`),
 ];
 
 for (const path of PAGES) {
@@ -19,9 +24,14 @@ for (const path of PAGES) {
     }
   });
 
-  for (const theme of ["light", "dark"] as const) {
-    test(`${path} passes axe in ${theme}`, async ({ page }) => {
-      await page.emulateMedia({ colorScheme: theme });
+  for (const [theme, contrast] of [
+    ["light", "no-preference"],
+    ["dark", "no-preference"],
+    ["light", "more"],
+    ["dark", "more"],
+  ] as const) {
+    test(`${path} passes axe in ${theme}${contrast === "more" ? ", high contrast" : ""}`, async ({ page }) => {
+      await page.emulateMedia({ colorScheme: theme, contrast });
       await open(page, path);
       // Open every code sample so its contents are scanned too.
       for (const details of await page.locator("details").all()) await details.evaluate((d) => ((d as HTMLDetailsElement).open = true));

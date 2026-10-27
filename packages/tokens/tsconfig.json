@@ -1,4 +1,11 @@
 {
   "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    // The MCP server imports this package on Node's type stripping, so local imports keep
+    // their .ts extension.
+    "allowImportingTsExtensions": true,
+    "erasableSyntaxOnly": true,
+    "types": ["node"]
+  },
   "include": ["src"]
 }

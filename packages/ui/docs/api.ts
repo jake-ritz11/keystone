@@ -28,6 +28,7 @@ export const COMPONENTS: ComponentSummary[] = [
   { slug: "tooltip", name: "Tooltip", imports: ["Tooltip"], summary: "Hover and focus hints that follow WCAG's rules for content on hover." },
   { slug: "disclosure", name: "Disclosure", imports: ["Disclosure"], summary: "Show and hide a section, on the native details element." },
   { slug: "badge", name: "Badge", imports: ["Badge"], summary: "A short, static label for a status or a category." },
+  { slug: "shimmer", name: "Shimmer", imports: ["Shimmer"], summary: "Live text: a light sweeps across it while the work it names is happening." },
   { slug: "diff-view", name: "DiffView", imports: ["DiffView"], summary: "A unified diff for reviewing a change, readable by screen readers." },
   { slug: "toast", name: "Toast", imports: ["ToastProvider", "useToast"], summary: "Announced notifications that pause on hover and work over a modal." },
 ];
@@ -159,6 +160,19 @@ export const api: Record<string, ComponentApi> = {
         props: [
           { name: "tone", type: '"neutral" | "accent" | "success" | "danger"', default: '"neutral"', description: "Color. The text still has to carry the meaning." },
           { name: "dot", type: "boolean", default: "false", description: "A leading dot, for statuses." },
+          { name: "pulse", type: "boolean", default: "false", description: "The dot gives off a ring every two seconds, for a status still in progress. Needs dot; still under reduced motion." },
+        ],
+      },
+    ],
+  },
+  shimmer: {
+    parts: [
+      {
+        interface: "ShimmerProps",
+        source: "packages/ui/src/shimmer/Shimmer.tsx",
+        extends: "every <span> attribute",
+        props: [
+          { name: "active", type: "boolean", default: "true", description: "Sweeps while true. Set it false when the work ends, and the words stay as plain text in the surrounding color." },
         ],
       },
     ],

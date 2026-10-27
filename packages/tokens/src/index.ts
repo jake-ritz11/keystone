@@ -95,6 +95,8 @@ export const motion = {
     fast: "120ms",
     normal: "200ms",
     slow: "320ms",
+    /** One cycle of a looping "still working" indicator: slow enough to read as calm. */
+    ambient: "2000ms",
   },
   easing: {
     standard: "cubic-bezier(0.2, 0, 0, 1)",

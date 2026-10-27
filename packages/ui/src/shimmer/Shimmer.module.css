@@ -1,0 +1,47 @@
+/*
+ * A band of full-strength text color, painted into the glyphs with background-clip, travels
+ * across muted text. Inactive, it's plain text in whatever color surrounds it. The gradient is 250% wide, so moving its position from 100% to 0% takes
+ * the band from just before the start to just past the end, with a pause off-screen.
+ */
+.shimmer[data-active] {
+  background-image: linear-gradient(
+    90deg,
+    var(--ks-color-text-muted) 40%,
+    var(--ks-color-text) 50%,
+    var(--ks-color-text-muted) 60%
+  );
+  background-size: 250% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: sweep var(--ks-motion-duration-ambient) linear infinite;
+}
+
+.shimmer[data-active]:dir(rtl) {
+  animation-direction: reverse;
+}
+
+@keyframes sweep {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shimmer[data-active] {
+    animation: none;
+    background: none;
+    color: inherit;
+  }
+}
+
+/* Forced colors drop backgrounds, which would leave transparent text: use the system color. */
+@media (forced-colors: active) {
+  .shimmer[data-active] {
+    background: none;
+    color: CanvasText;
+  }
+}

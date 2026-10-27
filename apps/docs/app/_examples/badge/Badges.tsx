@@ -11,7 +11,7 @@ export function Badges() {
       </div>
       <div className="row">
         <Badge dot>Waiting</Badge>
-        <Badge tone="accent" dot>
+        <Badge tone="accent" dot pulse>
           Running
         </Badge>
         <Badge tone="success" dot>

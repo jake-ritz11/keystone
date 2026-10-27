@@ -37,3 +37,6 @@ export type { SegmentedControlProps, SegmentedOption } from "./segmented-control
 
 export { Disclosure } from "./disclosure/Disclosure";
 export type { DisclosureProps } from "./disclosure/Disclosure";
+
+export { Shimmer } from "./shimmer/Shimmer";
+export type { ShimmerProps } from "./shimmer/Shimmer";

@@ -39,3 +39,25 @@
   border-radius: var(--ks-radius-full);
   background: currentColor;
 }
+
+/* A ring that swells out of the dot and fades: "live", without the dot itself moving. */
+.dot[data-pulse] {
+  box-shadow: 0 0 0 0 currentColor;
+  animation: pulse var(--ks-motion-duration-ambient) var(--ks-motion-easing-standard) infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, currentColor 55%, transparent);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 var(--ks-space-1) transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dot[data-pulse] {
+    animation: none;
+  }
+}

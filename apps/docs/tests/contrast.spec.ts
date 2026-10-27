@@ -16,12 +16,15 @@ const rgb = (hex: string) => `rgb(${[1, 3, 5].map((i) => Number.parseInt(hex.sli
 
 for (const theme of ["light", "dark"] as const) {
   test(`${theme}: prefers-contrast: more switches to the high-contrast tokens`, async ({ page }) => {
+    // Each state loads the page fresh: Firefox under Playwright doesn't restyle when the
+    // emulated contrast changes after load.
     await page.emulateMedia({ colorScheme: theme, contrast: "no-preference" });
     await open(page, "/components/input");
     expect(await token(page, "--ks-color-text-muted")).toBe(color[theme].textMuted);
     expect(await fieldBorder(page)).toBe(rgb(color[theme].borderControl));
 
     await page.emulateMedia({ colorScheme: theme, contrast: "more" });
+    await open(page, "/components/input");
     expect(await token(page, "--ks-color-text-muted")).toBe(colorHighContrast[theme].textMuted);
     expect(await fieldBorder(page)).toBe(rgb(colorHighContrast[theme].borderControl));
 
@@ -29,6 +32,7 @@ for (const theme of ["light", "dark"] as const) {
     await page.evaluate(() => (document.documentElement.dataset.contrast = "normal"));
     expect(await fieldBorder(page)).toBe(rgb(color[theme].borderControl));
     await page.emulateMedia({ colorScheme: theme, contrast: "no-preference" });
+    await open(page, "/components/input");
     await page.evaluate(() => (document.documentElement.dataset.contrast = "more"));
     expect(await fieldBorder(page)).toBe(rgb(colorHighContrast[theme].borderControl));
   });

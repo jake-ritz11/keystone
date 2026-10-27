@@ -129,10 +129,10 @@ results are NVDA with Chrome on Windows Server 2025, and quote what NVDA said.
 | I2 | auto | ✅ | "Username, edit, invalid entry, That username is taken. Letters and numbers only." Error before hint. |
 | I3, I4 | manual | ⬜ | |
 | SE1–SE3 | manual | ⬜ | |
-| D1 | auto | ⚠️ | "Edit profile, dialog, Changes are visible to everyone in your workspace." **twice**, then "Name, edit, Ada Lovelace" |
+| D1 | auto | ✅ | "Edit profile, dialog, Changes are visible to everyone in your workspace.", then "Name, edit, Ada Lovelace". NVDA says the dialog line twice; that's NVDA with Chrome, not the markup ([why](decisions.md#8-a-screen-reader-in-ci)). |
 | D2 | manual | ⬜ | |
 | D3 | auto | ⚠️ | First Escape stays with NVDA (leaves focus mode). The second closes it: "out of region, same page, link, Skip to content. main landmark, Examples, region, Edit profile, button" |
-| D4 | auto | ⚠️ | Read as "dialog", not "alert dialog"; the question and consequence twice; focus on "Keep project, button" ✅ |
+| D4 | auto | ✅ | The question, the consequence, then "Keep project, button". Read as "dialog", not "alert dialog", and twice, like D1. |
 | D5 | manual | ⬜ | |
 | M1 | auto | ✅ | "Actions, menu button, collapsed, sub Menu" |
 | M2 | auto | ✅ | "expanded. Actions, menu. Rename Ctrl E, 1 of 5" (no "menu item"; NVDA leaves it out inside a menu) |
@@ -140,7 +140,7 @@ results are NVDA with Chrome on Windows Server 2025, and quote what NVDA said.
 | M4 | auto | ✅ | "Actions, menu button, collapsed, sub Menu" |
 | M5 | manual | ⬜ | |
 | T1 | auto | ✅ | "Project, tab control. Overview, tab, selected, 1 of 4" |
-| T2 | auto | ⚠️ | "Activity, tab, selected, 2 of 4" **twice** |
+| T2 | auto | ✅ | "Activity, tab, selected, 2 of 4", once. It was read twice until Tabs selected the tab before focusing it. |
 | T3–T5 | manual | ⬜ | |
 | CM1 | auto | ✅ | "Commands, combo box, expanded, has auto complete, editable, Search commands…", after the dialog. The first run caught it skipping the field and reading "Esc"; fixed. |
 | CM2 | auto | ✅ | "Commands, list. Tasks, grouping. Stop the agent, 2 of 7" |

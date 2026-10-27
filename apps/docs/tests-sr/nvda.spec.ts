@@ -118,7 +118,10 @@ test("T1, T2: tabs announce the list, the selected tab and its position", async 
   await open(page, nvda, "/components/tabs");
   expectSaid(await reach(nvda, page.getByRole("tab", { name: "Overview", exact: true }), "T1"), "project", "overview", "tab", "selected");
   await nvda.press("ArrowRight");
-  expectSaid(await heard(nvda, "T2"), "activity", "tab", "selected");
+  const moved = await heard(nvda, "T2");
+  expectSaid(moved, "activity", "tab", "selected");
+  // Once: selecting before focusing stopped NVDA reading the new tab twice.
+  expect(moved.match(/activity, tab/gi)).toHaveLength(1);
 });
 
 test("TT1: a tooltip is read as the button's description", async ({ page, nvda }) => {

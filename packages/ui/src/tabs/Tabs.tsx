@@ -10,6 +10,7 @@ import {
   type HTMLAttributes,
   type KeyboardEvent,
 } from "react";
+import { flushSync } from "react-dom";
 import styles from "./Tabs.module.css";
 
 export type TabsVariant = "underline" | "segmented";
@@ -109,8 +110,11 @@ export const TabList = forwardRef<HTMLDivElement, TabListProps>(function TabList
     if (!target) return;
 
     event.preventDefault();
+    // Select first, then move focus: focus lands on a tab that's already selected, so NVDA
+    // announces it once. Focusing first and selecting after made it read the tab twice.
+    const value = target.dataset.value;
+    if (activation === "automatic" && value) flushSync(() => select(value));
     target.focus();
-    if (activation === "automatic" && target.dataset.value) select(target.dataset.value);
   };
 
   return (

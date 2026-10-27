@@ -198,9 +198,20 @@ to `close()`. NVDA still read it. The cause is NVDA's browse-mode cursor: it was
 dialog, the dialog left, and the cursor reset to the top of the page before following focus.
 The change was reverted; the spec records why.
 
-**Still reads oddly.** Dialogs announce their name and description twice on open, and tabs
-announce the newly selected tab twice. Both are open in the
-[checklist](screen-reader-checklist.md#results).
+**Two double announcements, one fixed.** NVDA read the newly selected tab twice, and every
+dialog's name and description twice on open. Rather than guess, a throwaway page put the
+candidate fixes side by side and one CI run recorded what NVDA said for each:
+
+- *Tabs.* Moving focus first and selecting after meant NVDA announced the focused tab, then
+  announced it again when it became selected. Committing the selection first (`flushSync`),
+  then focusing, gets one announcement. Tabs does that now, and the spec counts it.
+- *Dialogs.* Five native dialog variants all read twice: with and without a description, with
+  focus placed by the `autofocus` attribute, by script in the same task, by script a frame
+  later, and by the browser's own default. Nothing in the markup changes it, and others report
+  the same with ARIA dialogs, so it's NVDA's behavior with Chrome. Dialog stays as it is;
+  swapping the native element for a `div` would give up the top layer and the inert
+  background to chase a screen reader quirk. The results are in the
+  [checklist](screen-reader-checklist.md#results).
 
 ## What isn't proven yet
 

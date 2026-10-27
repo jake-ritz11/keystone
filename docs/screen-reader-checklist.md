@@ -142,7 +142,9 @@ results are NVDA with Chrome on Windows Server 2025, and quote what NVDA said.
 | T1 | auto | ✅ | "Project, tab control. Overview, tab, selected, 1 of 4" |
 | T2 | auto | ⚠️ | "Activity, tab, selected, 2 of 4" **twice** |
 | T3–T5 | manual | ⬜ | |
-| CM1–CM3 | auto | ⬜ | First run pending |
+| CM1 | auto | ✅ | "Commands, combo box, expanded, has auto complete, editable, Search commands…", after the dialog. The first run caught it skipping the field and reading "Esc"; fixed. |
+| CM2 | auto | ✅ | "Commands, list. Tasks, grouping. Stop the agent, 2 of 7" |
+| CM3 | auto | ✅ | "1 command" as you type, then the best match: "Toggle theme, 1 of 1" |
 | TT1 | auto | ✅ | "Hover or focus me, button, Saves a copy to your workspace" |
 | TT2, TT3 | manual | ⬜ | |
 | TO1 | auto | ✅ | "Project published. It's live for everyone in the workspace." Focus stays on the button. |

@@ -13,11 +13,16 @@ import { nvdaTest as test } from "@guidepup/playwright";
 
 type NVDA = Parameters<Parameters<typeof test>[2]>[0]["nvda"];
 
-async function open(page: Page, nvda: NVDA, path: string) {
+// By default Guidepup keeps only the first phrase after each key, which drops the newly focused
+// element when a key both changes state and moves focus (opening a dialog or a menu).
+test.use({ nvdaStartOptions: { capture: true } });
+
+/** Loads a page and returns what NVDA said on arriving. */
+async function open(page: Page, nvda: NVDA, path: string): Promise<string> {
   await page.goto(path, { waitUntil: "load" });
   await page.locator("html[data-hydrated]").waitFor();
   await nvda.navigateToWebContent();
-  await heard(nvda, `open ${path}`);
+  return heard(nvda, `open ${path}`);
 }
 
 /** Moves to `target` the way a keyboard user arrives at it: Tab from the element before it. */
@@ -55,10 +60,9 @@ function expectSaid(text: string, ...parts: (string | RegExp)[]) {
   }
 }
 
-test("S1: the first Tab reaches the skip link", async ({ page, nvda }) => {
-  await open(page, nvda, "/components/input");
-  await nvda.press("Tab");
-  expectSaid(await heard(nvda, "S1"), "skip to content", "link");
+test("S1: the skip link comes first", async ({ page, nvda }) => {
+  // NVDA lands on the first focusable element when the page loads.
+  expectSaid(await open(page, nvda, "/components/input"), "skip to content", "link");
 });
 
 test("I1, I2: fields announce name, role, required, error and hint", async ({ page, nvda }) => {
@@ -81,7 +85,9 @@ test("D4: an alert dialog starts on the safe choice", async ({ page, nvda }) => 
   await open(page, nvda, "/components/dialog");
   await reach(nvda, page.getByRole("button", { name: "Delete project" }), "D4 trigger");
   await nvda.press("Enter");
-  expectSaid(await heard(nvda, "D4"), "delete this project?", /alert/i, "keep project", "button");
+  // NVDA in Chrome reads role="alertdialog" as "dialog"; the role itself is checked by the
+  // behavior specs. What matters here is the question, the consequence and the safe choice.
+  expectSaid(await heard(nvda, "D4"), "delete this project?", "dialog", "can't be undone", "keep project", "button");
 });
 
 test("M1, M2, M4: the menu button, its items, and closing", async ({ page, nvda }) => {

@@ -171,15 +171,46 @@ found 13 more defects. All were real. The ones worth remembering:
 Each behavioral fix has a spec in [`polish.spec.ts`](../apps/docs/tests/polish.spec.ts) or
 [`layout.spec.ts`](../apps/docs/tests/layout.spec.ts).
 
+## 8. A screen reader in CI
+
+**The call.** The scripted NVDA pass was meant to be done by hand. Most of it now runs on every
+push instead: [Guidepup](https://www.guidepup.dev) starts a real NVDA on a Windows runner,
+Playwright drives Chrome, and [`tests-sr/nvda.spec.ts`](../apps/docs/tests-sr/nvda.spec.ts)
+asserts on what NVDA said. It's a separate workflow from `check`: slower (about five minutes),
+and dependent on speech timing.
+
+**Getting honest results took four rounds.**
+
+- Focus that Playwright sets from outside isn't announced, so a test that calls `focus()` hears
+  silence and proves nothing. Every move now goes through NVDA as a key press; to reach an
+  element, the test focuses the one before it and presses Tab.
+- Guidepup keeps only the first phrase after a key by default, which dropped the newly focused
+  element whenever a key both changed state and moved focus. Opening a menu read as just
+  "expanded". The tests now capture everything.
+- NVDA keeps the first Escape pressed in a text field for itself, to leave focus mode. The
+  dialog never saw it. Real NVDA users press it twice, so the test does too.
+- Some expectations were mine, not NVDA's. NVDA leaves out "menu item" inside a menu, and reads
+  `role="alertdialog"` in Chrome as "dialog". The specs now say so instead of failing on it.
+
+**A theory that didn't hold.** After a dialog closes, NVDA reads "Skip to content" before it
+reaches the opener. I assumed focus came back a task too late and moved the `focus()` call next
+to `close()`. NVDA still read it. The cause is NVDA's browse-mode cursor: it was inside the
+dialog, the dialog left, and the cursor reset to the top of the page before following focus.
+The change was reverted; the spec records why.
+
+**Still reads oddly.** Dialogs announce their name and description twice on open, and tabs
+announce the newly selected tab twice. Both are open in the
+[checklist](screen-reader-checklist.md#results).
+
 ## What isn't proven yet
 
 - **Firefox locally.** Firefox passes all 34 specs in CI on Linux, but it won't launch on the
   Windows machine this was built on (`spawn UNKNOWN`, although the binary runs from a shell),
   so it stays out of the local `check`.
-- **Screen readers.** Tests check that live regions receive the right text and that roles and
-  names are right. Nothing has been checked with VoiceOver or NVDA yet, which is the only way to
-  know what is actually announced. The pass is scripted in
-  [screen-reader-checklist.md](screen-reader-checklist.md).
+- **Screen readers beyond NVDA with Chrome.** NVDA covers 15 of the checklist's checks in CI
+  (section 8). The rest of the list, VoiceOver, JAWS and Firefox are unchecked, and no
+  screen-reader user has tried the kit. The automated pass proves the announcements, not that
+  the experience is good.
 - **The anchor positioning fallback in a browser.** Its maths is unit-tested; its behavior in a
   browser without anchor positioning isn't.
 - **Touch.** Tooltips deliberately don't open on touch, and nothing yet tests the components

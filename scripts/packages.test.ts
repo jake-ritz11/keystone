@@ -118,11 +118,13 @@ test("the type declarations work for a consumer", () => {
  * isn't wrong, but it should be a decision: raise the number in the same commit and say why.
  */
 const BUDGETS: [dist: string, file: string, kB: number][] = [
-  // Raised from 13 when CommandMenu landed (11.2 to 13.6 kB): a whole new component.
-  [UI, "index.js", 16],
+  // Raised from 13 when CommandMenu landed (11.2 to 13.6 kB): a whole new component. Raised
+  // from 16 when Slider, Progress and ToggleGroup took it to 16.2 kB: three more components.
+  [UI, "index.js", 18.5],
   // Raised from 5.5 with it: Shimmer and CommandMenu took the CSS from 4.7 to 5.5 kB. Raised
-  // again from 6.5 when Checkbox, Switch and RadioGroup took it to 6.5 kB.
-  [UI, "styles.css", 7.5],
+  // again from 6.5 when Checkbox, Switch and RadioGroup took it to 6.5 kB, and from 7.5 when
+  // Slider, Progress and ToggleGroup took it to 7.4 kB.
+  [UI, "styles.css", 8.5],
   // Raised from 1.5 and 1 when tokens split into a palette and semantic tiers and gained
   // high-contrast themes (index.js to 2.6 kB, tokens.css to 1.2 kB). The DTCG
   // converter stays out of the bundle; it only runs at build time.

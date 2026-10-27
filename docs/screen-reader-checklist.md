@@ -106,7 +106,7 @@ missing or announced twice.
 | TT2 | Tab to the icon-only search button | "Search, button", from the tooltip as its name |
 | TT3 | Press Escape | Tooltip hides; NVDA doesn't announce a focus change |
 
-### Checkbox, Switch, RadioGroup, Slider, Progress
+### Checkbox, Switch, RadioGroup, Slider, Progress, ToggleGroup
 
 | # | Do | Expect |
 | --- | --- | --- |
@@ -118,6 +118,8 @@ missing or announced twice.
 | RG2 | Down arrow | "Review at the end, radio button, checked, 2 of 3", then its hint |
 | SL1 | Tab to "Steps before checking in" on `/components/slider` | "Steps before checking in, slider, 8 steps", then its hint |
 | SL2 | Right arrow | "9 steps" |
+| TG1 | Tab to "Edits" on `/components/toggle-group` | "Show in the activity log, grouping, Edits, toggle button, pressed" |
+| TG2 | Press Space | "not pressed" |
 | PR1 | On `/components/progress`, Tab to "Upload another", then Up arrow in browse mode | "Uploading files" just before "progress bar, 3 of 12 files" |
 
 ### Toast (`/components/toast`)
@@ -165,6 +167,7 @@ results are NVDA with Chrome on Windows Server 2025, and quote what NVDA said.
 | SL1 | auto | ✅ | "Steps before checking in, slider, 8 steps, The agent works longer on its own between check-ins." |
 | SL2 | auto | ✅ | "9 steps" |
 | PR1 | auto | ✅ | "progress bar, 3 of 12 files". In browse mode NVDA gives the bar its own line and reads the label as the line above, rather than repeating it. |
+| TG1, TG2 | auto | ⬜ | |
 | CM1 | auto | ✅ | "Commands, combo box, expanded, has auto complete, editable, Search commands…", after the dialog. The first run caught it skipping the field and reading "Esc"; fixed. |
 | CM2 | auto | ✅ | "Commands, list. Tasks, grouping. Stop the agent, 2 of 7" |
 | CM3 | auto | ✅ | "1 command" as you type, then the best match: "Toggle theme, 1 of 1" |

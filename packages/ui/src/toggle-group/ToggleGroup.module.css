@@ -1,0 +1,113 @@
+/*
+ * Joined buttons inside one control outline. Pressed is a filled button, not a tint: the change
+ * in lightness reads without relying on hue (WCAG 1.4.1), in either theme.
+ */
+.group {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--ks-space-1);
+  width: fit-content;
+  max-width: 100%;
+  padding: var(--ks-space-1);
+  border: 1px solid var(--ks-color-border-control);
+  border-radius: var(--ks-radius-md);
+  background: var(--ks-color-surface);
+  font-family: var(--ks-font-family-sans);
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ks-space-2);
+  position: relative;
+  min-width: 0;
+  border: 0;
+  border-radius: var(--ks-radius-sm);
+  background: transparent;
+  color: var(--ks-color-text-muted);
+  font: inherit;
+  font-size: var(--ks-font-size-sm);
+  font-weight: var(--ks-font-weight-medium);
+  line-height: var(--ks-font-line-height-tight);
+  white-space: nowrap;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition:
+    background-color var(--ks-motion-duration-fast) var(--ks-motion-easing-standard),
+    color var(--ks-motion-duration-fast) var(--ks-motion-easing-standard);
+}
+
+.sm .item {
+  padding: var(--ks-space-1) var(--ks-space-2);
+}
+
+.md .item {
+  padding: var(--ks-space-2) var(--ks-space-3);
+}
+
+/* Icon-only buttons are square, the icon's size plus the padding on every side. */
+.iconOnly.sm .item {
+  padding: var(--ks-space-1);
+}
+
+.iconOnly.md .item {
+  padding: var(--ks-space-2);
+}
+
+.icon {
+  display: inline-flex;
+}
+
+.item[aria-pressed="true"] {
+  background: var(--ks-color-accent);
+  color: var(--ks-color-accent-text);
+}
+
+@media (hover: hover) {
+  .item:hover:not([aria-pressed="true"], [aria-disabled="true"]) {
+    background: var(--ks-color-surface-raised);
+    color: var(--ks-color-text);
+  }
+
+  .item[aria-pressed="true"]:hover:not([aria-disabled="true"]) {
+    background: var(--ks-color-accent-hover);
+  }
+}
+
+.item[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.item:focus-visible {
+  outline: 2px solid var(--ks-color-focus);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item {
+    transition: none;
+  }
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Windows high contrast: pressed uses the system highlight, and keeps an outline either way. */
+@media (forced-colors: active) {
+  .item {
+    border: 1px solid ButtonText;
+  }
+
+  .item[aria-pressed="true"] {
+    background: Highlight;
+    color: HighlightText;
+  }
+}

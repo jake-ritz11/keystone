@@ -20,6 +20,7 @@ export const CHECK_PREFIXES: Record<string, string | null> = {
   RG: "radio-group",
   SL: "slider",
   PR: "progress",
+  TG: "toggle-group",
   CM: "command-menu",
   TT: "tooltip",
   TO: "toast",

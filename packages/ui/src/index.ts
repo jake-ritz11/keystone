@@ -58,3 +58,6 @@ export type { SliderProps } from "./slider/Slider";
 
 export { Progress } from "./progress/Progress";
 export type { ProgressProps } from "./progress/Progress";
+
+export { ToggleGroup } from "./toggle-group/ToggleGroup";
+export type { ToggleGroupProps, ToggleOption } from "./toggle-group/ToggleGroup";

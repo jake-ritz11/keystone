@@ -27,7 +27,7 @@ arrow raises the value (it follows the mirrored track) while Safari's lowers it.
 | Accordion | all five | Disclosure covers one section; exclusive groups use `<details name>` |
 | Popover | all five | Built internally for Menu and Tooltip; not yet a public component |
 | Slider, Progress | all five | Built in the second round, on `<input type="range">` and `<progress>` |
-| Toggle group | all five | Not yet. SegmentedControl covers the common toggle-group case |
+| Toggle group | all five | Built in the second round. SegmentedControl stays for exactly-one choices |
 | Combobox | four | Inside CommandMenu only |
 | Date and number fields | two or three | Not planned. React Aria's localized parsing is the bar, and matching it is its own project |
 

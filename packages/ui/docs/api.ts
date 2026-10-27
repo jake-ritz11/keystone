@@ -30,6 +30,7 @@ export const COMPONENTS: ComponentSummary[] = [
   { slug: "slider", name: "Slider", imports: ["Slider"], summary: "A number from a range, on a native range input, with a formatted value." },
   { slug: "progress", name: "Progress", imports: ["Progress"], summary: "How far along work is, or that it's happening, on the native progress element." },
   { slug: "segmented-control", name: "SegmentedControl", imports: ["SegmentedControl"], summary: "One choice from a few, side by side, as a keyboard-friendly radio group." },
+  { slug: "toggle-group", name: "ToggleGroup", imports: ["ToggleGroup"], summary: "Buttons that stay pressed, for formatting, filters and view options." },
   { slug: "command-menu", name: "CommandMenu", imports: ["CommandMenu"], summary: "Every action in one searchable list, behind a keyboard shortcut." },
   { slug: "tooltip", name: "Tooltip", imports: ["Tooltip"], summary: "Hover and focus hints that follow WCAG's rules for content on hover." },
   { slug: "disclosure", name: "Disclosure", imports: ["Disclosure"], summary: "Show and hide a section, on the native details element." },
@@ -443,6 +444,33 @@ export const api: Record<string, ComponentApi> = {
       { keys: "Right, Down", action: "Next option, selected at once; wraps and skips disabled ones. Mirrored in right-to-left text." },
       { keys: "Left, Up", action: "Previous option." },
       { keys: "Home, End", action: "First or last option." },
+    ],
+  },
+  "toggle-group": {
+    parts: [
+      {
+        interface: "ToggleGroupProps",
+        source: "packages/ui/src/toggle-group/ToggleGroup.tsx",
+        extends: "every <div> attribute except onChange and defaultValue",
+        note: "Values are always an array, with or without multiple, in the options' order.",
+        props: [
+          { name: "aria-label", type: "string", required: true, description: "Names the group, e.g. \"Text style\"." },
+          { name: "options", type: "{ value, label, icon?, disabled? }[]", required: true, description: "The buttons, in order." },
+          { name: "multiple", type: "boolean", default: "false", description: "Any number pressed at once. Without it, at most one." },
+          { name: "value", type: "string[]", description: "The pressed values, when controlled." },
+          { name: "defaultValue", type: "string[]", default: "[]", description: "The values pressed at first, when uncontrolled." },
+          { name: "onValueChange", type: "(value) => void", description: "Called with every pressed value after a change." },
+          { name: "iconOnly", type: "boolean", default: "false", description: "Shows only the icons; each label still names its button." },
+          { name: "size", type: '"sm" | "md"', default: '"md"', description: "Padding around each button." },
+        ],
+      },
+    ],
+    keyboard: [
+      { keys: "Tab", action: "Into the group, on the button last used (or the first pressed); Tab again leaves it." },
+      { keys: "Right, Down", action: "Next button, without pressing it; wraps and skips disabled ones. Mirrored in right-to-left text." },
+      { keys: "Left, Up", action: "Previous button." },
+      { keys: "Home, End", action: "First or last button." },
+      { keys: "Space, Enter", action: "Presses or releases the focused button." },
     ],
   },
   "command-menu": {

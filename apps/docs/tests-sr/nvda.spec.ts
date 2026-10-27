@@ -200,6 +200,20 @@ test("PR1: a progress bar is found while reading, with its label and formatted v
   expectSaid(text, "progress bar", "3 of 12 files");
 });
 
+test("TG1, TG2: a toggle group reads its name, then each button's pressed state", async ({ page, nvda }) => {
+  await open(page, nvda, "/components/toggle-group");
+  expectSaid(
+    await reach(nvda, page.getByRole("group", { name: "Show in the activity log" }).getByRole("button", { name: "Edits" }), "TG1"),
+    "show in the activity log",
+    "grouping",
+    "edits",
+    "toggle button",
+    "pressed",
+  );
+  await nvda.press("Space");
+  expectSaid(await heard(nvda, "TG2"), /not pressed/i);
+});
+
 test("RG1, RG2: a radio group reads its question, then the answer and its position", async ({ page, nvda }) => {
   await open(page, nvda, "/components/radio-group");
   expectSaid(

@@ -78,12 +78,16 @@ test("D1, D3: a dialog announces itself, and Escape returns to its trigger", asy
   await nvda.press("Enter");
   expectSaid(await heard(nvda, "D1"), "edit profile", "dialog");
   await nvda.press("Escape");
-  const closing = await heard(nvda, "D3");
-  // Diagnostics: what the page and NVDA each think has focus once the dialog has closed.
-  await expect(page.getByRole("dialog")).toBeHidden();
+  let closing = await heard(nvda, "D3");
+  const dialog = page.getByRole("dialog", { name: "Edit profile" });
+  if (await dialog.isVisible()) {
+    // NVDA keeps the first Escape in a field to leave focus mode; the second reaches the page.
+    console.log("[D3] first Escape stayed with NVDA");
+    await nvda.press("Escape");
+    closing = await heard(nvda, "D3 second Escape");
+  }
+  await expect(dialog).toBeHidden();
   await expect(page.getByRole("button", { name: "Edit profile" })).toBeFocused();
-  await nvda.perform(nvda.keyboardCommands.reportCurrentFocus);
-  await heard(nvda, "D3 focus report");
   expectSaid(closing, "edit profile", "button");
 });
 

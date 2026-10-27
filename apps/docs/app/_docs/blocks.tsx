@@ -72,6 +72,10 @@ function Tested({ slug }: { slug: string }) {
         </dd>
       </div>
       <div>
+        <dt>Visual</dt>
+        <dd>Every example screenshotted in light and dark</dd>
+      </div>
+      <div>
         <dt>Axe</dt>
         <dd>Light, dark, and both in high contrast</dd>
       </div>

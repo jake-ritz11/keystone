@@ -43,6 +43,13 @@ first run needs `npx -w apps/docs playwright install chromium webkit`. CI runs `
 tests on every push. Firefox is left out of the local `check` because it won't launch on the
 Windows machine this was built on; run it with `npm run test:e2e:firefox -w apps/docs`.
 
+Visual regression (`apps/docs/tests-visual`) screenshots every example on every component page,
+plus the open states of the overlays, in light and dark, and compares them with committed
+baselines. Fonts render differently on each operating system, so the baselines come from the
+same Linux Playwright image CI uses, and the comparison runs only there. After an intended visual
+change, run the "Update screenshots" workflow, download its artifact into
+`apps/docs/tests-visual/screenshots`, review the image diff and commit it.
+
 The MCP server is registered in [`.mcp.json`](.mcp.json), so Claude Code picks it up when it
 opens this folder. Other clients can run `node packages/mcp/src/server.ts` over stdio.
 

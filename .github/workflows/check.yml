@@ -31,6 +31,10 @@ jobs:
       # Typecheck, unit tests, design-system audit, production build, and the behavior tests in
       # Chromium and WebKit.
       - run: npm run check
+      - name: Visual regression
+        # Screenshots of every example and overlay state against the baselines in
+        # apps/docs/tests-visual/screenshots. The "Update screenshots" workflow refreshes them.
+        run: npm run test:visual -w apps/docs
       - name: Behavior tests in Firefox
         # The container runs as root, and Firefox refuses to start when $HOME belongs to someone
         # else (GitHub mounts it for the image's pwuser).

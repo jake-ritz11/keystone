@@ -20,6 +20,8 @@ A token-driven React design system (npm workspaces): `packages/tokens`, `package
 `npm run check` must pass: typecheck, tests (`node --test`), the design-system audit, the
 Next production build, and the Playwright behavior tests in `apps/docs/tests`. A component with
 interactive behavior gets a spec there. Verify visual changes in the browser in both themes.
+CI also compares screenshots (`apps/docs/tests-visual`, Linux only); after an intended visual
+change, refresh the baselines with the "Update screenshots" workflow.
 
 ## Working style
 

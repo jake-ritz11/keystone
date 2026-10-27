@@ -64,6 +64,11 @@ most to say about how a system is run:
   checklist at build time rather than written by hand. The first build showed Select had no
   behavior spec, and it has one now.
 
+A fifth followed: **visual regression screenshots**, the most common guardrail Keystone was
+missing. Every example on every component page, and the open menu, tooltip, dialog, command menu,
+toast and focus ring, are compared in both themes against baselines rendered in CI's Linux image.
+The list comes from the component registry, so a new page is covered without a new test.
+
 Building these found two real bugs the existing tests had missed:
 
 1. **Field borders failed WCAG 1.4.11.** A text field's resting outline was 1.34:1 against
@@ -78,8 +83,6 @@ Building these found two real bugs the existing tests had missed:
 
 Still missing, in rough order of value:
 
-- **Visual regression screenshots.** The most common guardrail Keystone doesn't have. Behavior
-  and contrast are tested; how things look isn't.
 - **Changesets and a changelog.** These matter once the packages are published.
 - **Content guidelines.** Atlassian publishes voice, tone and per-component copy guidance. The
   agent app's copy (tool states, approvals, errors) is where this would pay off first.

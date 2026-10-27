@@ -38,7 +38,8 @@ export default function Overview() {
             <h3>Proven in browsers</h3>
             <p>
               Keyboard, focus and ARIA behavior is tested with Playwright in Chromium, WebKit
-              and Firefox, on every push.
+              and Firefox, and every example is compared against screenshots in both themes, on
+              every push.
             </p>
           </li>
         </ul>

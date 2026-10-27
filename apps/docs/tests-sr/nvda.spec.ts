@@ -78,7 +78,13 @@ test("D1, D3: a dialog announces itself, and Escape returns to its trigger", asy
   await nvda.press("Enter");
   expectSaid(await heard(nvda, "D1"), "edit profile", "dialog");
   await nvda.press("Escape");
-  expectSaid(await heard(nvda, "D3"), "edit profile", "button");
+  const closing = await heard(nvda, "D3");
+  // Diagnostics: what the page and NVDA each think has focus once the dialog has closed.
+  await expect(page.getByRole("dialog")).toBeHidden();
+  await expect(page.getByRole("button", { name: "Edit profile" })).toBeFocused();
+  await nvda.perform(nvda.keyboardCommands.reportCurrentFocus);
+  await heard(nvda, "D3 focus report");
+  expectSaid(closing, "edit profile", "button");
 });
 
 test("D4: an alert dialog starts on the safe choice", async ({ page, nvda }) => {
@@ -94,7 +100,9 @@ test("M1, M2, M4: the menu button, its items, and closing", async ({ page, nvda 
   await open(page, nvda, "/components/menu");
   expectSaid(await reach(nvda, page.getByRole("button", { name: "Actions", exact: true }), "M1"), "actions", /menu button|has ?popup|submenu/i, "collapsed");
   await nvda.press("Enter");
-  expectSaid(await heard(nvda, "M2"), "rename", "menu item");
+  // NVDA leaves out "menu item" inside a menu; the position says it's one of the menu's items,
+  // and counts the disabled one (M3).
+  expectSaid(await heard(nvda, "M2"), "rename", "ctrl e", "1 of 5");
   await nvda.press("Escape");
   expectSaid(await heard(nvda, "M4"), "actions", "collapsed");
 });

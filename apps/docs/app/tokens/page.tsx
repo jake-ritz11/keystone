@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { color, font, motion, radius, space } from "@keystone-ui/tokens";
+import Link from "next/link";
+import { color, font, radius, space } from "@keystone-ui/tokens";
 import { DocPage, Section } from "../_docs/blocks";
-import { MotionDemo } from "./MotionDemo";
 
 export const metadata: Metadata = { title: "Tokens" };
 
@@ -145,23 +145,9 @@ export default function TokensPage() {
 
       <Section title="Motion">
         <p>
-          Every component with a transition has a <code>prefers-reduced-motion</code> fallback,
-          usually a shorter fade with no movement. The audit checks for it.
+          Durations and easings, with what each is for, live demos and every pattern built from them, are on{" "}
+          <Link href="/motion">Motion</Link>.
         </p>
-        <MotionDemo
-          rows={[
-            ...Object.keys(motion.duration).map((name) => ({
-              label: `duration-${name} · standard`,
-              duration: `--ks-motion-duration-${name}`,
-              easing: "--ks-motion-easing-standard",
-            })),
-            {
-              label: "duration-slow · emphasized",
-              duration: "--ks-motion-duration-slow",
-              easing: "--ks-motion-easing-emphasized",
-            },
-          ]}
-        />
       </Section>
     </DocPage>
   );

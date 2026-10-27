@@ -9,6 +9,7 @@ export interface DocLink {
 
 export const foundations: DocLink[] = [
   { href: "/tokens", title: "Tokens", summary: "Color, space, radius, type and motion, as CSS variables." },
+  { href: "/motion", title: "Motion", summary: "What moves, why, how fast, and what reduced motion turns it into." },
 ];
 
 export const components: DocLink[] = COMPONENTS.map((c) => ({ href: `/components/${c.slug}`, title: c.name, summary: c.summary }));

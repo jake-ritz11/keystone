@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { flushSync } from "react-dom";
 import { Button } from "@keystone-ui/ui";
 
 type Choice = "system" | "light" | "dark";
@@ -34,8 +35,15 @@ export function ThemeToggle() {
 
   const next = () => {
     const value = ORDER[(ORDER.indexOf(choice) + 1) % ORDER.length] ?? "system";
-    setChoice(value);
-    apply(value);
+    const change = () => {
+      flushSync(() => setChoice(value));
+      apply(value);
+    };
+    // Cross-fade the whole page between themes, where the browser can, instead of every color
+    // snapping at once. The update itself is the same either way.
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (document.startViewTransition && !reduce) document.startViewTransition(change);
+    else change();
     try {
       localStorage.setItem(STORAGE_KEY, value);
     } catch {

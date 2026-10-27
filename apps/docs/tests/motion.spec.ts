@@ -36,3 +36,45 @@ test("reduced motion: shimmer text is still and readable, the badge dot is still
   expect(await thinking.evaluate(color)).not.toBe("rgba(0, 0, 0, 0)");
   expect(await page.locator("[data-pulse]").evaluate(animation)).toBe("none");
 });
+
+async function countTransitions(page: import("@playwright/test").Page) {
+  await page.evaluate(() => {
+    const w = window as unknown as { transitions: number };
+    w.transitions = 0;
+    const original = document.startViewTransition?.bind(document);
+    if (original) {
+      document.startViewTransition = ((cb: () => void) => {
+        w.transitions++;
+        return original(cb);
+      }) as typeof document.startViewTransition;
+    }
+  });
+}
+
+test.describe("theme changes, with motion on", () => {
+  test.use({ contextOptions: { reducedMotion: "no-preference" } });
+
+  test("cross-fade through a view transition where the browser has one", async ({ page }) => {
+    await open(page, "/motion");
+    const supported = await page.evaluate(() => "startViewTransition" in document);
+    test.skip(!supported, "No view transitions in this browser; the theme still changes, without a fade.");
+    await countTransitions(page);
+    await page.getByRole("button", { name: /^Theme: system/ }).click();
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+    expect(await page.evaluate(() => (window as unknown as { transitions: number }).transitions)).toBe(1);
+  });
+});
+
+test("reduced motion: the theme changes at once, with no view transition", async ({ page }) => {
+  await open(page, "/motion");
+  await countTransitions(page);
+  await page.getByRole("button", { name: /^Theme: system/ }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+  expect(await page.evaluate(() => (window as unknown as { transitions: number }).transitions)).toBe(0);
+});
+
+test("the easing plots follow the tokens", async ({ page }) => {
+  await open(page, "/motion");
+  await expect(page.getByRole("img", { name: "--ks-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1)" })).toBeVisible();
+  await expect(page.getByRole("img", { name: "--ks-motion-easing-emphasized: cubic-bezier(0.3, 0, 0, 1.3)" })).toBeVisible();
+});

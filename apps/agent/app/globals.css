@@ -46,3 +46,10 @@ pre {
   font-family: var(--ks-font-family-mono);
   font-size: 0.875em;
 }
+
+/* Theme changes cross-fade (see ThemeToggle). Only the root animates, so nothing moves. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--ks-motion-duration-slow);
+  animation-timing-function: var(--ks-motion-easing-standard);
+}

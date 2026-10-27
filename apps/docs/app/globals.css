@@ -672,6 +672,60 @@ h3 {
   background: var(--ks-color-surface-raised);
 }
 
+.easings {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--ks-space-4);
+}
+
+.easing {
+  margin: 0;
+  border: 1px solid var(--ks-color-border);
+  border-radius: var(--ks-radius-md);
+  padding: var(--ks-space-3);
+  background: var(--ks-color-surface);
+}
+
+.easing svg {
+  display: block;
+  width: 100%;
+  max-width: 220px;
+  margin-inline: auto;
+  overflow: visible;
+}
+
+.easing-box {
+  fill: none;
+  stroke: var(--ks-color-border);
+  stroke-dasharray: 2 3;
+}
+
+.easing-handle {
+  stroke: var(--ks-color-text-muted);
+  stroke-width: 0.75;
+}
+
+.easing-point {
+  fill: var(--ks-color-surface);
+  stroke: var(--ks-color-text-muted);
+}
+
+.easing-curve {
+  fill: none;
+  stroke: var(--ks-color-accent);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.easing figcaption {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ks-space-1);
+  margin-top: var(--ks-space-2);
+  font-size: var(--ks-font-size-xs);
+  color: var(--ks-color-text-muted);
+}
+
 .motion {
   display: flex;
   flex-direction: column;
@@ -732,4 +786,11 @@ h3 {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--ks-space-1);
   }
+}
+
+/* Theme changes cross-fade (see ThemeToggle). Only the root animates, so nothing moves. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--ks-motion-duration-slow);
+  animation-timing-function: var(--ks-motion-easing-standard);
 }

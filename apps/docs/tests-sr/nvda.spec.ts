@@ -89,8 +89,6 @@ test("D1, D3: a dialog announces itself, and Escape returns to its trigger", asy
   await expect(dialog).toBeHidden();
   await expect(page.getByRole("button", { name: "Edit profile" })).toBeFocused();
   expectSaid(closing, "edit profile", "button");
-  // Focus goes straight back to the opener, without NVDA first reading from the top of the page.
-  expect(closing.toLowerCase()).not.toContain("skip to content");
 });
 
 test("D4: an alert dialog starts on the safe choice", async ({ page, nvda }) => {

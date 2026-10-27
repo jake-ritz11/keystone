@@ -121,10 +121,6 @@ export const Dialog = forwardRef<HTMLDialogElement, DialogProps>(function Dialog
       dialog.showModal();
     } else if (!open && dialog.open) {
       dialog.close();
-      // Hand focus back in the same task, not on the close event a task later. In between,
-      // focus is nowhere, and NVDA reads from the top of the page ("Skip to content") before it
-      // reaches the opener.
-      returnFocus.current?.focus();
     }
   }, [open]);
 

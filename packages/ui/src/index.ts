@@ -43,3 +43,12 @@ export type { ShimmerProps } from "./shimmer/Shimmer";
 
 export { CommandMenu } from "./command-menu/CommandMenu";
 export type { CommandItem, CommandMenuProps } from "./command-menu/CommandMenu";
+
+export { Checkbox } from "./checkbox/Checkbox";
+export type { CheckboxProps } from "./checkbox/Checkbox";
+
+export { Switch } from "./switch/Switch";
+export type { SwitchProps } from "./switch/Switch";
+
+export { RadioGroup } from "./radio-group/RadioGroup";
+export type { RadioGroupProps, RadioOption } from "./radio-group/RadioGroup";

@@ -441,6 +441,24 @@ h3 {
   font-size: var(--ks-font-size-sm);
 }
 
+/* Checkbox, Switch and RadioGroup examples */
+
+.plain-fieldset {
+  min-width: 0;
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+.stack.indent {
+  gap: var(--ks-space-3);
+  padding-inline-start: var(--ks-space-6);
+}
+
+.settings-list {
+  max-width: 28rem;
+}
+
 /* Disclosure examples */
 
 .disclosure-output {

@@ -155,3 +155,37 @@ test("CM1–CM3: the command menu reads its field, each command, and the match c
   expectSaid(await heard(nvda, "CM3"), "1 command");
   await nvda.press("Escape");
 });
+
+test("CB1, CB2: a checkbox reads its mixed state and its hint", async ({ page, nvda }) => {
+  await open(page, nvda, "/components/checkbox");
+  expectSaid(await reach(nvda, page.getByRole("checkbox", { name: "All files" }), "CB1"), "all files", "check box", /half checked|mixed|partially/i);
+  expectSaid(
+    await reach(nvda, page.getByRole("checkbox", { name: "Send me a summary when a task finishes" }), "CB2"),
+    "send me a summary",
+    "check box",
+    "checked",
+    "one email per task",
+  );
+});
+
+test("SW1, SW2: a switch reads as on or off, and its hint follows the state", async ({ page, nvda }) => {
+  await open(page, nvda, "/components/switch");
+  expectSaid(await reach(nvda, page.getByRole("switch", { name: "Apply edits automatically" }), "SW1"), "apply edits automatically", "switch", /off|not pressed/i, "each edit waits");
+  await nvda.press("Space");
+  expectSaid(await heard(nvda, "SW2"), /\bon\b|pressed/i);
+});
+
+test("RG1, RG2: a radio group reads its question, then the answer and its position", async ({ page, nvda }) => {
+  await open(page, nvda, "/components/radio-group");
+  expectSaid(
+    await reach(nvda, page.getByRole("radio", { name: "Approve each edit" }), "RG1"),
+    "when should edits need you",
+    "grouping",
+    "approve each edit",
+    "radio button",
+    "checked",
+    "1 of 3",
+  );
+  await nvda.press("ArrowDown");
+  expectSaid(await heard(nvda, "RG2"), "review at the end", "2 of 3", "review them all together");
+});

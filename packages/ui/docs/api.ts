@@ -24,6 +24,9 @@ export const COMPONENTS: ComponentSummary[] = [
   { slug: "dialog", name: "Dialog", imports: ["Dialog"], summary: "A modal on the native <dialog>, with React in control of open state." },
   { slug: "menu", name: "Menu", imports: ["Menu", "MenuItem", "MenuSeparator"], summary: "An actions menu on the popover API, with the full menu keyboard model." },
   { slug: "tabs", name: "Tabs", imports: ["Tabs", "TabList", "Tab", "TabPanel"], summary: "Underline or segmented, horizontal or vertical, automatic or manual." },
+  { slug: "checkbox", name: "Checkbox", imports: ["Checkbox"], summary: "A native checkbox with a drawn box, a mixed state and a check that draws in." },
+  { slug: "switch", name: "Switch", imports: ["Switch"], summary: "An on/off setting that applies at once, announced as a switch." },
+  { slug: "radio-group", name: "RadioGroup", imports: ["RadioGroup"], summary: "One answer from a short list: native radios in a fieldset." },
   { slug: "segmented-control", name: "SegmentedControl", imports: ["SegmentedControl"], summary: "One choice from a few, side by side, as a keyboard-friendly radio group." },
   { slug: "command-menu", name: "CommandMenu", imports: ["CommandMenu"], summary: "Every action in one searchable list, behind a keyboard shortcut." },
   { slug: "tooltip", name: "Tooltip", imports: ["Tooltip"], summary: "Hover and focus hints that follow WCAG's rules for content on hover." },
@@ -307,6 +310,67 @@ export const api: Record<string, ComponentApi> = {
       { keys: "Left, Right", action: "Previous or next tab, wrapping and skipping disabled ones. Up and Down when vertical." },
       { keys: "Home, End", action: "First or last tab." },
       { keys: "Enter, Space", action: "Selects the focused tab (manual activation)." },
+    ],
+  },
+  checkbox: {
+    parts: [
+      {
+        interface: "CheckboxProps",
+        source: "packages/ui/src/checkbox/Checkbox.tsx",
+        extends: "every <input> attribute except type and size, including checked, defaultChecked, name and required",
+        note: "Controlled or not, like a native checkbox: pass checked with onCheckedChange, or defaultChecked.",
+        props: [
+          { name: "label", type: "ReactNode", required: true, description: "Clicking it toggles the box, and it's what's announced." },
+          { name: "hint", type: "ReactNode", description: "Help under the label, read with the checkbox." },
+          { name: "error", type: "ReactNode", description: "Error text under the label. Sets aria-invalid and is read with the checkbox." },
+          { name: "indeterminate", type: "boolean", default: "false", description: "Mixed: part of a group is checked. A dash, announced as \"mixed\"." },
+          { name: "onCheckedChange", type: "(checked: boolean) => void", description: "Called with the new state. onChange still works too." },
+        ],
+      },
+    ],
+    keyboard: [{ keys: "Space", action: "Checks or unchecks. A mixed checkbox becomes checked." }],
+  },
+  switch: {
+    parts: [
+      {
+        interface: "SwitchProps",
+        source: "packages/ui/src/switch/Switch.tsx",
+        extends: "every <input> attribute except type, size and role, including checked and defaultChecked",
+        note: "For settings that take effect at once. A choice that waits for a Save button is a Checkbox.",
+        props: [
+          { name: "label", type: "ReactNode", required: true, description: "Names the setting, not the action: \"Email alerts\", not \"Turn on alerts\"." },
+          { name: "hint", type: "ReactNode", description: "Help under the label, read with the switch." },
+          { name: "onCheckedChange", type: "(checked: boolean) => void", description: "Called with the new state. onChange still works too." },
+        ],
+      },
+    ],
+    keyboard: [{ keys: "Space", action: "Turns it on or off." }],
+  },
+  "radio-group": {
+    parts: [
+      {
+        interface: "RadioGroupProps",
+        source: "packages/ui/src/radio-group/RadioGroup.tsx",
+        extends: "every <fieldset> attribute except onChange and defaultValue, including disabled",
+        props: [
+          { name: "label", type: "ReactNode", required: true, description: "The question the options answer, as the fieldset's legend." },
+          { name: "options", type: "{ value, label, hint?, disabled? }[]", required: true, description: "The answers, in order." },
+          { name: "value", type: "string", description: "The selected value, when controlled." },
+          { name: "defaultValue", type: "string", description: "The first selected value, when uncontrolled. Unset means no answer yet." },
+          { name: "onValueChange", type: "(value) => void", description: "Called when the selection changes." },
+          { name: "name", type: "string", default: "generated", description: "Submitted with a form." },
+          { name: "hint", type: "ReactNode", description: "Help for the whole group, read when focus enters it." },
+          { name: "error", type: "ReactNode", description: "Error text under the legend. Marks every option invalid and is read when focus enters." },
+          { name: "required", type: "boolean", default: "false", description: "An answer is needed to submit. The browser enforces it." },
+          { name: "orientation", type: '"vertical" | "horizontal"', default: '"vertical"', description: "Stacked, or in a row that wraps." },
+        ],
+      },
+    ],
+    keyboard: [
+      { keys: "Tab", action: "Into the group, on the selected option (or the first, with none selected); Tab again leaves it." },
+      { keys: "Down, Right", action: "Next option, selected at once, skipping disabled ones. Chrome and Firefox wrap at the end; Safari stops." },
+      { keys: "Up, Left", action: "Previous option." },
+      { keys: "Space", action: "Selects the focused option, when none is selected yet." },
     ],
   },
   "segmented-control": {

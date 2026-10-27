@@ -106,6 +106,17 @@ missing or announced twice.
 | TT2 | Tab to the icon-only search button | "Search, button", from the tooltip as its name |
 | TT3 | Press Escape | Tooltip hides; NVDA doesn't announce a focus change |
 
+### Checkbox, Switch, RadioGroup
+
+| # | Do | Expect |
+| --- | --- | --- |
+| CB1 | Tab to "All files" on `/components/checkbox` | "All files, check box, half checked" |
+| CB2 | Tab to the summary checkbox | "…check box, checked, One email per task, never more." |
+| SW1 | Tab to "Apply edits automatically" on `/components/switch` | "…switch, off, Each edit waits for your approval." |
+| SW2 | Press Space | "on" |
+| RG1 | Tab into the approval group on `/components/radio-group` | "When should edits need you?, grouping, Approve each edit, radio button, checked, 1 of 3" |
+| RG2 | Down arrow | "Review at the end, radio button, checked, 2 of 3", then its hint |
+
 ### Toast (`/components/toast`)
 
 | # | Do | Expect |
@@ -142,6 +153,9 @@ results are NVDA with Chrome on Windows Server 2025, and quote what NVDA said.
 | T1 | auto | ✅ | "Project, tab control. Overview, tab, selected, 1 of 4" |
 | T2 | auto | ✅ | "Activity, tab, selected, 2 of 4", once. It was read twice until Tabs dropped `aria-controls`. |
 | T3–T5 | manual | ⬜ | |
+| CB1, CB2 | auto | ⬜ | Pending the first CI run. |
+| SW1, SW2 | auto | ⬜ | Pending the first CI run. |
+| RG1, RG2 | auto | ⬜ | Pending the first CI run. |
 | CM1 | auto | ✅ | "Commands, combo box, expanded, has auto complete, editable, Search commands…", after the dialog. The first run caught it skipping the field and reading "Esc"; fixed. |
 | CM2 | auto | ✅ | "Commands, list. Tasks, grouping. Stop the agent, 2 of 7" |
 | CM3 | auto | ✅ | "1 command" as you type, then the best match: "Toggle theme, 1 of 1" |

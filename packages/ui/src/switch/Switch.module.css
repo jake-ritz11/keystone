@@ -1,0 +1,127 @@
+/* Label first, switch at the end of the line, as in a settings list. */
+.switch {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--ks-space-4);
+  align-items: start;
+  font-family: var(--ks-font-family-sans);
+  font-size: var(--ks-font-size-sm);
+  line-height: var(--ks-font-line-height-normal);
+  color: var(--ks-color-text);
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.label {
+  cursor: pointer;
+}
+
+.hint {
+  color: var(--ks-color-text-muted);
+}
+
+/* Centered on the label's first line. */
+.track {
+  position: relative;
+  display: grid;
+  align-items: center;
+  height: 1lh;
+}
+
+/* Track 32 by 20; thumb 12, inset 4 from each end, so it travels 12. */
+.input {
+  appearance: none;
+  display: block;
+  width: var(--ks-space-8);
+  height: calc(var(--ks-space-4) + var(--ks-space-1));
+  margin: 0;
+  border: 1px solid var(--ks-color-border-control);
+  border-radius: var(--ks-radius-full);
+  background: var(--ks-color-surface-raised);
+  cursor: pointer;
+  transition:
+    background-color var(--ks-motion-duration-fast) var(--ks-motion-easing-standard),
+    border-color var(--ks-motion-duration-fast) var(--ks-motion-easing-standard);
+}
+
+@media (hover: hover) {
+  .input:hover:not(:checked, :disabled) {
+    border-color: var(--ks-color-border-control-hover);
+  }
+}
+
+.input:checked {
+  border-color: var(--ks-color-accent);
+  background: var(--ks-color-accent);
+}
+
+.input:focus-visible {
+  outline: 2px solid var(--ks-color-focus);
+  outline-offset: 2px;
+}
+
+.input:disabled,
+.switch[data-disabled] .label {
+  cursor: not-allowed;
+}
+
+/* The track and label dim; a hint stays readable, since it often says why it's disabled. */
+.switch[data-disabled] .track,
+.switch[data-disabled] .label {
+  opacity: 0.55;
+}
+
+.thumb {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: var(--ks-space-1);
+  width: var(--ks-space-3);
+  height: var(--ks-space-3);
+  margin-block: auto;
+  border-radius: var(--ks-radius-full);
+  background: var(--ks-color-text-muted);
+  pointer-events: none;
+}
+
+.input:checked + .thumb {
+  translate: var(--ks-space-3) 0;
+  background: var(--ks-color-accent-text);
+}
+
+/* In right-to-left text, on is to the left. */
+.track:dir(rtl) .input:checked + .thumb {
+  translate: calc(-1 * var(--ks-space-3)) 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .thumb {
+    transition:
+      translate var(--ks-motion-duration-normal) var(--ks-motion-easing-emphasized),
+      background-color var(--ks-motion-duration-fast) var(--ks-motion-easing-standard);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .input {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .input:checked {
+    background: Highlight;
+    border-color: Highlight;
+  }
+
+  .thumb {
+    background: CanvasText;
+  }
+
+  .input:checked + .thumb {
+    background: HighlightText;
+  }
+}

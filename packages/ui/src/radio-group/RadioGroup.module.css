@@ -1,0 +1,156 @@
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ks-space-2);
+  min-width: 0;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  font-family: var(--ks-font-family-sans);
+  font-size: var(--ks-font-size-sm);
+  line-height: var(--ks-font-line-height-normal);
+  color: var(--ks-color-text);
+}
+
+.legend {
+  padding: 0;
+  font-weight: var(--ks-font-weight-medium);
+  line-height: var(--ks-font-line-height-tight);
+}
+
+.required {
+  color: var(--ks-color-danger);
+  margin-inline-start: var(--ks-space-1);
+}
+
+.hint,
+.error {
+  margin: 0;
+}
+
+.hint,
+.optionHint {
+  color: var(--ks-color-text-muted);
+}
+
+.error {
+  color: var(--ks-color-danger);
+  font-weight: var(--ks-font-weight-medium);
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ks-space-2);
+}
+
+.group[data-orientation="horizontal"] .options {
+  flex-flow: row wrap;
+  column-gap: var(--ks-space-5);
+}
+
+.option {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--ks-space-2);
+  align-items: start;
+}
+
+/* The circle and label dim; a hint stays readable, since it often says why it's disabled. */
+.option[data-disabled] .circle,
+.option[data-disabled] .label {
+  opacity: 0.55;
+}
+
+/* One line tall, so the circle centers on the first line of a label that wraps. */
+.circle {
+  display: grid;
+  place-items: center;
+  height: 1lh;
+}
+
+.input {
+  appearance: none;
+  display: grid;
+  place-items: center;
+  width: var(--ks-space-4);
+  height: var(--ks-space-4);
+  margin: 0;
+  border: 1px solid var(--ks-color-border-control);
+  border-radius: var(--ks-radius-full);
+  background: var(--ks-color-surface);
+  cursor: pointer;
+  transition: border-color var(--ks-motion-duration-fast) var(--ks-motion-easing-standard);
+}
+
+/* The dot. */
+.input::before {
+  content: "";
+  width: var(--ks-space-2);
+  height: var(--ks-space-2);
+  border-radius: var(--ks-radius-full);
+  background: var(--ks-color-accent-text);
+  scale: 0;
+}
+
+@media (hover: hover) {
+  .input:hover:not(:checked, :disabled, [aria-invalid="true"]) {
+    border-color: var(--ks-color-border-control-hover);
+  }
+}
+
+.input:checked {
+  border-color: var(--ks-color-accent);
+  background: var(--ks-color-accent);
+}
+
+.input:checked::before {
+  scale: 1;
+}
+
+.input[aria-invalid="true"]:not(:checked) {
+  border-color: var(--ks-color-danger);
+}
+
+.input:focus-visible {
+  outline: 2px solid var(--ks-color-focus);
+  outline-offset: 2px;
+}
+
+.input:disabled,
+.option[data-disabled] .label {
+  cursor: not-allowed;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.label {
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .input::before {
+    transition: scale var(--ks-motion-duration-normal) var(--ks-motion-easing-emphasized);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .input {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .input:checked {
+    background: Highlight;
+    border-color: Highlight;
+  }
+
+  .input::before {
+    background: HighlightText;
+  }
+}

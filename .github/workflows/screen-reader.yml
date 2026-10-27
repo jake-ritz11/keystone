@@ -25,9 +25,11 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
-      # Installs a portable NVDA and sets up the runner for screen-reader automation.
-      - uses: guidepup/setup-action@acf1a64cc26292ebe0db6a28d1341bd1bae93c65 # 0.21.0
+      # Prepares the runner and installs a portable NVDA, the way Guidepup's own NVDA workflow
+      # does. Pinned to the release paired with @guidepup/guidepup in apps/docs.
+      - run: npx -y @guidepup/setup@0.29.2 setup --ci
       - run: npm ci
+      - run: npx -y @guidepup/setup@0.29.2 install
       - run: npx -w apps/docs playwright install chromium
       - run: npm run build -w apps/docs
       - run: npm run test:sr -w apps/docs

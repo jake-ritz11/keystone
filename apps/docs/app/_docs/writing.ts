@@ -23,7 +23,8 @@ export const slugify = (text: string) =>
 /** Where a link in docs/ should go on the site. */
 export function resolveLink(href: string): { href: string; external: boolean } {
   if (/^(https?:|mailto:)/.test(href)) return { href, external: true };
-  if (href.startsWith("#")) return { href, external: false };
+  // "#section" stays on the page; "/motion" is a page on this site.
+  if (href.startsWith("#") || href.startsWith("/")) return { href, external: false };
   const [path = "", hash = ""] = href.split("#");
   const target = WRITING.find((w) => w.file === posix.basename(path) && !path.includes("/"));
   if (target) return { href: `/writing/${target.slug}${hash ? `#${hash}` : ""}`, external: false };

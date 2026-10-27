@@ -25,6 +25,7 @@ export interface Writing {
 
 /** The write-ups in docs/, rendered as pages under /writing. */
 export const WRITING: Writing[] = [
+  { slug: "case-study", file: "case-study.md", title: "Case study", summary: "The agent interface from question to tests: what was built, what broke, and what isn't proven." },
   { slug: "decisions", file: "decisions.md", title: "Decisions", summary: "Why it's built this way, what broke, and what the tests do and don't prove." },
   { slug: "variants", file: "variants.md", title: "Interaction variants", summary: "The three open questions the study compares, with expectations written before testing." },
   { slug: "study-plan", file: "study-plan.md", title: "Study plan", summary: "The protocol, measures, data dictionary and analysis, set before any sessions run." },

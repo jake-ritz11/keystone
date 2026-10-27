@@ -1,0 +1,39 @@
+name: screen-reader
+
+# NVDA on Windows, driven by Guidepup: what a screen reader actually announces. Separate from
+# `check` because it's slower and depends on speech timing; a failure here is investigated
+# before the next release, not hidden behind a retry loop.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: screen-reader-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  nvda:
+    runs-on: windows-2025
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      # Installs a portable NVDA and sets up the runner for screen-reader automation.
+      - uses: guidepup/setup-action@acf1a64cc26292ebe0db6a28d1341bd1bae93c65 # 0.21.0
+      - run: npm ci
+      - run: npx -w apps/docs playwright install chromium
+      - run: npm run build -w apps/docs
+      - run: npm run test:sr -w apps/docs
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: nvda-results
+          path: apps/docs/test-results
+          retention-days: 7

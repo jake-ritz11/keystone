@@ -23,6 +23,8 @@ test("opens as a named modal, focus in the search, the first command current", a
   await expect(search(page)).toBeFocused();
   expect(await current(page)).toContain("New task");
   await expect(menu(page).getByRole("group", { name: "Tasks" }).getByRole("option")).toHaveCount(3);
+  // Let the entrance fade finish first: mid-fade, axe measures the text as faint.
+  await menu(page).evaluate((dialog) => Promise.all(dialog.getAnimations({ subtree: true }).map((a) => a.finished)));
   const results = await new AxeBuilder({ page }).include("dialog[open]").analyze();
   expect(results.violations).toEqual([]);
 });

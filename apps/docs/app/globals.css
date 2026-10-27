@@ -274,6 +274,27 @@ h3 {
   font-size: var(--ks-font-size-sm);
 }
 
+.doc-tested {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ks-space-2) var(--ks-space-6);
+  margin: var(--ks-space-3) 0 0;
+  font-size: var(--ks-font-size-sm);
+}
+
+.doc-tested > div {
+  display: flex;
+  gap: var(--ks-space-2);
+}
+
+.doc-tested dt {
+  color: var(--ks-color-text-muted);
+}
+
+.doc-tested dd {
+  margin: 0;
+}
+
 .doc-section {
   margin-top: var(--ks-space-12);
 }

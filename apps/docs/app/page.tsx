@@ -1,5 +1,8 @@
 import Link from "next/link";
+import { COMPONENTS } from "@keystone-ui/ui/docs";
+import { checkSummary } from "./_docs/blocks";
 import { components, REPO } from "./_docs/registry";
+import { testingFor } from "./_docs/testing";
 
 export default function Overview() {
   return (
@@ -53,6 +56,40 @@ export default function Overview() {
             </li>
           ))}
         </ul>
+      </section>
+
+      <section className="doc-section" aria-labelledby="tested">
+        <h2 id="tested">How each component is tested</h2>
+        <p>
+          Every page passes axe in light, dark and both high-contrast themes. Behavior specs and NVDA results are
+          read from the tests and the <Link href="/writing/screen-reader-checklist">screen-reader checklist</Link>{" "}
+          when the site builds, so this table can&apos;t claim more than they show.
+        </p>
+        <div className="table-scroll" role="region" aria-label="Testing by component" tabIndex={0}>
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Component</th>
+                <th scope="col">Behavior specs</th>
+                <th scope="col">Screen reader</th>
+              </tr>
+            </thead>
+            <tbody>
+              {COMPONENTS.map((c) => {
+                const { specs, checks } = testingFor(c.slug);
+                return (
+                  <tr key={c.slug}>
+                    <th scope="row">
+                      <Link href={`/components/${c.slug}`}>{c.name}</Link>
+                    </th>
+                    <td>{specs.length ? specs.join(", ") : "None yet"}</td>
+                    <td>{checkSummary(checks)}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <section className="doc-section" aria-labelledby="more">

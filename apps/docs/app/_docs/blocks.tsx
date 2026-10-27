@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { api } from "@keystone-ui/ui/docs";
 import { CodeBlock } from "./CodeBlock";
 import { REPO } from "./registry";
+import { testingFor, type CheckResult } from "./testing";
 
 const slugify = (text: string) => text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
@@ -33,9 +34,54 @@ export function DocPage({
             {source && <a href={`${REPO}/tree/main/${source}`}>Source</a>}
           </p>
         )}
+        {source?.startsWith("packages/ui/src/") && <Tested slug={source.split("/").at(-1)!} />}
       </header>
       {children}
     </article>
+  );
+}
+
+/** "2 of 3 pass, 1 reads oddly": a component's screen-reader checks, in words. */
+export function checkSummary(checks: CheckResult[]): string {
+  if (checks.length === 0) return "No screen-reader checks yet";
+  const count = (status: CheckResult["status"]) => checks.filter((c) => c.status === status).length;
+  const parts = [`${count("pass")} of ${checks.length} NVDA checks pass`];
+  if (count("odd")) parts.push(`${count("odd")} ${count("odd") === 1 ? "reads" : "read"} oddly`);
+  if (count("broken")) parts.push(`${count("broken")} broken`);
+  if (count("unchecked")) parts.push(`${count("unchecked")} not run yet`);
+  return parts.join(", ");
+}
+
+/** How this component is tested, from the specs and the checklist themselves. */
+function Tested({ slug }: { slug: string }) {
+  const { specs, checks } = testingFor(slug);
+  return (
+    <dl className="doc-tested">
+      <div>
+        <dt>Behavior</dt>
+        <dd>
+          {specs.length === 0
+            ? "No behavior spec yet"
+            : specs.map((spec, i) => (
+                <span key={spec}>
+                  {i > 0 && ", "}
+                  <a href={`${REPO}/blob/main/apps/docs/tests/${spec}`}>{spec}</a>
+                </span>
+              ))}
+          {specs.length > 0 && <> in Chromium, WebKit and Firefox</>}
+        </dd>
+      </div>
+      <div>
+        <dt>Axe</dt>
+        <dd>Light, dark, and both in high contrast</dd>
+      </div>
+      <div>
+        <dt>Screen reader</dt>
+        <dd>
+          <a href="/writing/screen-reader-checklist#results">{checkSummary(checks)}</a>
+        </dd>
+      </div>
+    </dl>
   );
 }
 

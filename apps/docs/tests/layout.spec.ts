@@ -6,10 +6,12 @@ import { open } from "./open";
  * opening, focusing, validating or loading. Each test measures a box before and after.
  */
 
+/** Where an element sits on the page (not the viewport), so scrolling isn't mistaken for a shift. */
 const box = async (locator: Locator) => {
   const b = await locator.boundingBox();
   if (!b) throw new Error("element isn't laid out");
-  return { x: Math.round(b.x), y: Math.round(b.y), width: Math.round(b.width), height: Math.round(b.height) };
+  const [sx, sy] = await locator.page().evaluate(() => [scrollX, scrollY]);
+  return { x: Math.round(b.x + sx!), y: Math.round(b.y + sy!), width: Math.round(b.width), height: Math.round(b.height) };
 };
 
 /** A page tall enough to scroll, so there's a scrollbar for a modal to (not) take away. */

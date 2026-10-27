@@ -58,7 +58,8 @@ opens this folder. Other clients can run `node packages/mcp/src/server.ts` over 
 
 ## Components
 
-Button, Input, Select, Dialog, Menu, Tabs, Tooltip and Toast. The overlays are built on the
+Button, Input, Textarea, Select, Checkbox, Switch, RadioGroup, SegmentedControl, Dialog, Menu,
+Tabs, CommandMenu, Tooltip, Disclosure, Badge, Shimmer, DiffView and Toast. The overlays are built on the
 platform rather than a headless library: `<dialog>` and `showModal()` for Dialog, the `popover`
 attribute and CSS anchor positioning for Menu and Tooltip, and `appearance: base-select` for
 Select's popup where the browser supports it. Keystone adds the parts the platform leaves out:

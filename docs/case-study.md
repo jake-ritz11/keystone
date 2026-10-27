@@ -93,6 +93,12 @@ type. The fix follows the ARIA pattern more closely: the highlighted command isn
 until the arrow keys move into the list. NVDA now reads "Commands, combo box, expanded, has
 auto complete, editable".
 
+When the cause wasn't obvious, I stopped guessing and measured. NVDA read every newly
+selected tab twice. A throwaway page built the tab pattern up one attribute at a time and CI
+recorded NVDA on each: only `aria-controls` doubled it, so Tabs dropped it. Dialogs read twice
+too, but in every variant tried, so that one is NVDA's and is written down rather than worked
+around.
+
 Not every theory held. I thought NVDA read the top of the page after a dialog closed because
 focus came back too late. I moved it and NVDA still did it: the cause is NVDA's own reading
 cursor. The change was reverted and the reason is written down.

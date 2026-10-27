@@ -12,7 +12,7 @@ concurrency:
 jobs:
   check:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     # Browsers and their system libraries come baked into Playwright's image, so the job never
     # waits on apt mirrors (a slow mirror once ate the whole time budget). Keep the tag in step
     # with @playwright/test; the first step fails if they drift.

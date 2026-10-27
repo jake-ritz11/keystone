@@ -30,7 +30,10 @@ for (const path of PAGES) {
     ["light", "more"],
     ["dark", "more"],
   ] as const) {
-    test(`${path} passes axe in ${theme}${contrast === "more" ? ", high contrast" : ""}`, async ({ page }) => {
+    test(`${path} passes axe in ${theme}${contrast === "more" ? ", high contrast" : ""}`, async ({ page, browserName }) => {
+      // High contrast changes only token values, and colors render the same in every engine, so
+      // one engine is enough for it. Structure and ARIA still run everywhere.
+      test.skip(contrast === "more" && browserName !== "chromium", "high-contrast colors are engine-independent");
       await page.emulateMedia({ colorScheme: theme, contrast });
       await open(page, path);
       // Open every code sample so its contents are scanned too.

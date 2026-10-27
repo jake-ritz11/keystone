@@ -114,10 +114,10 @@ function TaskPicker({ mode, onPick }: { mode: "replay" | "live"; onPick: (task: 
           : "It works on a small marketing site for a notes app, in a sandbox. Replays are recorded sessions: they run without an API key, and assume their edits get approved."}
       </p>
       <ul className={styles.tasks}>
-        {SAMPLE_TASKS.map((task) => {
+        {SAMPLE_TASKS.map((task, i) => {
           const available = mode === "live" || Boolean(REPLAYS[task.id]);
           return (
-            <li key={task.id}>
+            <li key={task.id} style={{ "--i": i } as React.CSSProperties}>
               <button type="button" className={styles.task} disabled={!available} onClick={() => onPick(task)}>
                 <span className={styles.taskTitle}>{task.title}</span>
                 <span className={styles.taskPrompt}>{task.prompt}</span>

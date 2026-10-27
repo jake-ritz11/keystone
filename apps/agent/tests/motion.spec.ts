@@ -43,3 +43,21 @@ test("scrolled up: Jump to latest appears, and takes you back to the end and the
   await expect(page.getByRole("textbox", { name: "Message the agent" })).toBeFocused();
   await expect.poll(() => scroller.evaluate((el) => el.scrollHeight - el.scrollTop - el.clientHeight)).toBeLessThan(2);
 });
+
+test("the preview swaps pages behind the scenes: one named frame, the old one cleaned up", async ({ page }) => {
+  await start(page, /Fix the broken link/);
+  await page.getByRole("button", { name: "Approve" }).click();
+  await expect(status(page)).toHaveText("Done");
+  const named = page.locator('iframe[title="Preview of index.html"]');
+  const frames = page.locator("iframe");
+
+  await page.getByRole("radio", { name: "Before" }).click();
+  // Mid-swap there can be two frames, but only the new one is named and reachable.
+  await expect(named).toHaveCount(1);
+  await expect(page.frameLocator('iframe[title="Preview of index.html"]').locator('a[href="about.html"]')).toHaveCount(0);
+  await expect(frames).toHaveCount(1);
+
+  await page.getByRole("radio", { name: "Now" }).click();
+  await expect(page.frameLocator('iframe[title="Preview of index.html"]').locator('a[href="about.html"]')).toHaveCount(1);
+  await expect(frames).toHaveCount(1);
+});

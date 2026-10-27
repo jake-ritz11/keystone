@@ -55,6 +55,19 @@
   list-style: none;
 }
 
+/* The cards arrive one after another, a beat apart, on the picker's first paint. */
+.tasks > li {
+  animation: rise var(--ks-motion-duration-slow) var(--ks-motion-easing-standard) backwards;
+  animation-delay: calc(var(--i, 0) * var(--ks-motion-duration-fast) / 2);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    translate: 0 var(--ks-space-2);
+  }
+}
+
 .task {
   display: flex;
   flex-direction: column;
@@ -71,7 +84,10 @@
   text-align: start;
   cursor: pointer;
   touch-action: manipulation;
-  transition: border-color var(--ks-motion-duration-fast) var(--ks-motion-easing-standard);
+  transition:
+    border-color var(--ks-motion-duration-fast) var(--ks-motion-easing-standard),
+    translate var(--ks-motion-duration-normal) var(--ks-motion-easing-standard),
+    box-shadow var(--ks-motion-duration-normal) var(--ks-motion-easing-standard);
 }
 
 .task:focus-visible {
@@ -87,6 +103,8 @@
 @media (hover: hover) {
   .task:hover:not(:disabled) {
     border-color: var(--ks-color-border-strong);
+    box-shadow: 0 6px 16px var(--ks-color-shadow);
+    translate: 0 calc(var(--ks-space-1) * -0.5);
   }
 }
 
@@ -612,6 +630,17 @@
   height: 100%;
 }
 
+/* A new change: the count swells and settles, once. */
+.bump {
+  animation: bump var(--ks-motion-duration-slow) var(--ks-motion-easing-emphasized);
+}
+
+@keyframes bump {
+  from {
+    scale: 1.35;
+  }
+}
+
 .workspacePanel {
   min-height: 0;
   overflow: auto;
@@ -632,6 +661,7 @@
 }
 
 .frameWrap {
+  display: grid;
   min-height: 480px;
   overflow: hidden;
   border: 1px solid var(--ks-color-border);
@@ -644,12 +674,27 @@
   margin-inline: auto;
 }
 
+/* Frames stack in one cell; a new one is invisible until it has loaded, then fades in on top. */
 .frame {
+  grid-area: 1 / 1;
   display: block;
   width: 100%;
   height: 100%;
   min-height: 480px;
   border: 0;
+  opacity: 0;
+  transition: opacity var(--ks-motion-duration-slow) var(--ks-motion-easing-standard);
+}
+
+.frame[data-ready] {
+  opacity: 1;
+}
+
+/* A frame that's ready before its first style (a small page loads in milliseconds) still fades. */
+@starting-style {
+  .frame[data-ready] {
+    opacity: 0;
+  }
 }
 
 .changes,
@@ -697,6 +742,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .tasks > li,
+  .bump,
   .caret,
   .check {
     animation: none;
@@ -704,6 +751,7 @@
 
   .task,
   .jump,
+  .frame,
   .entry,
   .review,
   .plan,

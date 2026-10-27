@@ -78,3 +78,19 @@ test("the easing plots follow the tokens", async ({ page }) => {
   await expect(page.getByRole("img", { name: "--ks-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1)" })).toBeVisible();
   await expect(page.getByRole("img", { name: "--ks-motion-easing-emphasized: cubic-bezier(0.3, 0, 0, 1.3)" })).toBeVisible();
 });
+
+test.describe("theme changes in quick succession", () => {
+  test.use({ contextOptions: { reducedMotion: "no-preference" } });
+
+  test("two quick clicks step twice, even mid-transition", async ({ page }) => {
+    await open(page, "/motion");
+    const toggle = page.getByRole("button", { name: /^Theme: / });
+    // Both in one task, so the second lands before the first transition has applied anything.
+    await toggle.evaluate((button: HTMLElement) => {
+      button.click();
+      button.click();
+    });
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+    await expect(toggle).toHaveText("Theme: dark");
+  });
+});

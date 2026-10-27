@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { Button } from "@keystone-ui/ui";
 
@@ -20,11 +20,15 @@ function apply(choice: Choice): void {
 
 export function ThemeToggle() {
   const [choice, setChoice] = useState<Choice>("system");
+  // The view transition applies the change a frame or two later; a second click before then
+  // must step on from the new choice, not the one still rendered.
+  const latest = useRef<Choice>("system");
 
   useEffect(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY) as Choice | null;
       if (saved && ORDER.includes(saved)) {
+        latest.current = saved;
         setChoice(saved);
         apply(saved);
       }
@@ -34,7 +38,8 @@ export function ThemeToggle() {
   }, []);
 
   const next = () => {
-    const value = ORDER[(ORDER.indexOf(choice) + 1) % ORDER.length] ?? "system";
+    const value = ORDER[(ORDER.indexOf(latest.current) + 1) % ORDER.length] ?? "system";
+    latest.current = value;
     const change = () => {
       flushSync(() => setChoice(value));
       apply(value);

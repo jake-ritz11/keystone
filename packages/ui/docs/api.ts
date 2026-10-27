@@ -25,6 +25,7 @@ export const COMPONENTS: ComponentSummary[] = [
   { slug: "menu", name: "Menu", imports: ["Menu", "MenuItem", "MenuSeparator"], summary: "An actions menu on the popover API, with the full menu keyboard model." },
   { slug: "tabs", name: "Tabs", imports: ["Tabs", "TabList", "Tab", "TabPanel"], summary: "Underline or segmented, horizontal or vertical, automatic or manual." },
   { slug: "segmented-control", name: "SegmentedControl", imports: ["SegmentedControl"], summary: "One choice from a few, side by side, as a keyboard-friendly radio group." },
+  { slug: "command-menu", name: "CommandMenu", imports: ["CommandMenu"], summary: "Every action in one searchable list, behind a keyboard shortcut." },
   { slug: "tooltip", name: "Tooltip", imports: ["Tooltip"], summary: "Hover and focus hints that follow WCAG's rules for content on hover." },
   { slug: "disclosure", name: "Disclosure", imports: ["Disclosure"], summary: "Show and hide a section, on the native details element." },
   { slug: "badge", name: "Badge", imports: ["Badge"], summary: "A short, static label for a status or a category." },
@@ -329,6 +330,42 @@ export const api: Record<string, ComponentApi> = {
       { keys: "Right, Down", action: "Next option, selected at once; wraps and skips disabled ones. Mirrored in right-to-left text." },
       { keys: "Left, Up", action: "Previous option." },
       { keys: "Home, End", action: "First or last option." },
+    ],
+  },
+  "command-menu": {
+    parts: [
+      {
+        interface: "CommandMenuProps",
+        source: "packages/ui/src/command-menu/CommandMenu.tsx",
+        extends: "every <dialog> attribute except open and onSelect",
+        props: [
+          { name: "open", type: "boolean", required: true, description: "Whether it's showing. You own the state, and usually a shortcut that toggles it." },
+          { name: "onOpenChange", type: "(open: boolean) => void", required: true, description: "Called with false on Escape, a backdrop click, or once a command is chosen." },
+          { name: "items", type: "CommandItem[]", required: true, description: "The commands, in the order to list them." },
+          { name: "label", type: "string", default: '"Commands"', description: "Names the dialog and the search field." },
+          { name: "placeholder", type: "string", default: '"Search commands…"', description: "Hint in the empty search field." },
+          { name: "emptyText", type: "ReactNode", default: '"No matching commands"', description: "Shown when nothing matches." },
+        ],
+      },
+      {
+        interface: "CommandItem",
+        source: "packages/ui/src/command-menu/CommandMenu.tsx",
+        props: [
+          { name: "id", type: "string", required: true, description: "Stable and unique within the list." },
+          { name: "label", type: "string", required: true, description: "What it does, starting with a verb." },
+          { name: "group", type: "string", description: "Commands sharing a group are listed together under it, in order of first appearance." },
+          { name: "keywords", type: "string[]", description: "Other words that should find it, like dark for Toggle theme." },
+          { name: "shortcut", type: "string[]", description: "Keys shown beside it. Display only; binding them is up to the app." },
+          { name: "disabled", type: "boolean", description: "Listed but skipped by the arrow keys, and can't be chosen." },
+          { name: "onSelect", type: "() => void", required: true, description: "Runs after the menu has closed and focus is back where it was." },
+        ],
+      },
+    ],
+    keyboard: [
+      { keys: "Type", action: "Filters the list. Labels that start with what you typed come first." },
+      { keys: "Down, Up", action: "Next or previous command, skipping disabled ones, wrapping." },
+      { keys: "Enter", action: "Runs the current command and closes the menu." },
+      { keys: "Escape", action: "Closes and returns focus to whatever opened it." },
     ],
   },
   tooltip: {

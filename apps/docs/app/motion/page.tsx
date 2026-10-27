@@ -46,6 +46,12 @@ const PATTERNS: { pattern: string; where: ReactNode; timing: string; reduced: st
     reduced: "All appear together.",
   },
   {
+    pattern: "Slide",
+    where: <Link href="/components/command-menu">CommandMenu</Link>,
+    timing: "fast · standard: one highlight moving between rows",
+    reduced: "Jumps to the row.",
+  },
+  {
     pattern: "Sweep",
     where: <Link href="/components/shimmer">Shimmer</Link>,
     timing: "ambient · linear",

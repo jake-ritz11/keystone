@@ -118,8 +118,10 @@ test("the type declarations work for a consumer", () => {
  * isn't wrong, but it should be a decision: raise the number in the same commit and say why.
  */
 const BUDGETS: [dist: string, file: string, kB: number][] = [
-  [UI, "index.js", 13],
-  [UI, "styles.css", 5.5],
+  // Raised from 13 when CommandMenu landed (11.2 to 13.6 kB): a whole new component.
+  [UI, "index.js", 16],
+  // Raised from 5.5 with it: Shimmer and CommandMenu took the CSS from 4.7 to 5.5 kB.
+  [UI, "styles.css", 6.5],
   [TOKENS, "index.js", 1.5],
   [TOKENS, "tokens.css", 1],
 ];

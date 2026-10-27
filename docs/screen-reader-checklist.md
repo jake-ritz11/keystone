@@ -90,6 +90,14 @@ missing or announced twice.
 | T4 | Range tabs (manual): Right arrow, then Enter | "Week, tab, not selected" on arrow; "selected" after Enter |
 | T5 | Account settings tabs | Announced as vertical; Up and Down work |
 
+### Command menu (`/components/command-menu`)
+
+| # | Do | Expect |
+| --- | --- | --- |
+| CM1 | Activate Open commands | "Commands, dialog", then "Commands, combo box" (or "edit") |
+| CM2 | Press Down | "Stop the agent" read while focus stays in the field |
+| CM3 | Type "dark" | "1 command" announced politely |
+
 ### Tooltip (`/components/tooltip`)
 
 | # | Do | Expect |
@@ -134,6 +142,7 @@ results are NVDA with Chrome on Windows Server 2025, and quote what NVDA said.
 | T1 | auto | ✅ | "Project, tab control. Overview, tab, selected, 1 of 4" |
 | T2 | auto | ⚠️ | "Activity, tab, selected, 2 of 4" **twice** |
 | T3–T5 | manual | ⬜ | |
+| CM1–CM3 | auto | ⬜ | First run pending |
 | TT1 | auto | ✅ | "Hover or focus me, button, Saves a copy to your workspace" |
 | TT2, TT3 | manual | ⬜ | |
 | TO1 | auto | ✅ | "Project published. It's live for everyone in the workspace." Focus stays on the button. |

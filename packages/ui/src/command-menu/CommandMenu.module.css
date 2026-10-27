@@ -1,0 +1,233 @@
+/*
+ * Same surface and motion as Dialog: layout on the base rule so the exit fade doesn't re-lay
+ * out, a rise on entry, a quick fade out. It sits high on the screen, where the eye already is.
+ */
+.menu {
+  flex-direction: column;
+  width: min(calc(100vw - var(--ks-space-8)), 560px);
+  max-height: min(calc(100dvh - var(--ks-space-12)), 440px);
+  margin: 12dvh auto auto;
+  overflow: hidden;
+  border: 1px solid var(--ks-color-border);
+  border-radius: var(--ks-radius-lg);
+  padding: 0;
+  background: var(--ks-color-surface);
+  color: var(--ks-color-text);
+  font-family: var(--ks-font-family-sans);
+  box-shadow: 0 16px 48px var(--ks-color-shadow);
+  opacity: 0;
+  transition:
+    opacity var(--ks-motion-duration-fast) var(--ks-motion-easing-standard),
+    display var(--ks-motion-duration-fast) allow-discrete,
+    overlay var(--ks-motion-duration-fast) allow-discrete;
+}
+
+.menu[open] {
+  display: flex;
+  opacity: 1;
+  transition:
+    opacity var(--ks-motion-duration-normal) var(--ks-motion-easing-standard),
+    translate var(--ks-motion-duration-normal) var(--ks-motion-easing-standard),
+    display var(--ks-motion-duration-normal) allow-discrete,
+    overlay var(--ks-motion-duration-normal) allow-discrete;
+}
+
+.menu::backdrop {
+  background: var(--ks-color-scrim);
+  opacity: 0;
+  transition:
+    opacity var(--ks-motion-duration-fast) var(--ks-motion-easing-standard),
+    display var(--ks-motion-duration-fast) allow-discrete,
+    overlay var(--ks-motion-duration-fast) allow-discrete;
+}
+
+.menu[open]::backdrop {
+  opacity: 1;
+  transition-duration: var(--ks-motion-duration-normal);
+}
+
+@starting-style {
+  .menu[open] {
+    opacity: 0;
+    translate: 0 calc(var(--ks-space-2) * -1);
+  }
+
+  .menu[open]::backdrop {
+    opacity: 0;
+  }
+}
+
+.search {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--ks-space-2);
+  border-bottom: 1px solid var(--ks-color-border);
+  padding: var(--ks-space-3) var(--ks-space-4);
+  transition: border-color var(--ks-motion-duration-fast) var(--ks-motion-easing-standard);
+}
+
+/* Focus never leaves the field, so the field's edge carries the focus color. */
+.search:has(.input:focus-visible) {
+  border-bottom-color: var(--ks-color-focus);
+}
+
+.icon {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  fill: none;
+  stroke: var(--ks-color-text-muted);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: var(--ks-font-size-md);
+}
+
+.input::placeholder {
+  color: var(--ks-color-text-muted);
+}
+
+.input:focus-visible {
+  outline: none;
+}
+
+.esc,
+.shortcut kbd {
+  border: 1px solid var(--ks-color-border);
+  border-radius: var(--ks-radius-sm);
+  padding: 0 var(--ks-space-1);
+  background: var(--ks-color-surface-raised);
+  color: var(--ks-color-text-muted);
+  font-family: inherit;
+  font-size: var(--ks-font-size-xs);
+  line-height: var(--ks-font-line-height-normal);
+}
+
+.list {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--ks-space-2);
+  scroll-padding-block: var(--ks-space-2);
+}
+
+/* Slides between commands; positioned from the active option's box in CommandMenu.tsx. */
+.highlight {
+  position: absolute;
+  inset-inline: var(--ks-space-2);
+  top: 0;
+  height: var(--h, 0);
+  border-radius: var(--ks-radius-sm);
+  background: var(--ks-color-surface-raised);
+  translate: 0 var(--y, 0);
+  transition:
+    translate var(--ks-motion-duration-fast) var(--ks-motion-easing-standard),
+    height var(--ks-motion-duration-fast) var(--ks-motion-easing-standard);
+}
+
+.highlight[hidden] {
+  display: none;
+}
+
+.highlight[data-instant] {
+  transition: none;
+}
+
+.groupLabel {
+  padding: var(--ks-space-2) var(--ks-space-3) var(--ks-space-1);
+  color: var(--ks-color-text-muted);
+  font-size: var(--ks-font-size-xs);
+  font-weight: var(--ks-font-weight-medium);
+}
+
+.option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--ks-space-2);
+  min-width: 0;
+  border-radius: var(--ks-radius-sm);
+  padding: var(--ks-space-2) var(--ks-space-3);
+  font-size: var(--ks-font-size-sm);
+  line-height: var(--ks-font-line-height-tight);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.option[aria-disabled="true"] {
+  color: var(--ks-color-text-muted);
+  cursor: not-allowed;
+}
+
+.label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.shortcut {
+  display: inline-flex;
+  flex-shrink: 0;
+  gap: var(--ks-space-1);
+}
+
+.empty {
+  margin: 0;
+  padding: var(--ks-space-6) var(--ks-space-4);
+  color: var(--ks-color-text-muted);
+  font-size: var(--ks-font-size-sm);
+  text-align: center;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu[open],
+  .menu[open]::backdrop {
+    transition-duration: var(--ks-motion-duration-fast);
+  }
+
+  @starting-style {
+    .menu[open] {
+      translate: none;
+    }
+  }
+
+  .highlight,
+  .search {
+    transition: none;
+  }
+}
+
+/* Forced colors drop the highlight's fill; mark the active command with a system outline. */
+@media (forced-colors: active) {
+  .highlight {
+    display: none;
+  }
+
+  .option[aria-selected="true"] {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+}

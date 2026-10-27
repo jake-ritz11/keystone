@@ -136,3 +136,16 @@ test("TO1, TO2: toasts are announced without moving focus", async ({ page, nvda 
   await nvda.press("Enter");
   expectSaid(await heard(nvda, "TO2"), "couldn't upload file");
 });
+
+test("CM1–CM3: the command menu reads its field, each command, and the match count", async ({ page, nvda }) => {
+  await open(page, nvda, "/components/command-menu");
+  await reach(nvda, page.getByRole("button", { name: "Open commands" }), "CM1 trigger");
+  await nvda.press("Enter");
+  expectSaid(await heard(nvda, "CM1"), "commands", /combo ?box|edit/i);
+  // Focus stays in the field; NVDA follows aria-activedescendant to each command.
+  await nvda.press("ArrowDown");
+  expectSaid(await heard(nvda, "CM2"), "stop the agent");
+  await nvda.type("dark");
+  expectSaid(await heard(nvda, "CM3"), "1 command");
+  await nvda.press("Escape");
+});

@@ -40,3 +40,6 @@ export type { DisclosureProps } from "./disclosure/Disclosure";
 
 export { Shimmer } from "./shimmer/Shimmer";
 export type { ShimmerProps } from "./shimmer/Shimmer";
+
+export { CommandMenu } from "./command-menu/CommandMenu";
+export type { CommandItem, CommandMenuProps } from "./command-menu/CommandMenu";

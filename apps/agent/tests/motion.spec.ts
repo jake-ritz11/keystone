@@ -61,3 +61,23 @@ test("the preview swaps pages behind the scenes: one named frame, the old one cl
   await expect(page.frameLocator('iframe[title="Preview of index.html"]').locator('a[href="about.html"]')).toHaveCount(1);
   await expect(frames).toHaveCount(1);
 });
+
+test("Ctrl+K: the command menu approves the pending edit and starts tasks", async ({ page }) => {
+  await start(page, /Fix the broken link/);
+  await expect(status(page)).toHaveText("Waiting for you");
+
+  await page.keyboard.press("Control+k");
+  const menu = page.getByRole("dialog", { name: "Commands" });
+  await expect(menu).toBeVisible();
+  await page.keyboard.type("approve");
+  await expect(menu.getByRole("option", { name: "Approve the edit to index.html" })).toBeVisible();
+  await page.keyboard.press("Enter");
+  await expect(menu).toBeHidden();
+  await expect(status(page)).toHaveText("Done");
+
+  // From anywhere, start another task.
+  await page.getByRole("button", { name: "Commands" }).click();
+  await page.keyboard.type("pricing");
+  await page.keyboard.press("Enter");
+  await expect(page.getByRole("list", { name: "Conversation" })).toContainText("pricing table");
+});

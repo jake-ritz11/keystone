@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { DEFAULT_VARIANT, liveTransport, REPLAYS, replayTransport, SAMPLE_TASKS, type SampleTask, type Variant } from "@keystone-ui/agent-core";
-import { Badge, Button, SegmentedControl, Tooltip } from "@keystone-ui/ui";
+import { Badge, Button, CommandMenu, SegmentedControl, Tooltip, type CommandItem } from "@keystone-ui/ui";
 import { ThemeToggle } from "./ThemeToggle";
 import { AgentSession } from "./session/AgentSession";
 import { VariantsDialog } from "./session/VariantsDialog";
@@ -25,6 +25,45 @@ function Shell({ fast }: { fast: boolean }) {
   const [run, setRun] = useState(0);
   const [mode, setMode] = useState<"replay" | "live">("replay");
   const [server, setServer] = useState<{ live: boolean; model?: string } | null>(null);
+  const [variantsOpen, setVariantsOpen] = useState(false);
+  const [commandsOpen, setCommandsOpen] = useState(false);
+  const [sessionCommands, setSessionCommands] = useState<CommandItem[]>([]);
+  const onCommands = useCallback((items: CommandItem[]) => setSessionCommands(items), []);
+
+  // Ctrl+K, or Command+K on a Mac, from anywhere.
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key.toLowerCase() === "k" && (event.metaKey || event.ctrlKey) && !event.altKey) {
+        event.preventDefault();
+        setCommandsOpen((o) => !o);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  const start = (t: SampleTask) => {
+    setTask(t);
+    setRun((r) => r + 1);
+  };
+  const commands: CommandItem[] = [
+    ...(task ? sessionCommands : []),
+    ...(task
+      ? [
+          { id: "restart", group: "Session", label: "Restart this task", keywords: ["again", "rerun"], onSelect: () => setRun((r) => r + 1) },
+          { id: "new", group: "Session", label: "New task", keywords: ["pick", "home"], onSelect: () => setTask(null) },
+        ]
+      : []),
+    ...SAMPLE_TASKS.map((t) => ({
+      id: `task-${t.id}`,
+      group: "Start a task",
+      label: t.title,
+      keywords: t.prompt.split(/\s+/),
+      disabled: mode === "replay" && !REPLAYS[t.id],
+      onSelect: () => start(t),
+    })),
+    { id: "variants", group: "Study", label: "Change interaction variants", keywords: ["approval", "planning", "visibility"], onSelect: () => setVariantsOpen(true) },
+  ];
 
   // Ask the server whether live mode is set up (it needs an API key there, never here).
   useEffect(() => {
@@ -58,8 +97,13 @@ function Shell({ fast }: { fast: boolean }) {
               New task
             </Button>
           )}
+          <Button variant="ghost" size="sm" onClick={() => setCommandsOpen(true)} aria-keyshortcuts="Control+K Meta+K">
+            Commands
+          </Button>
           <StudyButton context={{ task: task?.id, variant }} />
           <VariantsDialog
+            open={variantsOpen}
+            onOpenChange={setVariantsOpen}
             variant={variant}
             onApply={(next) => {
               setVariant(next);
@@ -69,17 +113,12 @@ function Shell({ fast }: { fast: boolean }) {
           <ThemeToggle />
         </div>
       </header>
+      <CommandMenu open={commandsOpen} onOpenChange={setCommandsOpen} items={commands} />
       <main className={styles.main}>
         {task && transport ? (
-          <AgentSession key={`${task.id}-${run}`} task={task} variant={variant} transport={transport} mode={mode} />
+          <AgentSession key={`${task.id}-${run}`} task={task} variant={variant} transport={transport} mode={mode} onCommands={onCommands} />
         ) : (
-          <TaskPicker
-            mode={mode}
-            onPick={(t) => {
-              setTask(t);
-              setRun((r) => r + 1);
-            }}
-          />
+          <TaskPicker mode={mode} onPick={start} />
         )}
       </main>
     </div>

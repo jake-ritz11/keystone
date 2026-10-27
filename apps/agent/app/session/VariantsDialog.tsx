@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Approval, Planning, Variant, Visibility } from "@keystone-ui/agent-core";
 import { Button, Dialog, Select } from "@keystone-ui/ui";
 import styles from "./session.module.css";
@@ -34,19 +34,29 @@ function Choice<T extends string>({ label, value, options, onChange }: { label: 
 }
 
 /** The three study dimensions. Changes apply to the next session, so a run is never mixed. */
-export function VariantsDialog({ variant, onApply }: { variant: Variant; onApply: (v: Variant) => void }) {
-  const [open, setOpen] = useState(false);
+export function VariantsDialog({
+  variant,
+  onApply,
+  open,
+  onOpenChange: setOpen,
+}: {
+  variant: Variant;
+  onApply: (v: Variant) => void;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
   const [draft, setDraft] = useState(variant);
+  // Start from the current variants whenever it opens, however it was opened.
+  useEffect(() => {
+    if (open) setDraft(variant);
+  }, [open]);
 
   return (
     <>
       <Button
         variant="secondary"
         size="sm"
-        onClick={() => {
-          setDraft(variant);
-          setOpen(true);
-        }}
+        onClick={() => setOpen(true)}
       >
         Variants
       </Button>

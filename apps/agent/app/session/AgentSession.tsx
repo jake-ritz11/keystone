@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import type { CommandItem } from "@keystone-ui/ui";
 import { SAMPLE_SITE, studyEvent, type Action, type SampleTask, type SessionState, type StudyEvent, type Transport, type Variant } from "@keystone-ui/agent-core";
 import { RatingCard } from "../study/RatingCard";
 import { SessionLog } from "../study/SessionLog";
@@ -21,7 +22,20 @@ const STATUS_TEXT: Partial<Record<string, string>> = {
   error: "Something went wrong",
 };
 
-export function AgentSession({ task, variant, transport, mode }: { task: SampleTask; variant: Variant; transport: Transport; mode: "replay" | "live" }) {
+export function AgentSession({
+  task,
+  variant,
+  transport,
+  mode,
+  onCommands,
+}: {
+  task: SampleTask;
+  variant: Variant;
+  transport: Transport;
+  mode: "replay" | "live";
+  /** Receives the commands that make sense in this session right now, for the command menu. */
+  onCommands?: (items: CommandItem[]) => void;
+}) {
   const study = useStudy();
   // One study session per agent session, only when taking part. A ref, so React's development
   // double-mount doesn't open two.
@@ -82,6 +96,26 @@ export function AgentSession({ task, variant, transport, mode }: { task: SampleT
     const el = scroller.current;
     if (el && pinned.current) el.scrollTop = el.scrollHeight;
   }, [state.items]);
+
+  const working = state.status === "streaming" || state.status === "ready" || state.status === "waiting";
+  const pending = state.items.find((item) => item.type === "tool" && item.status === "awaiting");
+  useEffect(() => {
+    const items: CommandItem[] = [];
+    if (pending) {
+      items.push({
+        id: "approve",
+        group: "Session",
+        label: `Approve the edit to ${pending.type === "tool" ? (pending.change?.path ?? "the file") : "the file"}`,
+        keywords: ["accept", "apply", "yes"],
+        onSelect: () => dispatch({ type: "approve", id: pending.id }),
+      });
+    }
+    if (working) items.push({ id: "stop", group: "Session", label: "Stop the agent", keywords: ["cancel", "halt"], onSelect: stop });
+    if (away) items.push({ id: "jump", group: "Session", label: "Jump to latest", keywords: ["scroll", "bottom", "end"], onSelect: jumpToLatest });
+    onCommands?.(items);
+    // jumpToLatest only reads refs, so a stale copy behaves the same.
+  }, [pending?.id, working, away, dispatch, stop, onCommands]);
+  useEffect(() => () => onCommands?.([]), [onCommands]);
 
   return (
     <SessionLog.Provider value={log}>

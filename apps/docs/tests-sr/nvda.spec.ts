@@ -88,6 +88,9 @@ test("D1, D3: a dialog announces itself, and Escape returns to its trigger", asy
   }
   await expect(dialog).toBeHidden();
   await expect(page.getByRole("button", { name: "Edit profile" })).toBeFocused();
+  // NVDA reads "Skip to content" first: the first Escape put it in browse mode inside the
+  // dialog, and when the dialog leaves, NVDA's reading position resets to the top of the page
+  // before following focus to the opener. Returning focus earlier doesn't change it (tried).
   expectSaid(closing, "edit profile", "button");
 });
 

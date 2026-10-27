@@ -18,6 +18,8 @@ export const CHECK_PREFIXES: Record<string, string | null> = {
   CB: "checkbox",
   SW: "switch",
   RG: "radio-group",
+  SL: "slider",
+  PR: "progress",
   CM: "command-menu",
   TT: "tooltip",
   TO: "toast",

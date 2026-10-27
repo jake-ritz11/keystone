@@ -1,0 +1,178 @@
+.slider {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ks-space-1);
+  font-family: var(--ks-font-family-sans);
+  font-size: var(--ks-font-size-sm);
+  line-height: var(--ks-font-line-height-normal);
+  color: var(--ks-color-text);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--ks-space-3);
+}
+
+/* Hidden label, but the value stays visible: it moves to the end of the row on its own. */
+.headerHidden {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.headerHidden .label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.label {
+  font-weight: var(--ks-font-weight-medium);
+}
+
+.value {
+  color: var(--ks-color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/*
+ * The input is as tall as the thumb, so the whole height takes a click. The track is a gradient
+ * split at --fill, set from the value: accent up to it, the control border color after.
+ */
+.input {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: var(--ks-space-5);
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  --toward: right;
+}
+
+/* In right-to-left text the minimum is on the right, so the fill grows from there. */
+.input:dir(rtl) {
+  --toward: left;
+}
+
+.input:disabled {
+  cursor: not-allowed;
+}
+
+.slider[data-disabled] .input,
+.slider[data-disabled] .label,
+.slider[data-disabled] .value {
+  opacity: 0.55;
+}
+
+/* Each engine's pseudo-elements need their own rule: one unknown selector drops a whole list. */
+.input::-webkit-slider-runnable-track {
+  height: var(--ks-space-1);
+  border-radius: var(--ks-radius-full);
+  background: linear-gradient(to var(--toward), var(--ks-color-accent) var(--fill), var(--ks-color-border-control) var(--fill));
+}
+
+.input::-moz-range-track {
+  height: var(--ks-space-1);
+  border-radius: var(--ks-radius-full);
+  background: linear-gradient(to var(--toward), var(--ks-color-accent) var(--fill), var(--ks-color-border-control) var(--fill));
+}
+
+/* WebKit centers the thumb on the track's top edge; the margin moves it to the middle. */
+.input::-webkit-slider-thumb {
+  appearance: none;
+  box-sizing: border-box;
+  width: var(--ks-space-4);
+  height: var(--ks-space-4);
+  margin-top: calc((var(--ks-space-1) - var(--ks-space-4)) / 2);
+  border: 2px solid var(--ks-color-accent);
+  border-radius: var(--ks-radius-full);
+  background: var(--ks-color-surface);
+  box-shadow: 0 1px 2px var(--ks-color-shadow);
+}
+
+.input::-moz-range-thumb {
+  box-sizing: border-box;
+  width: var(--ks-space-4);
+  height: var(--ks-space-4);
+  border: 2px solid var(--ks-color-accent);
+  border-radius: var(--ks-radius-full);
+  background: var(--ks-color-surface);
+  box-shadow: 0 1px 2px var(--ks-color-shadow);
+}
+
+.input:focus-visible {
+  outline: none;
+}
+
+.input:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid var(--ks-color-focus);
+  outline-offset: 2px;
+}
+
+.input:focus-visible::-moz-range-thumb {
+  outline: 2px solid var(--ks-color-focus);
+  outline-offset: 2px;
+}
+
+/* The thumb grows a little while it's held, so a drag feels picked up. */
+@media (prefers-reduced-motion: no-preference) {
+  .input::-webkit-slider-thumb {
+    transition: scale var(--ks-motion-duration-fast) var(--ks-motion-easing-standard);
+  }
+
+  .input::-moz-range-thumb {
+    transition: scale var(--ks-motion-duration-fast) var(--ks-motion-easing-standard);
+  }
+
+  .input:not(:disabled):active::-webkit-slider-thumb {
+    scale: 1.15;
+  }
+
+  .input:not(:disabled):active::-moz-range-thumb {
+    scale: 1.15;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .input::-webkit-slider-thumb {
+    transition: none;
+  }
+
+  .input::-moz-range-thumb {
+    transition: none;
+  }
+}
+
+.hint {
+  color: var(--ks-color-text-muted);
+}
+
+/* Windows high contrast drops gradients: draw the fill and thumb in system colors. */
+@media (forced-colors: active) {
+  .input::-webkit-slider-runnable-track {
+    forced-color-adjust: none;
+    background: linear-gradient(to var(--toward), Highlight var(--fill), CanvasText var(--fill));
+  }
+
+  .input::-moz-range-track {
+    forced-color-adjust: none;
+    background: linear-gradient(to var(--toward), Highlight var(--fill), CanvasText var(--fill));
+  }
+
+  .input::-webkit-slider-thumb {
+    forced-color-adjust: none;
+    border-color: Highlight;
+    background: Canvas;
+  }
+
+  .input::-moz-range-thumb {
+    forced-color-adjust: none;
+    border-color: Highlight;
+    background: Canvas;
+  }
+}

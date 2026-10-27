@@ -175,6 +175,31 @@ test("SW1, SW2: a switch reads as on or off, and its hint follows the state", as
   expectSaid(await heard(nvda, "SW2"), /\bon\b|pressed/i);
 });
 
+test("SL1, SL2: a slider reads its formatted value and hint, and the new value as it moves", async ({ page, nvda }) => {
+  await open(page, nvda, "/components/slider");
+  expectSaid(
+    await reach(nvda, page.getByRole("slider", { name: "Steps before checking in" }), "SL1"),
+    "steps before checking in",
+    "slider",
+    "8 steps",
+    "works longer on its own",
+  );
+  await nvda.press("ArrowRight");
+  expectSaid(await heard(nvda, "SL2"), "9 steps");
+});
+
+test("PR1: a progress bar is found while reading, with its label and formatted value", async ({ page, nvda }) => {
+  await open(page, nvda, "/components/progress");
+  // It isn't focusable, so read backwards from the button below it, as someone browsing would.
+  await reach(nvda, page.getByRole("button", { name: "Upload another" }), "PR1 (start)");
+  let text = "";
+  for (let i = 0; i < 3 && !/progress/i.test(text); i++) {
+    await nvda.press("ArrowUp");
+    text += ` | ${await heard(nvda, `PR1 (${i + 1})`)}`;
+  }
+  expectSaid(text, "progress bar", "3 of 12 files");
+});
+
 test("RG1, RG2: a radio group reads its question, then the answer and its position", async ({ page, nvda }) => {
   await open(page, nvda, "/components/radio-group");
   expectSaid(

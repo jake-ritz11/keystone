@@ -27,6 +27,8 @@ export const COMPONENTS: ComponentSummary[] = [
   { slug: "checkbox", name: "Checkbox", imports: ["Checkbox"], summary: "A native checkbox with a drawn box, a mixed state and a check that draws in." },
   { slug: "switch", name: "Switch", imports: ["Switch"], summary: "An on/off setting that applies at once, announced as a switch." },
   { slug: "radio-group", name: "RadioGroup", imports: ["RadioGroup"], summary: "One answer from a short list: native radios in a fieldset." },
+  { slug: "slider", name: "Slider", imports: ["Slider"], summary: "A number from a range, on a native range input, with a formatted value." },
+  { slug: "progress", name: "Progress", imports: ["Progress"], summary: "How far along work is, or that it's happening, on the native progress element." },
   { slug: "segmented-control", name: "SegmentedControl", imports: ["SegmentedControl"], summary: "One choice from a few, side by side, as a keyboard-friendly radio group." },
   { slug: "command-menu", name: "CommandMenu", imports: ["CommandMenu"], summary: "Every action in one searchable list, behind a keyboard shortcut." },
   { slug: "tooltip", name: "Tooltip", imports: ["Tooltip"], summary: "Hover and focus hints that follow WCAG's rules for content on hover." },
@@ -345,6 +347,53 @@ export const api: Record<string, ComponentApi> = {
       },
     ],
     keyboard: [{ keys: "Space", action: "Turns it on or off." }],
+  },
+  slider: {
+    parts: [
+      {
+        interface: "SliderProps",
+        source: "packages/ui/src/slider/Slider.tsx",
+        extends: "every <input> attribute except type and size, including name, disabled and onChange",
+        note: "Controlled or not: pass value with onValueChange, or defaultValue.",
+        props: [
+          { name: "label", type: "ReactNode", required: true, description: "Names the setting. Clicking it focuses the slider." },
+          { name: "hideLabel", type: "boolean", default: "false", description: "Hides the label visually; it's still announced." },
+          { name: "hint", type: "ReactNode", description: "Help under the slider, read with it." },
+          { name: "value", type: "number", description: "The value, when controlled." },
+          { name: "defaultValue", type: "number", default: "min", description: "The first value, when uncontrolled." },
+          { name: "min", type: "number", default: "0", description: "The lowest value." },
+          { name: "max", type: "number", default: "100", description: "The highest value." },
+          { name: "step", type: "number", default: "1", description: "How far one arrow key moves it." },
+          { name: "formatValue", type: "(value: number) => string", description: "What's shown and announced for a value, like \"8 steps\"." },
+          { name: "showValue", type: "boolean", default: "true", description: "Shows the value at the end of the label row." },
+          { name: "onValueChange", type: "(value: number) => void", description: "Called with the new value as it moves." },
+        ],
+      },
+    ],
+    keyboard: [
+      { keys: "Right, Up", action: "Up one step. In right-to-left text, Chrome and Firefox swap Left and Right to match the mirrored track; Safari doesn't." },
+      { keys: "Left, Down", action: "Down one step." },
+      { keys: "Page Up, Page Down", action: "A bigger step, where the browser supports it." },
+      { keys: "Home, End", action: "To the minimum or maximum." },
+    ],
+  },
+  progress: {
+    parts: [
+      {
+        interface: "ProgressProps",
+        source: "packages/ui/src/progress/Progress.tsx",
+        extends: "every <progress> attribute except value and max",
+        props: [
+          { name: "label", type: "ReactNode", required: true, description: "What's in progress, like \"Uploading files\"." },
+          { name: "hideLabel", type: "boolean", default: "false", description: "Hides the label visually; it's still announced." },
+          { name: "hint", type: "ReactNode", description: "Help under the bar, read with it." },
+          { name: "value", type: "number", description: "How far along, from 0 to max. Leave it out while the amount is unknown." },
+          { name: "max", type: "number", default: "100", description: "The value at completion." },
+          { name: "formatValue", type: "(value: number, max: number) => string", description: "What's shown and announced, like \"3 of 12 files\". A percentage without it." },
+          { name: "showValue", type: "boolean", default: "true", description: "Shows the value at the end of the label row, when there is one." },
+        ],
+      },
+    ],
   },
   "radio-group": {
     parts: [

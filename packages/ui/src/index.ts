@@ -52,3 +52,9 @@ export type { SwitchProps } from "./switch/Switch";
 
 export { RadioGroup } from "./radio-group/RadioGroup";
 export type { RadioGroupProps, RadioOption } from "./radio-group/RadioGroup";
+
+export { Slider } from "./slider/Slider";
+export type { SliderProps } from "./slider/Slider";
+
+export { Progress } from "./progress/Progress";
+export type { ProgressProps } from "./progress/Progress";

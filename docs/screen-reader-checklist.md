@@ -106,7 +106,7 @@ missing or announced twice.
 | TT2 | Tab to the icon-only search button | "Search, button", from the tooltip as its name |
 | TT3 | Press Escape | Tooltip hides; NVDA doesn't announce a focus change |
 
-### Checkbox, Switch, RadioGroup
+### Checkbox, Switch, RadioGroup, Slider, Progress
 
 | # | Do | Expect |
 | --- | --- | --- |
@@ -116,6 +116,9 @@ missing or announced twice.
 | SW2 | Press Space | "on" |
 | RG1 | Tab into the approval group on `/components/radio-group` | "When should edits need you?, grouping, Approve each edit, radio button, checked, 1 of 3" |
 | RG2 | Down arrow | "Review at the end, radio button, checked, 2 of 3", then its hint |
+| SL1 | Tab to "Steps before checking in" on `/components/slider` | "Steps before checking in, slider, 8 steps", then its hint |
+| SL2 | Right arrow | "9 steps" |
+| PR1 | On `/components/progress`, Tab to "Upload another", then Up arrow in browse mode | "Uploading files, progress bar, 3 of 12 files" |
 
 ### Toast (`/components/toast`)
 
@@ -159,6 +162,8 @@ results are NVDA with Chrome on Windows Server 2025, and quote what NVDA said.
 | SW2 | auto | ✅ | "Edits apply as the agent makes them. Undo is always there. on": the new hint, then the state |
 | RG1 | auto | ✅ | "When should edits need you?, grouping. Approve each edit, radio button, checked, Every change waits, as a diff., 1 of 3" |
 | RG2 | auto | ✅ | "Review at the end, radio button, checked, Edits apply as the agent works; review them all together., 2 of 3" |
+| SL1, SL2 | auto | ⬜ | |
+| PR1 | auto | ⬜ | |
 | CM1 | auto | ✅ | "Commands, combo box, expanded, has auto complete, editable, Search commands…", after the dialog. The first run caught it skipping the field and reading "Esc"; fixed. |
 | CM2 | auto | ✅ | "Commands, list. Tasks, grouping. Stop the agent, 2 of 7" |
 | CM3 | auto | ✅ | "1 command" as you type, then the best match: "Toggle theme, 1 of 1" |

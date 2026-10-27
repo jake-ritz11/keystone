@@ -1,0 +1,144 @@
+.progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ks-space-1);
+  font-family: var(--ks-font-family-sans);
+  font-size: var(--ks-font-size-sm);
+  line-height: var(--ks-font-line-height-normal);
+  color: var(--ks-color-text);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--ks-space-3);
+}
+
+.headerHidden {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.headerHidden .label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.label {
+  font-weight: var(--ks-font-weight-medium);
+}
+
+.value {
+  color: var(--ks-color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.bar {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: var(--ks-space-2);
+  border: none;
+  border-radius: var(--ks-radius-full);
+  background-color: var(--ks-color-border);
+  overflow: hidden;
+}
+
+/* The engines' own track goes; .bar is the track. Each engine's pseudo-elements get their own rule. */
+.bar::-webkit-progress-bar {
+  background: transparent;
+}
+
+.bar::-webkit-progress-value {
+  border-radius: var(--ks-radius-full);
+  background: var(--ks-color-accent);
+}
+
+.bar::-moz-progress-bar {
+  border-radius: var(--ks-radius-full);
+  background: var(--ks-color-accent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .bar::-webkit-progress-value {
+    transition: inline-size var(--ks-motion-duration-slow) var(--ks-motion-easing-standard);
+  }
+}
+
+/*
+ * Indeterminate: a band half the bar wide travels along it. The gradient is 250% wide, so
+ * moving its position from 100% to 0% carries the band from before the start to past the end,
+ * the same sweep Shimmer uses.
+ */
+.bar:indeterminate {
+  background-image: linear-gradient(
+    90deg,
+    transparent 40%,
+    var(--ks-color-accent) 40%,
+    var(--ks-color-accent) 60%,
+    transparent 60%
+  );
+  background-size: 250% 100%;
+  animation: sweep var(--ks-motion-duration-ambient) var(--ks-motion-easing-standard) infinite;
+}
+
+.bar:indeterminate::-moz-progress-bar {
+  background: transparent;
+}
+
+.bar:indeterminate:dir(rtl) {
+  animation-direction: reverse;
+}
+
+@keyframes sweep {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+
+/* Without motion, stripes: still clearly "working", and not mistakable for an amount. */
+@media (prefers-reduced-motion: reduce) {
+  .bar:indeterminate {
+    animation: none;
+    background-image: repeating-linear-gradient(
+      -45deg,
+      var(--ks-color-accent) 0 var(--ks-space-1),
+      transparent var(--ks-space-1) var(--ks-space-2)
+    );
+    background-size: auto;
+  }
+}
+
+.hint {
+  color: var(--ks-color-text-muted);
+}
+
+/* Windows high contrast: outline the track and fill with the system highlight. */
+@media (forced-colors: active) {
+  .bar {
+    border: 1px solid CanvasText;
+  }
+
+  .bar::-webkit-progress-value {
+    background: Highlight;
+  }
+
+  .bar::-moz-progress-bar {
+    background: Highlight;
+  }
+
+  .bar:indeterminate {
+    forced-color-adjust: none;
+    background-color: Canvas;
+    background-image: repeating-linear-gradient(-45deg, Highlight 0 var(--ks-space-1), Canvas var(--ks-space-1) var(--ks-space-2));
+    animation: none;
+  }
+}

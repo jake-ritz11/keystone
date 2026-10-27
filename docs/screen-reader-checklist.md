@@ -153,9 +153,12 @@ results are NVDA with Chrome on Windows Server 2025, and quote what NVDA said.
 | T1 | auto | ✅ | "Project, tab control. Overview, tab, selected, 1 of 4" |
 | T2 | auto | ✅ | "Activity, tab, selected, 2 of 4", once. It was read twice until Tabs dropped `aria-controls`. |
 | T3–T5 | manual | ⬜ | |
-| CB1, CB2 | auto | ⬜ | Pending the first CI run. |
-| SW1, SW2 | auto | ⬜ | Pending the first CI run. |
-| RG1, RG2 | auto | ⬜ | Pending the first CI run. |
+| CB1 | auto | ✅ | "Files to include, grouping, All files, check box, half checked" |
+| CB2 | auto | ✅ | "Send me a summary when a task finishes, check box, checked, One email per task, never more." |
+| SW1 | auto | ✅ | "Apply edits automatically, switch, off, Each edit waits for your approval." |
+| SW2 | auto | ✅ | "Edits apply as the agent makes them. Undo is always there. on": the new hint, then the state |
+| RG1 | auto | ✅ | "When should edits need you?, grouping. Approve each edit, radio button, checked, Every change waits, as a diff., 1 of 3" |
+| RG2 | auto | ✅ | "Review at the end, radio button, checked, Edits apply as the agent works; review them all together., 2 of 3" |
 | CM1 | auto | ✅ | "Commands, combo box, expanded, has auto complete, editable, Search commands…", after the dialog. The first run caught it skipping the field and reading "Esc"; fixed. |
 | CM2 | auto | ✅ | "Commands, list. Tasks, grouping. Stop the agent, 2 of 7" |
 | CM3 | auto | ✅ | "1 command" as you type, then the best match: "Toggle theme, 1 of 1" |

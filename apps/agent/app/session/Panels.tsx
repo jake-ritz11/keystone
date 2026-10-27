@@ -18,6 +18,8 @@ export function PlanPanel({ state, dispatch }: { state: SessionState; dispatch: 
   const [feedback, setFeedback] = useState("");
   if (!state.plan) return null;
   const awaiting = !state.planApproved && state.status === "waiting";
+  const done = state.plan.filter((step) => step.status === "done").length;
+  const total = state.plan.length;
 
   return (
     <section className={styles.plan} aria-labelledby="plan-heading" data-plan data-awaiting={awaiting || undefined}>
@@ -25,7 +27,17 @@ export function PlanPanel({ state, dispatch }: { state: SessionState; dispatch: 
         <h2 id="plan-heading" className={styles.panelTitle}>
           Plan
         </h2>
-        {awaiting && <Badge tone="accent">Waiting for your approval</Badge>}
+        {awaiting ? (
+          <Badge tone="accent">Waiting for your approval</Badge>
+        ) : (
+          <span className={styles.planCount}>
+            {done} of {total} done
+          </span>
+        )}
+      </div>
+      {/* The count above says it in words; the bar shows it at a glance. */}
+      <div className={styles.meter} aria-hidden="true">
+        <span style={{ "--done": total ? done / total : 0 } as React.CSSProperties} data-complete={(total > 0 && done === total) || undefined} />
       </div>
       <ol className={styles.steps}>
         {state.plan.map((step, i) => (

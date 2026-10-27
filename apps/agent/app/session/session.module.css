@@ -116,6 +116,7 @@
 }
 
 .scroller {
+  grid-area: 1 / 1;
   display: flex;
   flex-direction: column;
   gap: var(--ks-space-4);
@@ -128,7 +129,66 @@
   scroll-padding-block-start: calc(var(--plan-height, 0px) + var(--ks-space-3));
 }
 
+/*
+ * Floats over the bottom of the conversation when the user has scrolled up: it shares the
+ * scroller's grid cell, so it sits just above the composer without measuring anything. Rises
+ * in; it leaves the moment they're back at the end, so it has no exit to animate.
+ */
+.jump {
+  z-index: 2;
+  grid-area: 1 / 1;
+  align-self: end;
+  justify-self: center;
+  margin-bottom: var(--ks-space-3);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ks-space-1);
+  border: 1px solid var(--ks-color-border);
+  border-radius: var(--ks-radius-full);
+  padding: var(--ks-space-1) var(--ks-space-3);
+  background: var(--ks-color-surface-raised);
+  color: var(--ks-color-text);
+  box-shadow: 0 4px 12px var(--ks-color-shadow);
+  font: inherit;
+  font-size: var(--ks-font-size-sm);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition:
+    opacity var(--ks-motion-duration-normal) var(--ks-motion-easing-standard),
+    translate var(--ks-motion-duration-normal) var(--ks-motion-easing-standard),
+    border-color var(--ks-motion-duration-fast) var(--ks-motion-easing-standard);
+}
+
+@starting-style {
+  .jump {
+    opacity: 0;
+    translate: 0 var(--ks-space-2);
+  }
+}
+
+.jump svg {
+  width: 1em;
+  height: 1em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.jump:focus-visible {
+  outline: 2px solid var(--ks-color-focus);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) {
+  .jump:hover {
+    border-color: var(--ks-color-border-strong);
+  }
+}
+
 .footer {
+  grid-area: 2 / 1;
   border-top: 1px solid var(--ks-color-border);
   padding: var(--ks-space-2) var(--ks-space-5) var(--ks-space-4);
   background: var(--ks-color-bg);
@@ -255,6 +315,14 @@
   font-size: var(--ks-font-size-sm);
 }
 
+.elapsed {
+  margin-inline-start: var(--ks-space-2);
+  color: var(--ks-color-text-muted);
+  font-size: var(--ks-font-size-xs);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
 .notice[data-tone="danger"] {
   color: var(--ks-color-danger);
 }
@@ -365,6 +433,47 @@
   justify-content: space-between;
   gap: var(--ks-space-2);
   margin-bottom: var(--ks-space-2);
+}
+
+.planCount {
+  color: var(--ks-color-text-muted);
+  font-size: var(--ks-font-size-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Fills as steps complete; turns success color when the plan is done. */
+.meter {
+  height: var(--ks-space-1);
+  margin-bottom: var(--ks-space-3);
+  overflow: hidden;
+  border-radius: var(--ks-radius-full);
+  background: var(--ks-color-surface-raised);
+}
+
+.meter > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--ks-color-accent);
+  transform: scaleX(var(--done));
+  transform-origin: left;
+  transition:
+    transform var(--ks-motion-duration-slow) var(--ks-motion-easing-standard),
+    background-color var(--ks-motion-duration-slow) var(--ks-motion-easing-standard);
+}
+
+.meter > span:dir(rtl) {
+  transform-origin: right;
+}
+
+.meter > span[data-complete] {
+  background: var(--ks-color-success);
+}
+
+@media (forced-colors: active) {
+  .meter > span {
+    background: Highlight;
+  }
 }
 
 .panelTitle {
@@ -594,11 +703,13 @@
   }
 
   .task,
+  .jump,
   .entry,
   .review,
   .plan,
   .step,
-  .stepMark {
+  .stepMark,
+  .meter > span {
     transition: none;
   }
 

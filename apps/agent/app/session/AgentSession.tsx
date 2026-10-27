@@ -50,6 +50,19 @@ export function AgentSession({ task, variant, transport, mode }: { task: SampleT
   }, [finished, state.status, study]);
   const scroller = useRef<HTMLDivElement>(null);
   const pinned = useRef(true);
+  // Mirrors `pinned` for rendering: the pill shows only while the user has scrolled away.
+  const [away, setAway] = useState(false);
+
+  const jumpToLatest = () => {
+    const el = scroller.current;
+    if (!el) return;
+    pinned.current = true;
+    setAway(false);
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    el.scrollTo({ top: el.scrollHeight, behavior: reduce ? "auto" : "smooth" });
+    // The pill is about to go; put focus where the next move is, not on <body>.
+    el.closest("section")?.querySelector<HTMLTextAreaElement>("textarea")?.focus({ preventScroll: true });
+  };
 
   // The plan is sticky. Tell the scroller its height, so focusing or scrolling to anything
   // keeps it below the plan instead of hidden behind it (WCAG 2.4.11, focus not obscured).
@@ -80,6 +93,7 @@ export function AgentSession({ task, variant, transport, mode }: { task: SampleT
             onScroll={(event) => {
               const el = event.currentTarget;
               pinned.current = el.scrollHeight - el.scrollTop - el.clientHeight < 48;
+              if (away === pinned.current) setAway(!pinned.current);
             }}
           >
             <PlanPanel state={state} dispatch={dispatch} />
@@ -95,6 +109,14 @@ export function AgentSession({ task, variant, transport, mode }: { task: SampleT
               />
             )}
           </div>
+          {away && (
+            <button type="button" className={styles.jump} onClick={jumpToLatest}>
+              <svg viewBox="0 0 16 16" aria-hidden="true">
+                <path d="M8 3v10M3.5 8.5 8 13l4.5-4.5" />
+              </svg>
+              Jump to latest
+            </button>
+          )}
           <div className={styles.footer}>
             <p className={styles.status} role="status" data-status={state.status}>
               {STATUS_TEXT[state.status] ?? ""}

@@ -1,6 +1,7 @@
 "use client";
 
 import type { Action, Item, SessionState, ToolItem } from "@keystone-ui/agent-core";
+import { useEffect, useRef, useState } from "react";
 import { Disclosure, Shimmer } from "@keystone-ui/ui";
 import { isWrite, summarize, describeTool } from "./describe";
 import { useSessionLog } from "../study/SessionLog";
@@ -56,11 +57,7 @@ function Entry({ row, live, approval, dispatch }: { row: Row; live: boolean; app
         </p>
       );
     case "progress":
-      return (
-        <p className={styles.progress}>
-          <Shimmer active={live}>{row.text || "Thinking…"}</Shimmer>
-        </p>
-      );
+      return <Progress text={row.text} live={live} />;
     case "notice":
       return (
         <p className={styles.notice} data-tone={row.tone}>
@@ -80,4 +77,37 @@ function Entry({ row, live, approval, dispatch }: { row: Row; live: boolean; app
     case "tool":
       return <ToolRow item={row} approval={approval} dispatch={dispatch} />;
   }
+}
+
+/**
+ * A line of the agent's thinking, timed while it's the newest thing happening: "Thinking… 3s",
+ * then "4s" once the agent moves on. The time is measured here, for display only; it isn't
+ * session state, and a row that was never live shows no time.
+ */
+function Progress({ text, live }: { text: string; live: boolean }) {
+  const started = useRef<number | null>(live ? Date.now() : null);
+  const [seconds, setSeconds] = useState(0);
+
+  useEffect(() => {
+    if (!live || started.current === null) return;
+    const tick = () => setSeconds(Math.floor((Date.now() - started.current!) / 1000));
+    tick();
+    const timer = setInterval(tick, 1000);
+    return () => {
+      clearInterval(timer);
+      tick();
+    };
+  }, [live]);
+
+  return (
+    <p className={styles.progress}>
+      <Shimmer active={live}>{text || (live ? "Thinking…" : "Thought")}</Shimmer>
+      {started.current !== null && (seconds > 0 || !live) && (
+        <span className={styles.elapsed}>
+          <span className={styles.visuallyHidden}>, </span>
+          {live ? `${seconds}s` : `for ${Math.max(seconds, 1)}s`}
+        </span>
+      )}
+    </p>
+  );
 }

@@ -167,7 +167,8 @@ results are NVDA with Chrome on Windows Server 2025, and quote what NVDA said.
 | SL1 | auto | ✅ | "Steps before checking in, slider, 8 steps, The agent works longer on its own between check-ins." |
 | SL2 | auto | ✅ | "9 steps" |
 | PR1 | auto | ✅ | "progress bar, 3 of 12 files". In browse mode NVDA gives the bar its own line and reads the label as the line above, rather than repeating it. |
-| TG1, TG2 | auto | ⬜ | |
+| TG1 | auto | ✅ | "Show in the activity log, grouping, Edits, toggle button, pressed" |
+| TG2 | auto | ✅ | "not pressed" |
 | CM1 | auto | ✅ | "Commands, combo box, expanded, has auto complete, editable, Search commands…", after the dialog. The first run caught it skipping the field and reading "Esc"; fixed. |
 | CM2 | auto | ✅ | "Commands, list. Tasks, grouping. Stop the agent, 2 of 7" |
 | CM3 | auto | ✅ | "1 command" as you type, then the best match: "Toggle theme, 1 of 1" |

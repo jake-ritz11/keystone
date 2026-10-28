@@ -48,7 +48,8 @@ for (const { slug } of COMPONENTS) {
       expect(count).toBeGreaterThan(0);
       for (let i = 0; i < count; i++) {
         const example = examples.nth(i);
-        const title = await example.locator("h3").innerText();
+        // The example's own title is its first heading; a demo may have headings of its own.
+        const title = await example.locator("h3").first().innerText();
         await expect(example.locator(".example-preview")).toHaveScreenshot(`${slug}--${slugify(title)}--${theme}.png`);
       }
     });

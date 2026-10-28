@@ -111,7 +111,7 @@ export function Response() {
         {text ? undefined : <span className="note">Nothing yet. Play the response to start the stream.</span>}
       </StreamingText>
       <section className="heard">
-        <h3>What a screen reader is given</h3>
+        <h4>What a screen reader is given</h4>
         {mode === "text" ? (
           <p className="note">
             The whole text is a live region, so each of its {updates} changes so far is given to the screen reader, and the screen

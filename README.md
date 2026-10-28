@@ -91,12 +91,15 @@ same sentence; a test fails if the generated file is stale or a prop has no JSDo
 
 ## Roadmap
 
-1. **The kit**: core components (input, select, dialog, menu, tabs, tooltip, toast), token
-   docs, a "generate component" MCP tool, and a published package.
-2. **An agent interface built on the kit**: a web app for working with an AI agent (plans,
-   tool calls, diffs, approvals), with each interaction idea as a switchable variant. See
-   [docs/phase-2-plan.md](docs/phase-2-plan.md) and the reasoning behind each variant in
-   [docs/variants.md](docs/variants.md).
-3. **A user study**: testers switch variants and suggest changes in the app, with consent-based
-   logging. The results get published as a case study. The plan, measures and data dictionary
-   are in [docs/study-plan.md](docs/study-plan.md); the instrumentation is built.
+1. **The kit**: built. 23 components, two-tier tokens with high contrast, the MCP server, and
+   docs whose props tables are generated from the source. Still to do: publish the packages to
+   npm, with changesets for the changelog from then on.
+2. **An agent interface built on the kit**: built. A web app for working with an AI agent
+   (plans, tool calls, diffs, approvals, file references you can follow), with each interaction
+   idea as a switchable variant. See [docs/phase-2-plan.md](docs/phase-2-plan.md) and the
+   reasoning behind each variant in [docs/variants.md](docs/variants.md). Still to do: deploy it
+   with live mode switched on.
+3. **A user study**: not started. Testers switch variants and suggest changes in the app, with
+   consent-based logging, and the results get published as a case study. The plan, measures and
+   data dictionary are in [docs/study-plan.md](docs/study-plan.md); the instrumentation is built.
+   It needs the deployed app.

@@ -22,6 +22,7 @@ export const CHECK_PREFIXES: Record<string, string | null> = {
   PR: "progress",
   TG: "toggle-group",
   PO: "popover",
+  AC: "accordion",
   CM: "command-menu",
   TT: "tooltip",
   TO: "toast",

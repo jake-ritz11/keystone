@@ -230,6 +230,19 @@ test("PO1, PO2: a popover is announced as a dialog by name, and closing returns 
   expectSaid(closed, "share", "button", "collapsed");
 });
 
+test("AC1, AC2: an accordion section is a heading with a button, and says when it expands", async ({ page, nvda }) => {
+  await open(page, nvda, "/components/accordion");
+  expectSaid(
+    await reach(nvda, page.getByRole("heading", { name: "Can I undo an edit?" }).getByRole("button"), "AC1"),
+    "can i undo an edit",
+    "button",
+    "collapsed",
+    /heading,? level 4|level 4/i,
+  );
+  await nvda.press("Enter");
+  expectSaid(await heard(nvda, "AC2"), "expanded");
+});
+
 test("RG1, RG2: a radio group reads its question, then the answer and its position", async ({ page, nvda }) => {
   await open(page, nvda, "/components/radio-group");
   expectSaid(

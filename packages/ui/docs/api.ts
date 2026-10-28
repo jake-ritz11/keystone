@@ -34,6 +34,7 @@ export const COMPONENTS: ComponentSummary[] = [
   { slug: "command-menu", name: "CommandMenu", imports: ["CommandMenu"], summary: "Every action in one searchable list, behind a keyboard shortcut." },
   { slug: "popover", name: "Popover", imports: ["Popover"], summary: "Interactive content beside its trigger, as a non-modal dialog on the popover API." },
   { slug: "tooltip", name: "Tooltip", imports: ["Tooltip"], summary: "Hover and focus hints that follow WCAG's rules for content on hover." },
+  { slug: "accordion", name: "Accordion", imports: ["Accordion", "AccordionItem"], summary: "Sections under real headings, one or several open, still found by find-in-page." },
   { slug: "disclosure", name: "Disclosure", imports: ["Disclosure"], summary: "Show and hide a section, on the native details element." },
   { slug: "badge", name: "Badge", imports: ["Badge"], summary: "A short, static label for a status or a category." },
   { slug: "shimmer", name: "Shimmer", imports: ["Shimmer"], summary: "Live text: a light sweeps across it while the work it names is happening." },
@@ -136,6 +137,42 @@ export const api: Record<string, ComponentApi> = {
         ],
       },
       FIELD,
+    ],
+  },
+  accordion: {
+    parts: [
+      {
+        interface: "AccordionProps",
+        source: "packages/ui/src/accordion/Accordion.tsx",
+        extends: "every <div> attribute except defaultValue and onChange",
+        note: "Values are always an array, with or without multiple.",
+        props: [
+          { name: "multiple", type: "boolean", default: "false", description: "Any number open at once. Without it, opening one closes the others." },
+          { name: "value", type: "string[]", description: "The open items, when controlled." },
+          { name: "defaultValue", type: "string[]", default: "[]", description: "The items open at first, when uncontrolled." },
+          { name: "onValueChange", type: "(value: string[]) => void", description: "Called with the open items after a change." },
+          { name: "headingLevel", type: "2 | 3 | 4 | 5 | 6", default: "3", description: "The heading level of each title, to fit the page's outline." },
+          { name: "children", type: "ReactNode", required: true, description: "AccordionItem elements." },
+        ],
+      },
+      {
+        interface: "AccordionItemProps",
+        source: "packages/ui/src/accordion/Accordion.tsx",
+        extends: "every <div> attribute except title",
+        props: [
+          { name: "value", type: "string", required: true, description: "Identifies the item in value." },
+          { name: "title", type: "ReactNode", required: true, description: "The heading, and the button that opens and closes the section." },
+          { name: "meta", type: "ReactNode", description: "Shown at the end of the heading, e.g. a Badge; part of the button's name." },
+          { name: "disabled", type: "boolean", default: "false", description: "Can't be opened or closed, and the arrow keys skip it." },
+          { name: "children", type: "ReactNode", required: true, description: "The section's content." },
+        ],
+      },
+    ],
+    keyboard: [
+      { keys: "Tab", action: "To each heading's button in turn, then into an open section's content." },
+      { keys: "Enter, Space", action: "Opens or closes the focused section." },
+      { keys: "Down, Up", action: "Next or previous heading; wraps and skips disabled ones." },
+      { keys: "Home, End", action: "First or last heading." },
     ],
   },
   disclosure: {

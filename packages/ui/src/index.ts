@@ -64,3 +64,6 @@ export type { ToggleGroupProps, ToggleOption } from "./toggle-group/ToggleGroup"
 
 export { Popover } from "./popover/Popover";
 export type { PopoverProps } from "./popover/Popover";
+
+export { Accordion, AccordionItem } from "./accordion/Accordion";
+export type { AccordionItemProps, AccordionProps } from "./accordion/Accordion";

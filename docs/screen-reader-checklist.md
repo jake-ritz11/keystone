@@ -106,7 +106,7 @@ missing or announced twice.
 | TT2 | Tab to the icon-only search button | "Search, button", from the tooltip as its name |
 | TT3 | Press Escape | Tooltip hides; NVDA doesn't announce a focus change |
 
-### Checkbox, Switch, RadioGroup, Slider, Progress, ToggleGroup, Popover
+### Checkbox, Switch, RadioGroup, Slider, Progress, ToggleGroup, Popover, Accordion
 
 | # | Do | Expect |
 | --- | --- | --- |
@@ -122,6 +122,8 @@ missing or announced twice.
 | TG2 | Press Space | "not pressed" |
 | PO1 | Tab to "Share" on `/components/popover`, press Enter | "Share this session, dialog", then "Link, edit" with its value |
 | PO2 | Press Escape (twice from a text field: NVDA takes the first to leave focus mode) | Back on "Share, button, collapsed" |
+| AC1 | Tab to "Can I undo an edit?" on `/components/accordion` | "heading, level 4, Can I undo an edit?, button, collapsed" |
+| AC2 | Press Enter | "expanded" |
 | PR1 | On `/components/progress`, Tab to "Upload another", then Up arrow in browse mode | "Uploading files" just before "progress bar, 3 of 12 files" |
 
 ### Toast (`/components/toast`)
@@ -172,6 +174,7 @@ results are NVDA with Chrome on Windows Server 2025, and quote what NVDA said.
 | TG1 | auto | ✅ | "Show in the activity log, grouping, Edits, toggle button, pressed" |
 | TG2 | auto | ✅ | "not pressed" |
 | PO1, PO2 | auto | ⬜ | |
+| AC1, AC2 | auto | ⬜ | |
 | CM1 | auto | ✅ | "Commands, combo box, expanded, has auto complete, editable, Search commands…", after the dialog. The first run caught it skipping the field and reading "Esc"; fixed. |
 | CM2 | auto | ✅ | "Commands, list. Tasks, grouping. Stop the agent, 2 of 7" |
 | CM3 | auto | ✅ | "1 command" as you type, then the best match: "Toggle theme, 1 of 1" |

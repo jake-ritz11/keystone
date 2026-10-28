@@ -21,7 +21,7 @@ export default function DisclosurePage() {
         <Example title="Bordered, with a status" file="disclosure/Disclosures.tsx">
           <Disclosures />
         </Example>
-        <Example title="Exclusive group" file="disclosure/Accordion.tsx" note="Opening one closes the others, through the native name attribute.">
+        <Example title="Exclusive group" file="disclosure/Accordion.tsx" note="Opening one closes the others, through the native name attribute. When the sections need headings or arrow keys, use Accordion.">
           <Accordion />
         </Example>
       </Section>

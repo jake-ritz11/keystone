@@ -1,0 +1,91 @@
+.accordion {
+  min-width: 0;
+  color: var(--ks-color-text);
+  font-family: var(--ks-font-family-sans);
+  font-size: var(--ks-font-size-sm);
+}
+
+/* A plain list of sections, divided by rules, like Disclosure's plain variant. */
+.item {
+  border-block-end: 1px solid var(--ks-color-border);
+}
+
+.heading {
+  margin: 0;
+  font: inherit;
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--ks-space-2);
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  padding: var(--ks-space-3) 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: var(--ks-font-weight-medium);
+  text-align: start;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.trigger:focus-visible {
+  border-radius: var(--ks-radius-sm);
+  outline: 2px solid var(--ks-color-focus);
+  outline-offset: 2px;
+}
+
+.trigger:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+@media (hover: hover) {
+  .trigger:hover:not(:disabled) .title {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+}
+
+.chevron {
+  flex-shrink: 0;
+  color: var(--ks-color-text-muted);
+  transition: rotate var(--ks-motion-duration-fast) var(--ks-motion-easing-standard);
+}
+
+.item[data-open] .chevron {
+  rotate: 90deg;
+}
+
+/* Mirrored in right-to-left text, so the closed chevron points along the reading direction. */
+.trigger:dir(rtl) .chevron {
+  scale: -1 1;
+}
+
+.title {
+  flex: 1;
+  min-width: 0;
+}
+
+.meta {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--ks-space-2);
+  font-weight: var(--ks-font-weight-regular);
+}
+
+/* Lines up with the title's text, past the chevron (16px icon + gap). */
+.panel {
+  padding-block-end: var(--ks-space-3);
+  padding-inline-start: calc(var(--ks-space-4) + var(--ks-space-2));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chevron {
+    transition: none;
+  }
+}

@@ -219,8 +219,15 @@ test("PO1, PO2: a popover is announced as a dialog by name, and closing returns 
   expectSaid(await reach(nvda, page.getByRole("button", { name: "Share", exact: true }), "PO1 (trigger)"), "share", "button", "collapsed");
   await nvda.press("Enter");
   expectSaid(await heard(nvda, "PO1"), "share this session", "dialog", "link");
+  // Focus is in a text field, so NVDA is in focus mode and takes the first Escape itself, to
+  // leave it. A second Escape reaches the page.
   await nvda.press("Escape");
-  expectSaid(await heard(nvda, "PO2"), "share", "button", "collapsed");
+  let closed = await heard(nvda, "PO2 (first Escape)");
+  if (!/button/i.test(closed)) {
+    await nvda.press("Escape");
+    closed = await heard(nvda, "PO2");
+  }
+  expectSaid(closed, "share", "button", "collapsed");
 });
 
 test("RG1, RG2: a radio group reads its question, then the answer and its position", async ({ page, nvda }) => {

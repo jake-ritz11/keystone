@@ -121,7 +121,7 @@ missing or announced twice.
 | TG1 | Tab to "Edits" on `/components/toggle-group` | "Show in the activity log, grouping, Edits, toggle button, pressed" |
 | TG2 | Press Space | "not pressed" |
 | PO1 | Tab to "Share" on `/components/popover`, press Enter | "Share this session, dialog", then "Link, edit" with its value |
-| PO2 | Press Escape | Back on "Share, button, collapsed" |
+| PO2 | Press Escape (twice from a text field: NVDA takes the first to leave focus mode) | Back on "Share, button, collapsed" |
 | PR1 | On `/components/progress`, Tab to "Upload another", then Up arrow in browse mode | "Uploading files" just before "progress bar, 3 of 12 files" |
 
 ### Toast (`/components/toast`)

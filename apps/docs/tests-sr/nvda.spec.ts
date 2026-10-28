@@ -10,6 +10,7 @@
  */
 import { expect, type Locator, type Page } from "@playwright/test";
 import { nvdaTest as test } from "@guidepup/playwright";
+import { NVDAClient } from "@guidepup/guidepup/lib/windows/NVDA/NVDAClient.js";
 
 type NVDA = Parameters<Parameters<typeof test>[2]>[0]["nvda"];
 
@@ -258,22 +259,34 @@ test("RG1, RG2: a radio group reads its question, then the answer and its positi
   expectSaid(await heard(nvda, "RG2"), "review at the end", "2 of 3", "review them all together");
 });
 
-/** Everything NVDA says over `ms`, however long the pauses between phrases. */
-async function listen(nvda: NVDA, ms: number, check: string): Promise<string[]> {
+/**
+ * Everything NVDA says from pressing `key` until `ms` later. Guidepup records speech only until
+ * NVDA has been quiet for a second after a key, and a stream with pauses outlasts that: the first
+ * run recorded two of six sentences, while the page had given NVDA all six. So a second
+ * connection to NVDA's relay listens for the whole time instead.
+ */
+async function listen(nvda: NVDA, key: string, ms: number, check: string): Promise<string[]> {
+  const listener = new NVDAClient();
+  await listener.connect({ capture: false });
+  const phrases: string[] = [];
+  const onSpeak = (phrase: string) => phrases.push(phrase);
+  listener.on("speak", onSpeak);
+  await nvda.press(key);
   await new Promise((resolve) => setTimeout(resolve, ms));
-  const log = await nvda.spokenPhraseLog();
+  listener.off("speak", onSpeak);
+  listener.disconnect();
   await nvda.clearSpokenPhraseLog();
-  console.log(`[${check}] ${log.join(" | ")}`);
-  return log;
+  console.log(`[${check}] ${phrases.length} phrases: ${phrases.join(" | ")}`);
+  return phrases;
 }
 
 test("ST1, ST2: a streamed response is read a sentence at a time, each sentence once", async ({ page, nvda }) => {
   await open(page, nvda, "/components/streaming-text");
   await reach(nvda, page.getByRole("button", { name: "Play response" }), "ST1 trigger");
-  await nvda.press("Enter");
-  const phrases = await listen(nvda, 14_000, "ST1");
+  const phrases = await listen(nvda, "Enter", 14_000, "ST1");
   const said = phrases.join(" ");
-  expectSaid(said, "found the problem in pagination.ts", "first page is skipped", "nothing else does", "all 14 tests pass");
+  // NVDA reads the file name as "pagination dot ts".
+  expectSaid(said, "found the problem in pagination", "first page is skipped", "checking what else calls", "nothing else does", "all 14 tests pass");
   // ST2: no sentence is said in pieces or twice, which is what a live region on the text itself does.
   for (const sentence of ["first page is skipped", "added a test for the first page"]) {
     expect(said.toLowerCase().split(sentence).length - 1, sentence).toBe(1);
@@ -286,8 +299,8 @@ test("ST3: for comparison, the same response with the text itself as the live re
   await open(page, nvda, "/components/streaming-text");
   await page.getByRole("radio", { name: "Live text" }).click();
   await reach(nvda, page.getByRole("button", { name: "Play response" }), "ST3 trigger");
-  await nvda.press("Enter");
-  const phrases = await listen(nvda, 14_000, "ST3");
+  const phrases = await listen(nvda, "Enter", 14_000, "ST3");
   const said = phrases.join(" ").toLowerCase();
-  console.log(`[ST3] ${phrases.length} phrases; "first page is skipped" said ${said.split("first page is skipped").length - 1} times`);
+  console.log(`[ST3] ${phrases.length} phrases; "first page is skipped" in ${said.split("first page is skipped").length - 1} of them`);
 });
+

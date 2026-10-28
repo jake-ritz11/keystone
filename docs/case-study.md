@@ -129,9 +129,11 @@ announce only that it started and finished. Nobody had tested the middle.
 receives whole sentences: everything up to the last sentence that has finished, as one
 announcement, with an unfinished sentence said only once the stream pauses for 1.5 seconds. In
 the example, the region receives 6 announcements, which are the response's 6 sentences in
-order. The behavior tests prove that on a fake clock in three browser engines, and NVDA in CI
-checks that each sentence is spoken once. A comparison check records what NVDA says when the
-text itself is the live region. The full reasoning, the sources and the limits are in
+order. The behavior tests prove that on a fake clock in three browser engines. In CI, NVDA spoke
+the 6 sentences as 6 utterances, each once. With the text itself as the live region, NVDA began
+25 utterances, each starting again from the first word. The first NVDA run reported only 2 of
+the 6 sentences, and the fault was in my test: its recorder stopped listening at the first pause
+in the stream. The full reasoning, the sources and the limits are in
 [Streaming and screen readers](streaming.md). The claim that matters, that a sentence at a time
 is easier to follow than silence, needs listeners, and no test can make it.
 

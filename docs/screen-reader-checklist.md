@@ -189,9 +189,9 @@ said.
 | AC2 | auto | ✅ | "expanded" |
 | CM1 | auto | ✅ | "Commands, combo box, expanded, has auto complete, editable, Search commands…", after the dialog. The first run found that it skipped the field and read "Esc", and I fixed that. |
 | CM2 | auto | ✅ | "Commands, list. Tasks, grouping. Stop the agent, 2 of 7" |
-| ST1 | auto | ⬜ | Waiting for the first CI run. |
-| ST2 | auto | ⬜ | Waiting for the first CI run. |
-| ST3 | auto | ⬜ | Waiting for the first CI run. |
+| ST1 | auto | ✅ | Six utterances, one per sentence, starting 1.1, 2.1, 4.0, 5.5, 6.3 and 6.6 seconds after Enter: "I found the problem in pagination dot ts.", then each sentence in turn. The unfinished "Checking what else calls first Page" came 1.5 seconds into the pause, as designed. |
+| ST2 | auto | ✅ | No sentence read twice or in pieces, and no backticks read out. |
+| ST3 | auto | ✅ | Recorded, not checked: 25 utterances, each starting again from "I"; "first page is skipped" was in 15 of them. |
 | CM3 | auto | ✅ | "1 command" as you type, then the best match: "Toggle theme, 1 of 1" |
 | TT1 | auto | ✅ | "Hover or focus me, button, Saves a copy to your workspace" |
 | TT2, TT3 | manual | ⬜ | |

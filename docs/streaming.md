@@ -85,9 +85,20 @@ had arrived, so that what was said matched what was shown. These tests prove wha
 reader is given. They do not prove what it says.
 
 The NVDA tests (`apps/docs/tests-sr/nvda.spec.ts`, checks ST1 to ST3) listen to the same example
-with a real NVDA in CI. ST1 and ST2 check that each sentence is spoken, and that no sentence is
-spoken in pieces or twice. ST3 records the comparison: the same response with the visible text as
-the live region. Its results are in the [screen-reader checklist](screen-reader-checklist.md).
+with a real NVDA and Chrome in CI. With `StreamingText`, NVDA spoke 6 utterances, which were the
+6 sentences, each once, starting between 1.1 and 6.6 seconds after the response began. With the
+visible text as the live region instead, NVDA began 25 utterances. Each started again from the
+first word of the response, and the second sentence was in 15 of them. The same 7 seconds of
+text took NVDA about 25 restarts to get through, and a listener would hear the opening words of
+the response over and over.
+
+The first run of these tests reported something else, and the cause was the test. Guidepup
+records what NVDA says after a key press until NVDA has been quiet for one second. The stream
+pauses for two seconds after its second sentence, so the recording stopped there, and the test
+reported that NVDA said two sentences out of six. A probe that logged the live region showed the
+page had given NVDA all six on time. The tests now open a second connection to NVDA's relay and
+listen for the whole stream. Without that probe I would have concluded that NVDA drops
+announcements after a pause, and I would have changed a component that was working.
 
 ## What is not proven
 

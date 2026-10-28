@@ -9,18 +9,18 @@ export default function ProgressPage() {
   return (
     <DocPage
       title="Progress"
-      lede="How far along some work is. When the amount isn't known yet, leave out the value and it shows the work is happening."
+      lede="Shows how far along some work is. When the amount is not known yet, leave out the value, and the bar shows that the work is happening."
       builtOn={<code>&lt;progress&gt;</code>}
       source="packages/ui/src/progress"
     >
       <Section title="Examples">
-        <Example title="With a value" file="progress/Determinate.tsx" note="A percentage by default; formatValue says it in the task's own units.">
+        <Example title="With a value" file="progress/Determinate.tsx" note="The value is a percentage by default, and formatValue states it in the units of the task.">
           <Determinate />
         </Example>
         <Example
           title="Indeterminate"
           file="progress/Indeterminate.tsx"
-          note="A band travels along the bar. With reduced motion it's stripes instead, so it can't be read as an amount."
+          note="A band travels along the bar. With reduced motion the bar shows stripes instead, so that it cannot be read as an amount."
         >
           <Indeterminate />
         </Example>
@@ -33,12 +33,12 @@ export default function ProgressPage() {
       <Section title="Accessibility">
         <Notes
           items={[
-            <>A native progress bar, named by its label and announced with its value.</>,
+            <>It is a native progress bar, named by its label and announced with its value.</>,
             <>
-              It doesn&apos;t announce as it moves, which would be noise. Say when the work is done, with a toast or a
-              status message.
+              It does not announce as it moves, because that would be noise. Say when the work is done with a toast or
+              a status message.
             </>,
-            <>Not focusable: it&apos;s a status, not a control. Screen readers find it while reading.</>,
+            <>It is not focusable, because it is a status and not a control. Screen readers find it while reading.</>,
           ]}
         />
       </Section>

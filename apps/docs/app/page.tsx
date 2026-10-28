@@ -10,9 +10,8 @@ export default function Overview() {
       <header className="doc-header">
         <h1>Keystone</h1>
         <p className="lede">
-          A token-driven React design system, built on the web platform and tested in real
-          browsers, with an MCP server so Claude can build components from it and audit them
-          against it.
+          A token-driven React design system built on the web platform and tested in real browsers. It
+          includes an MCP server so that Claude can build components from it and audit them against it.
         </p>
       </header>
 
@@ -29,17 +28,16 @@ export default function Overview() {
           <li>
             <h3>Platform first</h3>
             <p>
-              Dialog is a <code>&lt;dialog&gt;</code>, Menu and Tooltip are popovers, Select is a
-              select. Keystone adds what the browser leaves out: keyboard models, controlled
-              state, announcements.
+              Dialog is a <code>&lt;dialog&gt;</code>, Menu and Tooltip are popovers, and Select is a
+              select. Keystone adds the keyboard models, controlled state and announcements that the browser
+              leaves out.
             </p>
           </li>
           <li>
             <h3>Proven in browsers</h3>
             <p>
-              Keyboard, focus and ARIA behavior is tested with Playwright in Chromium, WebKit
-              and Firefox, and every example is compared against screenshots in both themes, on
-              every push.
+              On every push, keyboard, focus and ARIA behavior is tested with Playwright in Chromium, WebKit
+              and Firefox, and every example is compared against screenshots in both themes.
             </p>
           </li>
         </ul>
@@ -62,9 +60,9 @@ export default function Overview() {
       <section className="doc-section" aria-labelledby="tested">
         <h2 id="tested">How each component is tested</h2>
         <p>
-          Every page passes axe in light, dark and both high-contrast themes. Behavior specs and NVDA results are
+          Every page passes axe in light, dark and both high-contrast themes. The behavior specs and NVDA results are
           read from the tests and the <Link href="/writing/screen-reader-checklist">screen-reader checklist</Link>{" "}
-          when the site builds, so this table can&apos;t claim more than they show.
+          when the site builds, so this table cannot claim more than they show.
         </p>
         <div className="table-scroll" role="region" aria-label="Testing by component" tabIndex={0}>
           <table>
@@ -97,11 +95,11 @@ export default function Overview() {
         <h2 id="more">More</h2>
         <ul className="notes">
           <li>
-            <Link href="/tokens">Tokens</Link>: the full scale, in both themes.
+            <Link href="/tokens">Tokens</Link> shows the full scale in both themes.
           </li>
           <li>
-            <Link href="/writing/decisions">Decisions</Link>: why it's built this way, what broke,
-            and what the tests do and don't prove. More in <Link href="/writing">Writing</Link>.
+            <Link href="/writing/decisions">Decisions</Link> explains why it is built this way, what broke,
+            and what the tests do and do not prove. <Link href="/writing">Writing</Link> has more.
           </li>
           <li>
             <a href={REPO}>Source on GitHub</a>, including the MCP server and its{" "}

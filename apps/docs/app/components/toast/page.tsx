@@ -19,7 +19,7 @@ export default function ToastPage() {
       source="packages/ui/src/toast"
     >
       <Section title="Examples">
-        <Example title="Tones" file="toast/Tones.tsx" note="Each tone has its own icon, so color isn't the only signal.">
+        <Example title="Tones" file="toast/Tones.tsx" note="Each tone has its own icon, so color is not the only signal.">
           <Tones />
         </Example>
         <Example title="Action and persistent" file="toast/ActionAndPersistent.tsx">
@@ -38,18 +38,17 @@ export default function ToastPage() {
         <Notes
           items={[
             <>
-              Messages are announced through live regions that are always in the page, since a
-              region added at the same moment as its text is often missed. Danger toasts use the
-              assertive one.
+              Messages are announced through live regions that are always in the page, because a
+              region added at the same moment as its text is often missed. Danger toasts use the assertive one.
             </>,
             <>
-              Timers pause while the pointer or focus is on the stack, so nobody loses a message
-              mid-read (WCAG 2.2.1).
+              Timers pause while the pointer or focus is on the stack, so nobody loses a message in the middle of reading
+              it (WCAG 2.2.1).
             </>,
             <>Every toast has a dismiss button named after its message.</>,
             <>
-              While a modal is open, the whole layer moves inside it. Otherwise the modal would make
-              it inert: visible, but neither clickable nor announced.
+              While a modal is open, the whole layer moves inside it. Otherwise the modal would make the layer inert, so
+              it would be visible but neither clickable nor announced.
             </>,
             <>Actions time out with the toast, so put the same action somewhere permanent too.</>,
           ]}

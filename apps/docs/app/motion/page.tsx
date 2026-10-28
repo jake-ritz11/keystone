@@ -113,32 +113,32 @@ export default function MotionPage() {
   return (
     <DocPage
       title="Motion"
-      lede="Motion says what changed and what's still happening. It never decorates, and it never makes anyone wait."
+      lede="Motion says what changed and what is still happening. It is not used as decoration, and it never makes anyone wait."
       source="packages/tokens"
     >
       <Section title="Principles">
         <Notes
           items={[
             <>
-              <strong>Every animation carries information.</strong> Something arrived, something is still running,
-              something finished. If it says nothing, it doesn&apos;t move.
+              <strong>Every animation carries information.</strong> It says that something arrived, is
+              still running or has finished. An element with nothing to say does not move.
             </>,
             <>
-              <strong>Entrances rise; exits fade.</strong> Arrivals move a few pixels so the eye finds them. Leaving is
-              quicker and doesn&apos;t move, since nobody needs to watch something go. Nothing scales, because scaled
-              text blurs.
+              <strong>Entrances rise; exits fade.</strong> Arriving elements move a few pixels so
+              that the eye finds them. Leaving is quicker and has no movement, because nobody needs to watch something
+              go. Nothing scales, because scaled text blurs.
             </>,
             <>
-              <strong>Loops are slow.</strong> Anything that repeats while work runs takes the two-second ambient cycle,
-              calm enough to sit beside text someone is reading.
+              <strong>Loops are slow.</strong> Anything that repeats while work runs uses the two-second ambient cycle,
+              which is calm enough to sit beside text that someone is reading.
             </>,
             <>
-              <strong>Nothing moves under the pointer.</strong> Layout stays put while things animate, so a click
-              always lands where it was aimed.
+              <strong>Nothing moves under the pointer.</strong> The layout stays in place while things animate, so a
+              click always lands where it was aimed.
             </>,
             <>
-              <strong>Reduced motion keeps the meaning.</strong> Movement goes; the state it showed stays, in words,
-              color or a still mark. The audit fails any component without a fallback.
+              <strong>Reduced motion keeps the meaning.</strong> The movement is removed, but the state it showed
+              remains, as words, color or a still mark. The audit fails any component without a fallback.
             </>,
           ]}
         />
@@ -146,8 +146,8 @@ export default function MotionPage() {
 
       <Section title="Easing">
         <p>
-          Two curves. Standard decelerates hard, so things arrive quickly and settle. Emphasized overshoots a little,
-          for the rare moment that should land like a beat.
+          There are two curves. Standard decelerates hard, so things arrive quickly and then settle. Emphasized
+          overshoots a little and is kept for the rare moment that should land like a beat.
         </p>
         <div className="easings">
           {Object.entries(motion.easing).map(([name, value]) => (
@@ -194,7 +194,7 @@ export default function MotionPage() {
       </Section>
 
       <Section title="Patterns">
-        <p>Every motion in the kit and the agent app, and what each becomes with reduced motion on.</p>
+        <p>This table lists every motion in the kit and the agent app, and what each one becomes when reduced motion is on.</p>
         <div className="table-scroll" role="region" aria-label="Motion patterns" tabIndex={0}>
           <table>
             <thead>

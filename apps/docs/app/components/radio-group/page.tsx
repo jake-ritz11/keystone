@@ -9,7 +9,7 @@ export default function RadioGroupPage() {
   return (
     <DocPage
       title="RadioGroup"
-      lede="One answer from a short list, with every option and its consequences in view. For switching a view in place, use SegmentedControl."
+      lede="One answer from a short list, with every option and its consequences in view. Use SegmentedControl for switching a view in place."
       builtOn={
         <>
           native radios in a <code>&lt;fieldset&gt;</code>
@@ -24,7 +24,7 @@ export default function RadioGroupPage() {
         <Example
           title="Required, in a row"
           file="radio-group/Required.tsx"
-          note="Press Continue with nothing chosen: the browser stops the form and the error appears."
+          note="If you press Continue with nothing chosen, the browser stops the form and the error appears."
         >
           <Required />
         </Example>
@@ -42,8 +42,8 @@ export default function RadioGroupPage() {
         <Notes
           items={[
             <>The legend names the group, so a screen reader reads the question before the first answer.</>,
-            <>The browser supplies the keyboard model: one Tab stop, arrows that select, and required validation.</>,
-            <>Each option&apos;s hint is tied to that option, so it&apos;s read only when that option is reached.</>,
+            <>The browser supplies the keyboard model (one Tab stop and arrow keys that select) and required validation.</>,
+            <>The hint of each option is tied to that option, so it is read only when that option is reached.</>,
             <>Selected is shown by a fill and a dot, not color alone.</>,
           ]}
         />

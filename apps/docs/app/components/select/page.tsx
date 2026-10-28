@@ -10,7 +10,7 @@ export default function SelectPage() {
   return (
     <DocPage
       title="Select"
-      lede="Pick one option from a list. It's a real select, so the keyboard model, mobile pickers and form submission come from the browser."
+      lede="Pick one option from a list. It is a real select, so the keyboard model, mobile pickers and form submission come from the browser."
       builtOn={
         <>
           <code>&lt;select&gt;</code> and <code>appearance: base-select</code>
@@ -19,7 +19,7 @@ export default function SelectPage() {
       source="packages/ui/src/select"
     >
       <Section title="Examples">
-        <Example title="Default and placeholder" file="select/Basics.tsx" note="With a placeholder and required, the prompt can't be chosen.">
+        <Example title="Default and placeholder" file="select/Basics.tsx" note="With a placeholder and required set, the prompt cannot be chosen.">
           <Basics />
         </Example>
         <Example title="Groups, error and disabled" file="select/GroupsAndErrors.tsx">
@@ -53,8 +53,8 @@ export default function SelectPage() {
         <Notes
           items={[
             <>Label, hint and error are wired exactly as in Input.</>,
-            <>Disabled options stay in the list, announced as unavailable, so people can see what exists.</>,
-            <>The placeholder renders in the muted color while it's selected, so it reads as a prompt, not a value.</>,
+            <>Disabled options stay in the list and are announced as unavailable, so people can see what exists.</>,
+            <>The placeholder renders in the muted color while it is selected, so that it reads as a prompt and not as a value.</>,
           ]}
         />
       </Section>

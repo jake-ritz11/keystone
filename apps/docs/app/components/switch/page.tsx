@@ -8,7 +8,7 @@ export default function SwitchPage() {
   return (
     <DocPage
       title="Switch"
-      lede="An on/off setting that applies the moment it changes. If a choice waits for a Save button, it's a Checkbox."
+      lede="An on/off setting that applies the moment it changes. If a choice waits for a Save button, use a Checkbox."
       builtOn={
         <>
           a native checkbox with <code>role=&quot;switch&quot;</code>
@@ -17,7 +17,7 @@ export default function SwitchPage() {
       source="packages/ui/src/switch"
     >
       <Section title="Examples">
-        <Example title="A settings list" file="switch/Settings.tsx" note="The first switch's hint says what the current state means.">
+        <Example title="A settings list" file="switch/Settings.tsx" note="The hint on the first switch says what the current state means.">
           <Settings />
         </Example>
       </Section>
@@ -33,9 +33,9 @@ export default function SwitchPage() {
       <Section title="Accessibility">
         <Notes
           items={[
-            <>Announced as a switch, on or off, rather than a checkbox that&apos;s checked.</>,
-            <>Name the setting, not the action. &quot;Email alerts, switch, on&quot; reads right; &quot;Turn on email alerts, switch, on&quot; doesn&apos;t.</>,
-            <>On is shown by the thumb&apos;s position and a fill, not color alone. In right-to-left text, on is to the left.</>,
+            <>It is announced as a switch that is on or off, instead of a checkbox that is checked.</>,
+            <>Name the setting instead of the action. &quot;Email alerts, switch, on&quot; reads correctly, and &quot;Turn on email alerts, switch, on&quot; does not.</>,
+            <>On is shown by the position of the thumb and a fill, not color alone. In right-to-left text, on is to the left.</>,
           ]}
         />
       </Section>

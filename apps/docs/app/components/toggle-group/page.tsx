@@ -9,7 +9,7 @@ export default function ToggleGroupPage() {
   return (
     <DocPage
       title="ToggleGroup"
-      lede="Buttons that stay pressed, side by side: formatting, filters, view options. If exactly one must always be chosen, use a SegmentedControl."
+      lede="Buttons side by side that stay pressed, for things such as formatting, filters and view options. If exactly one must always be chosen, use a SegmentedControl."
       builtOn={
         <>
           <code>&lt;button aria-pressed&gt;</code> in a group
@@ -21,7 +21,7 @@ export default function ToggleGroupPage() {
         <Example
           title="Icons, any number pressed"
           file="toggle-group/Formatting.tsx"
-          note="iconOnly hides the labels visually; they still name each button."
+          note="iconOnly hides the labels visually, but they still name each button."
         >
           <Formatting />
         </Example>
@@ -47,11 +47,12 @@ export default function ToggleGroupPage() {
           items={[
             <>Each button is announced as a toggle button, pressed or not pressed, inside a named group.</>,
             <>
-              One Tab stop, like a toolbar, so a long row doesn&apos;t cost a Tab press per button. The arrow keys only
-              move: pressing is always Space or Enter, since each button is its own setting.
+              The group is one Tab stop, like a toolbar, so a long row does not cost a Tab press per button. The
+              arrow keys only move focus, and pressing is always Space or Enter, because each button is its own
+              setting.
             </>,
-            <>Pressed is a filled button, a change in lightness rather than hue alone, in every theme.</>,
-            <>The arrow keys skip a disabled button, but it&apos;s still announced in place, so people know it exists.</>,
+            <>A pressed button is filled, which changes its lightness and not only its hue, in every theme.</>,
+            <>The arrow keys skip a disabled button, but it is still announced in place, so people know it exists.</>,
           ]}
         />
       </Section>

@@ -1,9 +1,10 @@
 # Mobile
 
-Most people who see this work will see it on a phone first: about 62% of web traffic worldwide
-came from phones in the second quarter of 2025, by StatCounter's count ([Statista][share]). This
-page sets the standards Keystone holds itself to on small screens, where each one comes from, and
-how it's checked. Every rule here has a test that fails when it's broken, in
+Most web traffic is now on phones. By StatCounter's count, about 62% of web traffic worldwide
+came from phones in the second quarter of 2025 ([Statista][share]), and there is no reason to
+expect readers of this project to differ much. This
+page sets out the standards that Keystone holds itself to on small screens, with the source of
+each one and how it is checked. Every rule here has a test that fails when the rule is broken, in
 `apps/docs/tests/mobile.spec.ts` and `apps/agent/tests/mobile.spec.ts`.
 
 ## The standards
@@ -11,79 +12,85 @@ how it's checked. Every rule here has a test that fails when it's broken, in
 ### Nothing scrolls the page sideways
 
 At 320 CSS pixels wide, every page works without scrolling in two directions. This is WCAG 2.2
-success criterion 1.4.10, Reflow ([Deque][reflow]). 320px isn't arbitrary: it's what a 1280px
-window becomes at 400% zoom, so the same rule serves people who zoom on a desktop and people on
-small phones ([NYU][nyu]).
+success criterion 1.4.10, Reflow ([Deque][reflow]). The width of 320px is not arbitrary. It
+is what a 1280px window becomes at 400% zoom, so the same rule serves people who zoom in on a
+desktop and people with small phones ([NYU][nyu]).
 
 The criterion makes an exception for content that needs two dimensions to make sense, such as a
-data table. The exception covers that part only: the table scrolls inside its own container, and
+data table. The exception covers only that part. The table scrolls inside its own container, and
 the rest of the page still reflows ([216digital][216], [BOIA][boia]). Keystone's tables, code
 blocks and diffs each scroll inside a labelled, focusable region, so keyboard users can scroll
 them too.
 
-**Checked by:** every docs page and every state of the agent app, at 320px and 375px: the page
-can't be wider than the window, and no element sticks out past the right edge unless a scroll
-container of its own holds it.
+The tests check every docs page and every state of the agent app at 320px and 375px. The page
+cannot be wider than the window, and no element may extend past the right edge unless it is held
+by a scroll container of its own.
 
 ### Every control is big enough to hit
 
-Two numbers matter ([AllAccessible][258], [Evinced][evinced]):
+Two numbers matter here ([AllAccessible][258], [Evinced][evinced]).
 
 | Standard | Minimum | What it's for |
 | --- | --- | --- |
-| WCAG 2.2, 2.5.8 Target Size (AA) | 24 × 24 CSS px | Every pointer. Smaller targets pass only if they're spaced so a 24px circle on each doesn't touch another |
+| WCAG 2.2, 2.5.8 Target Size (AA) | 24 × 24 CSS px | Every pointer. Smaller targets pass only if they are spaced so that a 24px circle on each does not touch another |
 | Apple Human Interface Guidelines | 44 × 44 pt | A fingertip |
 | Material Design | 48 × 48 dp | A fingertip, on Android |
 
-Keystone makes both numbers tokens: `--ks-target-min` (24px) and `--ks-target-touch` (44px).
-Every control is at least the first. On a touch screen (`pointer: coarse`), every control in the
-kit grows to the second: buttons, fields, tabs, segmented and toggle buttons, menu items,
-disclosures, accordion headings, the slider and the popover's close button. The look on a desktop
-doesn't change.
+Keystone has a token for each of the two numbers, `--ks-target-min` (24px) and
+`--ks-target-touch` (44px). Every control is at least as large as the first. On a touch screen
+(`pointer: coarse`), every control in the kit grows to the second. This covers buttons, fields,
+tabs, segmented and toggle buttons, menu items, disclosures, accordion headings, the slider and
+the popover's close button. The appearance on a desktop does not change.
 
-Checkboxes, radios and switches get their 44px a different way: the whole row is the hit area, the
-way a settings row works on a phone, so the drawn box stays 16px and a tap anywhere along the row
-toggles it.
+Checkboxes, radios and switches reach 44px in a different way. The whole row is the hit area, as
+in a settings row on a phone, so the drawn box stays 16px and a tap anywhere along the row
+toggles the control.
 
-Links and buttons inside a sentence are exempt, as 2.5.8 allows, since making them taller would
-break the line spacing of the text around them.
+Links and buttons inside a sentence are exempt, as 2.5.8 allows, because making them taller
+would break the line spacing of the text around them.
 
-Why 44 matters more than the AA minimum: in Steven Hoober's field study of 1,333 people using
-phones in public, 49% held the phone in one hand and tapped with their thumb ([UXmatters][hoober]).
-A thumb is the least precise pointer there is.
+The 44px size matters more than the AA minimum because of how people hold their phones. In
+Steven Hoober's field study of 1,333 people using phones in public, 49% held the phone in one
+hand and tapped with their thumb ([UXmatters][hoober]). A thumb covers more of the screen than a
+fingertip held straight on, so a target that is easy to hit with a mouse can be hard to hit
+this way.
 
-**Checked by:** every docs page and the agent app at 375px, against 2.5.8 including its spacing
-exception; and every example on every component page, plus the agent app, under touch emulation
-against 44px. A tap at the far end of a checkbox row has to toggle it.
+The tests check every docs page and the agent app at 375px against 2.5.8, including its spacing
+exception. They also check every example on every component page, and the agent app, against
+44px under touch emulation. A tap at the far end of a checkbox row has to toggle the checkbox.
 
 ### Fields don't zoom the page
 
-iOS zooms the whole page into a text field whose text is smaller than 16px when it's focused,
-and leaves it zoomed ([CSS-Tricks][zoom], [GitLab][gitlab]). The common fix, turning off zoom in
-the viewport tag, takes pinch-zoom away from everyone who needs it, which fails WCAG 1.4.4. So on
-touch screens Keystone's fields, including the small size and the command menu's search, use 16px
-text instead, and the viewport tag leaves zoom alone.
+When a text field whose text is smaller than 16px is focused, iOS zooms the whole page into it
+and leaves it zoomed ([CSS-Tricks][zoom], [GitLab][gitlab]). The common fix is to turn off zoom
+in the viewport tag. However, that takes pinch-zoom away from everyone who needs it, which fails
+WCAG 1.4.4. On touch screens, Keystone's fields therefore use 16px text instead, including the
+small size and the command menu's search, and the viewport tag does not restrict zoom.
 
-**Checked by:** the text fields on the Input, Textarea and Select pages and the agent's composer
-under touch emulation.
+The tests check the text fields on the Input, Textarea and Select pages, and the agent's
+composer, under touch emulation.
 
 ### Navigation fits in one hand
 
-On a phone the docs' navigation is behind a full-width Menu button under the header that also
-says which page you're on, and opens the grouped list in place. It used to be one row of 30 links
-scrolling sideways, with most of them offscreen and no sign they were there. The agent app shows
-its conversation and its workspace one at a time, switched at the top, rather than stacking the
-workspace a long scroll below the composer.
+On a phone, the docs navigation sits behind a full-width Menu button under the header. The button
+also shows which page is open, and it opens the grouped list in place. The navigation used to be
+one row of 30 links that scrolled sideways, with most of them off screen and nothing to show that
+they were there. The agent app shows its conversation and its workspace one at a time, with a
+switch at the top, instead of placing the workspace a long scroll below the composer.
 
 ## What isn't covered
 
-- **Real devices.** The tests use Chromium's and WebKit's mobile emulation. Emulation gets layout,
-  touch events and `pointer: coarse` right, but not a real keyboard covering half the screen, or
-  how a thumb actually lands. Those need a phone in hand.
-- **Firefox on Android.** Playwright can't emulate a mobile Firefox, so the touch checks run in
-  Chromium and WebKit only. The 320px reflow checks run in all three.
-- **Landscape phones.** At 256 CSS px tall, 1.4.10 also covers content that scrolls sideways by
-  design. Nothing here does, so it isn't tested.
+No real devices are tested. The tests use the mobile emulation in Chromium and WebKit, which
+reproduces layout, touch events and `pointer: coarse` correctly. It does not reproduce a real
+keyboard covering half the screen, or how a thumb actually lands, and checking those needs a
+phone in hand.
+
+Firefox on Android is not tested either. Playwright cannot emulate a mobile Firefox, so the touch
+checks run only in Chromium and WebKit. The 320px reflow checks run in all three.
+
+Landscape phones are not tested. At a height of 256 CSS px, 1.4.10 also covers content that
+scrolls sideways by design, such as a carousel. Keystone has no pages built to scroll sideways
+(its tables, code blocks and diffs scroll inside their own regions), so this case is not tested.
 
 ## Sources
 

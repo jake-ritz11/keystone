@@ -9,7 +9,7 @@ export default function CheckboxPage() {
   return (
     <DocPage
       title="Checkbox"
-      lede="Yes or no, for each of any number of things, applied when the form is submitted. For a setting that takes effect at once, use Switch."
+      lede="A yes-or-no choice for each of any number of things, applied when the form is submitted. Use Switch for a setting that takes effect at once."
       builtOn={
         <>
           the native <code>&lt;input type=&quot;checkbox&quot;&gt;</code>
@@ -18,7 +18,7 @@ export default function CheckboxPage() {
       source="packages/ui/src/checkbox"
     >
       <Section title="Examples">
-        <Example title="Select all, with a mixed state" file="checkbox/SelectAll.tsx" note="Check one file: the first box turns to a dash.">
+        <Example title="Select all, with a mixed state" file="checkbox/SelectAll.tsx" note="Checking one file turns the first box to a dash.">
           <SelectAll />
         </Example>
         <Example title="Hint, error and disabled" file="checkbox/States.tsx">
@@ -37,10 +37,10 @@ export default function CheckboxPage() {
       <Section title="Accessibility">
         <Notes
           items={[
-            <>It&apos;s a real checkbox, so it submits with a form, works with <code>required</code>, and the label toggles it.</>,
-            <>The mixed state is the DOM&apos;s own <code>indeterminate</code>, announced as &quot;mixed&quot; or &quot;half checked&quot;.</>,
-            <>The box&apos;s outline is 3:1 against the page, as WCAG asks of anything that identifies a control.</>,
-            <>Checked is shown by a fill and a mark, not color alone. With reduced motion the check appears instead of drawing in.</>,
+            <>It is a real checkbox, so it submits with a form, works with <code>required</code>, and the label toggles it.</>,
+            <>The mixed state uses the DOM <code>indeterminate</code> property, which is announced as &quot;mixed&quot; or &quot;half checked&quot;.</>,
+            <>The outline of the box is 3:1 against the page, as WCAG asks of anything that identifies a control.</>,
+            <>Checked is shown by a fill and a mark, not color alone. With reduced motion, the check appears instead of drawing in.</>,
           ]}
         />
       </Section>

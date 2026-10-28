@@ -8,7 +8,7 @@ export default function SegmentedControlPage() {
   return (
     <DocPage
       title="SegmentedControl"
-      lede="One choice from a few, side by side, for settings that change a view right away. For switching between panels of content, use Tabs."
+      lede="One choice from a few options shown side by side, for settings that change a view right away. Use Tabs for switching between panels of content."
       builtOn="the WAI-ARIA radio group pattern"
       source="packages/ui/src/segmented-control"
     >
@@ -29,8 +29,8 @@ export default function SegmentedControlPage() {
       <Section title="Accessibility">
         <Notes
           items={[
-            <>It&apos;s a radio group, so it&apos;s one Tab stop and announced as &quot;2 of 3, selected&quot;, not as three separate buttons.</>,
-            <>A disabled option stays in the group and is announced as unavailable; the arrow keys skip it.</>,
+            <>It is a radio group, so it is one Tab stop and is announced as &quot;2 of 3, selected&quot; instead of as three separate buttons.</>,
+            <>A disabled option stays in the group and is announced as unavailable. The arrow keys skip it.</>,
             <>The selected option is shown by a raised surface and weight, not by color alone.</>,
           ]}
         />

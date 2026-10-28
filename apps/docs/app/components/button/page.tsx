@@ -11,12 +11,12 @@ export default function ButtonPage() {
   return (
     <DocPage
       title="Button"
-      lede="Triggers an action. For going somewhere, use a link instead."
+      lede="Triggers an action. Use a link instead for going somewhere."
       builtOn={<code>&lt;button&gt;</code>}
       source="packages/ui/src/button"
     >
       <Section title="Examples">
-        <Example title="Variants" file="button/Variants.tsx" note="One primary action per view; the rest step down in weight.">
+        <Example title="Variants" file="button/Variants.tsx" note="Each view has one primary action, and the other buttons step down in weight.">
           <Variants />
         </Example>
         <Example title="Sizes" file="button/Sizes.tsx">
@@ -46,14 +46,14 @@ export default function ButtonPage() {
         <Notes
           items={[
             <>
-              A real <code>&lt;button&gt;</code> with <code>type=&quot;button&quot;</code> by default, so it never
+              It is a real <code>&lt;button&gt;</code> with <code>type=&quot;button&quot;</code> by default, so it never
               submits a form by accident.
             </>,
             <>
-              While loading it uses <code>aria-disabled</code> rather than <code>disabled</code>, so focus isn&apos;t
-              thrown back to the page mid-action, and sets <code>aria-busy</code>.
+              While loading, it uses <code>aria-disabled</code> instead of <code>disabled</code> so that focus is not
+              thrown back to the page in the middle of the action. It also sets <code>aria-busy</code>.
             </>,
-            <>Icons are decorative. An icon-only button needs a name: pair it with a Tooltip of kind &quot;label&quot;.</>,
+            <>Icons are decorative, so an icon-only button needs a name. Pair it with a Tooltip of kind &quot;label&quot;.</>,
             <>The focus ring uses the focus token and shows for keyboard focus only.</>,
           ]}
         />

@@ -20,9 +20,9 @@ export default function BadgePage() {
       <Section title="Accessibility">
         <Notes
           items={[
-            <>The text carries the meaning; tone and dot are reinforcement. &quot;Failed&quot; reads as failed in any color.</>,
-            <>Tinted text is mixed toward the body text color so it keeps readable contrast on its tint in both themes.</>,
-            <>A badge isn&apos;t interactive. If it needs to do something, it&apos;s a Button.</>,
+            <>The meaning is in the text, and the tone and dot only reinforce it. &quot;Failed&quot; reads as failed in any color.</>,
+            <>Tinted text is mixed toward the body text color so that it keeps readable contrast on its tint in both themes.</>,
+            <>A badge is not interactive. If it needs to do something, it should be a Button.</>,
           ]}
         />
       </Section>

@@ -11,7 +11,7 @@ export default function InputPage() {
   return (
     <DocPage
       title="Input"
-      lede="A labelled text field. The label, hint and error are part of the component, so they're always wired up."
+      lede="A labelled text field. The label, hint and error are part of the component, so they are always wired up."
       builtOn={<code>&lt;input&gt;</code>}
       source="packages/ui/src/input"
     >
@@ -22,7 +22,7 @@ export default function InputPage() {
         <Example
           title="Validation"
           file="input/Validation.tsx"
-          note="Try “admin”, or clear it. The error appears on blur and is read out with the field."
+          note="Try “admin”, or clear the field. The error appears on blur and is read out with the field."
         >
           <Validation />
         </Example>
@@ -42,25 +42,25 @@ export default function InputPage() {
         <Notes
           items={[
             <>
-              <code>label</code> is required. With <code>hideLabel</code> it's visually hidden but still
-              the field's name; a placeholder is never used as the label.
+              <code>label</code> is required. With <code>hideLabel</code>, the label is visually hidden but still
+              names the field. A placeholder is never used as the label.
             </>,
             <>
               Hint and error are linked with <code>aria-describedby</code>, error first, so a screen
               reader reads the problem before the help.
             </>,
             <>
-              An error sets <code>aria-invalid</code> and a danger border, and the text itself carries
-              the meaning, so color isn't the only signal.
+              An error sets <code>aria-invalid</code> and a danger border. The error text carries the meaning, so
+              color is not the only signal.
             </>,
             <>
-              Required fields use the native <code>required</code> attribute, which is what gets
-              announced; the asterisk is hidden from assistive tech.
+              Required fields use the native <code>required</code> attribute, which is what is
+              announced. The asterisk is hidden from assistive technology.
             </>,
             <>
-              There's only ever one line: hover darkens the border, and focus turns it the focus
-              color with a soft blurred glow. In Windows high contrast mode, which drops shadows,
-              focus falls back to a real outline.
+              There is only ever one line. Hover darkens the border, and focus turns it the focus color with a
+              soft blurred glow. Windows high contrast mode drops shadows, so there focus falls back to a real
+              outline.
             </>,
           ]}
         />

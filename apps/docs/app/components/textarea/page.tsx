@@ -9,7 +9,7 @@ export default function TextareaPage() {
   return (
     <DocPage
       title="Textarea"
-      lede="Multi-line text that grows as you type, up to a limit, then scrolls. It shares Input's label, hint, error and focus treatment."
+      lede="Multi-line text that grows as you type up to a limit and then scrolls. It shares the label, hint, error and focus treatment of Input."
       builtOn={
         <>
           <code>&lt;textarea&gt;</code> and <code>field-sizing: content</code>
@@ -18,7 +18,7 @@ export default function TextareaPage() {
       source="packages/ui/src/textarea"
     >
       <Section title="Examples">
-        <Example title="Composer" file="textarea/Composer.tsx" note="Grows from two lines to eight. Enter sends; Shift+Enter adds a line.">
+        <Example title="Composer" file="textarea/Composer.tsx" note="The field grows from two lines to eight. Enter sends, and Shift+Enter adds a line.">
           <Composer />
         </Example>
         <Example title="States" file="textarea/States.tsx">
@@ -33,14 +33,14 @@ export default function TextareaPage() {
       <Section title="Accessibility">
         <Notes
           items={[
-            <>Label, hint and error are wired exactly as in Input, and the error takes the hint&apos;s line instead of adding one.</>,
+            <>Label, hint and error are wired exactly as in Input, and the error takes the line of the hint instead of adding one.</>,
             <>
-              Auto-resize uses CSS (<code>field-sizing: content</code>), not a script measuring the text, so there&apos;s no
-              flicker as it grows. Browsers without it fall back to <code>rows</code> and a resize handle.
+              Auto-resize uses CSS (<code>field-sizing: content</code>) instead of a script that measures
+              the text, so there is no flicker as it grows. Browsers without it fall back to <code>rows</code> and a resize handle.
             </>,
             <>
               In the composer example, Enter is ignored while an input method is composing text, so people typing in
-              Japanese, Chinese or Korean don&apos;t send half-finished words.
+              Japanese, Chinese or Korean do not send half-finished words.
             </>,
           ]}
         />

@@ -20,13 +20,13 @@ export default function DialogPage() {
       source="packages/ui/src/dialog"
     >
       <Section title="Examples">
-        <Example title="Form" file="dialog/FormDialog.tsx" note="Not dismissible by a backdrop click, because it holds input.">
+        <Example title="Form" file="dialog/FormDialog.tsx" note="A backdrop click does not dismiss it, because it holds input.">
           <FormDialog />
         </Example>
-        <Example title="Confirmation" file="dialog/ConfirmDialog.tsx" note={<>An <code>alertdialog</code>: focus starts on the safe choice.</>}>
+        <Example title="Confirmation" file="dialog/ConfirmDialog.tsx" note={<>This is an <code>alertdialog</code>, so focus starts on the safe choice.</>}>
           <ConfirmDialog />
         </Example>
-        <Example title="Long content" file="dialog/LongDialog.tsx" note="The body scrolls; title and footer stay put.">
+        <Example title="Long content" file="dialog/LongDialog.tsx" note="The body scrolls while the title and footer stay in place.">
           <LongDialog />
         </Example>
         <Example title="Small, dismissible" file="dialog/SmallDialog.tsx">
@@ -47,15 +47,15 @@ export default function DialogPage() {
           items={[
             <>
               <code>showModal()</code> puts the dialog in the top layer and makes the rest of the page
-              inert, so focus can't escape and screen readers can't wander behind it.
+              inert, so focus cannot escape and screen readers cannot wander behind it.
             </>,
             <>The title names the dialog and the description describes it, both by id.</>,
             <>
-              Focus returns to whatever opened the dialog, including in Safari, where clicking a
-              button doesn't focus it.
+              Focus returns to whatever opened the dialog. This includes Safari, where clicking a button does not
+              focus it.
             </>,
-            <>A backdrop click only counts if the press also started on the backdrop, so dragging out of a text field doesn't close it.</>,
-            <>With reduced motion, it fades without moving.</>,
+            <>A backdrop click only counts if the press also started on the backdrop, so dragging out of a text field does not close the dialog.</>,
+            <>With reduced motion, the dialog fades without moving.</>,
           ]}
         />
       </Section>

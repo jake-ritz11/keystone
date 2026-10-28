@@ -9,7 +9,7 @@ export default function MenuPage() {
   return (
     <DocPage
       title="Menu"
-      lede="A list of actions behind a button. For choosing a value, use Select; for navigation, use links."
+      lede="A list of actions behind a button. Use Select for choosing a value, and links for navigation."
       builtOn={
         <>
           the <code>popover</code> attribute and CSS anchor positioning
@@ -21,11 +21,11 @@ export default function MenuPage() {
         <Example
           title="Actions"
           file="menu/ActionsMenu.tsx"
-          note="Icons, shortcut hints, a disabled item the arrow keys skip, and a destructive item set apart."
+          note="This menu has icons, shortcut hints, a disabled item that the arrow keys skip, and a destructive item set apart."
         >
           <ActionsMenu />
         </Example>
-        <Example title="Aligned to the end" file="menu/SortMenu.tsx" note="Lines up with the trigger's right edge, and flips if there's no room below.">
+        <Example title="Aligned to the end" file="menu/SortMenu.tsx" note="The menu lines up with the right edge of the trigger, and flips if there is no room below.">
           <SortMenu />
         </Example>
       </Section>
@@ -46,17 +46,17 @@ export default function MenuPage() {
           items={[
             <>
               The trigger gets <code>aria-haspopup</code>, <code>aria-expanded</code> and{" "}
-              <code>aria-controls</code>; the menu is named by the trigger.
+              <code>aria-controls</code>. The menu is named by the trigger.
             </>,
             <>
               <code>popovertarget</code> makes the trigger a true toggle, and the browser handles light
               dismiss and Escape.
             </>,
             <>
-              Disabled items use <code>aria-disabled</code>, so they're still announced in place; the
+              Disabled items use <code>aria-disabled</code>, so they are still announced in place. The
               arrow keys skip them.
             </>,
-            <>Choosing an item, or Escape, returns focus to the trigger.</>,
+            <>Choosing an item, or pressing Escape, returns focus to the trigger.</>,
           ]}
         />
       </Section>

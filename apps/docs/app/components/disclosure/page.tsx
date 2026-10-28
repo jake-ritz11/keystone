@@ -9,7 +9,7 @@ export default function DisclosurePage() {
   return (
     <DocPage
       title="Disclosure"
-      lede="Show and hide a section of detail, like a tool call's output or an answer to a question."
+      lede="Shows and hides a section of detail, such as the output of a tool call or the answer to a question."
       builtOn={
         <>
           <code>&lt;details&gt;</code> and <code>&lt;summary&gt;</code>
@@ -21,7 +21,7 @@ export default function DisclosurePage() {
         <Example title="Bordered, with a status" file="disclosure/Disclosures.tsx">
           <Disclosures />
         </Example>
-        <Example title="Exclusive group" file="disclosure/Accordion.tsx" note="Opening one closes the others, through the native name attribute. When the sections need headings or arrow keys, use Accordion.">
+        <Example title="Exclusive group" file="disclosure/Accordion.tsx" note="The native name attribute makes opening one section close the others. Use Accordion when the sections need headings or arrow keys.">
           <Accordion />
         </Example>
       </Section>
@@ -37,10 +37,10 @@ export default function DisclosurePage() {
       <Section title="Accessibility">
         <Notes
           items={[
-            <>The summary is announced as a button that&apos;s expanded or collapsed, by the browser, with no ARIA added.</>,
-            <>Find-in-page searches closed content too, and opens the section with the match.</>,
-            <>Where supported, it animates its height open and closed; with reduced motion, it doesn&apos;t.</>,
-            <>The meta slot is part of the summary, so a status like &quot;Failed&quot; is read with the line it belongs to.</>,
+            <>The browser announces the summary as a button that is expanded or collapsed, with no ARIA added.</>,
+            <>Find-in-page searches closed content too and opens the section with the match.</>,
+            <>Where the browser supports it, the section animates its height as it opens and closes. With reduced motion it does not animate.</>,
+            <>The meta slot is part of the summary, so a status such as &quot;Failed&quot; is read with the line it belongs to.</>,
           ]}
         />
       </Section>

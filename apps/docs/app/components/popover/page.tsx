@@ -9,7 +9,7 @@ export default function PopoverPage() {
   return (
     <DocPage
       title="Popover"
-      lede="Interactive content beside the button that opened it, with the page still usable behind. For a list of actions, use a Menu; for a hint, a Tooltip; for something that needs an answer first, a Dialog."
+      lede="Interactive content beside the button that opened it, while the page behind stays usable. Use a Menu for a list of actions, a Tooltip for a hint, and a Dialog for something that needs an answer first."
       builtOn={
         <>
           the <code>popover</code> attribute and CSS anchor positioning
@@ -18,13 +18,13 @@ export default function PopoverPage() {
       source="packages/ui/src/popover"
     >
       <Section title="Examples">
-        <Example title="Share settings" file="popover/Share.tsx" note="Focus moves to the first control when it opens.">
+        <Example title="Share settings" file="popover/Share.tsx" note="When the popover opens, focus moves to the first control.">
           <Share />
         </Example>
         <Example
           title="Controlled, aligned to the end"
           file="popover/Filters.tsx"
-          note="Apply closes it through open and onOpenChange. Each time it opens, it starts from what's applied."
+          note="Apply closes the popover through open and onOpenChange. Each time it opens, it starts from what is applied."
         >
           <Filters />
         </Example>
@@ -42,18 +42,18 @@ export default function PopoverPage() {
         <Notes
           items={[
             <>
-              A non-modal dialog named by its title. The trigger says it opens a dialog and whether it&apos;s expanded,
-              and the browser&apos;s <code>popovertarget</code> makes it a real toggle.
+              The popover is a non-modal dialog named by its title. The trigger says that it opens a dialog and whether
+              it is expanded, and <code>popovertarget</code>, which the browser handles, makes it a real toggle.
             </>,
             <>
-              It sits right after its trigger in the page, so Tab moves through it and then on through the page; it
-              doesn&apos;t trap focus.
+              It sits right after its trigger in the page, so Tab moves through it and then on through the page. It
+              does not trap focus.
             </>,
             <>
               Closing from inside returns focus to the trigger. A click elsewhere closes it and leaves focus where the
               click put it.
             </>,
-            <>It fades in and out, and appears at once with reduced motion.</>,
+            <>It fades in and out, and with reduced motion it appears at once.</>,
           ]}
         />
       </Section>

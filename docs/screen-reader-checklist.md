@@ -1,13 +1,13 @@
 # Screen-reader checklist
 
-Automated tests check that roles, names and live-region text are *in the DOM*. Only a screen
-reader shows what's actually *announced*.
+Automated tests check that roles, names and live-region text are in the DOM. They do not show
+what is announced, and only a screen reader can show that.
 
-The checks marked **auto** in the results run on every push to main: a real NVDA, driven by
-[Guidepup](https://www.guidepup.dev) in [`tests-sr/nvda.spec.ts`](../apps/docs/tests-sr/nvda.spec.ts),
-on a Windows runner, with every key pressed through NVDA. The rest are a manual pass of about
-20 minutes with NVDA. Record results in the table at the bottom, and copy anything surprising
-into [decisions.md](decisions.md).
+The checks marked **auto** in the results run on every push to main. They use a real NVDA on a
+Windows runner, driven by [Guidepup](https://www.guidepup.dev) in
+[`tests-sr/nvda.spec.ts`](../apps/docs/tests-sr/nvda.spec.ts), and every key is pressed through
+NVDA. The rest are a manual pass with NVDA, which takes about 20 minutes. Record the results in
+the table at the bottom, and copy anything surprising into [decisions.md](decisions.md).
 
 ## Setup
 
@@ -17,7 +17,8 @@ into [decisions.md](decisions.md).
    Speech viewer.
 4. Use the keyboard only. Close the speech viewer's focus by clicking back into the browser.
 
-Keys you'll need. NVDA's modifier is Insert (or Caps Lock, if you set it).
+You will need the keys below. NVDA's modifier key is Insert, or Caps Lock if you have set NVDA
+to use it.
 
 | Keys | Does |
 | --- | --- |
@@ -30,9 +31,9 @@ Keys you'll need. NVDA's modifier is Insert (or Caps Lock, if you set it).
 
 ## Checks
 
-Each check lists what to do and what you should hear. Wording varies a little between NVDA
-versions and browsers; what matters is the role, the name, the state, and that nothing is
-missing or announced twice.
+Each check lists what to do and what you should hear. The wording varies a little between NVDA
+versions and browsers, so a check is judged on the role, the name and the state, and on whether
+anything is missing or announced twice.
 
 ### Site
 
@@ -139,7 +140,8 @@ missing or announced twice.
 ## Results
 
 Status: ✅ as expected, ⚠️ works but reads oddly, ❌ broken, ⬜ not checked yet. The automated
-results are NVDA with Chrome on Windows Server 2025, and quote what NVDA said.
+results come from NVDA with Chrome on Windows Server 2025, and the last column quotes what NVDA
+said.
 
 | Check | How | Status | What was announced |
 | --- | --- | --- | --- |
@@ -149,9 +151,9 @@ results are NVDA with Chrome on Windows Server 2025, and quote what NVDA said.
 | I2 | auto | ✅ | "Username, edit, invalid entry, That username is taken. Letters and numbers only." Error before hint. |
 | I3, I4 | manual | ⬜ | |
 | SE1–SE3 | manual | ⬜ | |
-| D1 | auto | ✅ | "Edit profile, dialog, Changes are visible to everyone in your workspace.", then "Name, edit, Ada Lovelace". NVDA says the dialog line twice; that's NVDA with Chrome, not the markup ([why](decisions.md#8-a-screen-reader-in-ci)). |
+| D1 | auto | ✅ | "Edit profile, dialog, Changes are visible to everyone in your workspace.", then "Name, edit, Ada Lovelace". NVDA says the dialog line twice. The repeat comes from NVDA with Chrome and not from the markup ([why](decisions.md#8-a-screen-reader-in-ci)). |
 | D2 | manual | ⬜ | |
-| D3 | auto | ⚠️ | First Escape stays with NVDA (leaves focus mode). The second closes it: "out of region, same page, link, Skip to content. main landmark, Examples, region, Edit profile, button" |
+| D3 | auto | ⚠️ | The first Escape stays with NVDA, which leaves focus mode. The second closes the dialog, and NVDA reads "out of region, same page, link, Skip to content. main landmark, Examples, region, Edit profile, button" |
 | D4 | auto | ✅ | The question, the consequence, then "Keep project, button". Read as "dialog", not "alert dialog", and twice, like D1. |
 | D5 | manual | ⬜ | |
 | M1 | auto | ✅ | "Actions, menu button, collapsed, sub Menu" |
@@ -160,12 +162,12 @@ results are NVDA with Chrome on Windows Server 2025, and quote what NVDA said.
 | M4 | auto | ✅ | "Actions, menu button, collapsed, sub Menu" |
 | M5 | manual | ⬜ | |
 | T1 | auto | ✅ | "Project, tab control. Overview, tab, selected, 1 of 4" |
-| T2 | auto | ✅ | "Activity, tab, selected, 2 of 4", once. It was read twice until Tabs dropped `aria-controls`. |
+| T2 | auto | ✅ | "Activity, tab, selected, 2 of 4", once. It was read twice until I removed `aria-controls` from Tabs. |
 | T3–T5 | manual | ⬜ | |
 | CB1 | auto | ✅ | "Files to include, grouping, All files, check box, half checked" |
 | CB2 | auto | ✅ | "Send me a summary when a task finishes, check box, checked, One email per task, never more." |
 | SW1 | auto | ✅ | "Apply edits automatically, switch, off, Each edit waits for your approval." |
-| SW2 | auto | ✅ | "Edits apply as the agent makes them. Undo is always there. on": the new hint, then the state |
+| SW2 | auto | ✅ | "Edits apply as the agent makes them. Undo is always there. on", which is the new hint followed by the state |
 | RG1 | auto | ✅ | "When should edits need you?, grouping. Approve each edit, radio button, checked, Every change waits, as a diff., 1 of 3" |
 | RG2 | auto | ✅ | "Review at the end, radio button, checked, Edits apply as the agent works; review them all together., 2 of 3" |
 | SL1 | auto | ✅ | "Steps before checking in, slider, 8 steps, The agent works longer on its own between check-ins." |
@@ -174,10 +176,10 @@ results are NVDA with Chrome on Windows Server 2025, and quote what NVDA said.
 | TG1 | auto | ✅ | "Show in the activity log, grouping, Edits, toggle button, pressed" |
 | TG2 | auto | ✅ | "not pressed" |
 | PO1 | auto | ✅ | "Share, button, collapsed, opens dialog", then "expanded. Share this session, dialog" and the Link field. The dialog's name is read twice, the same NVDA and Chrome behavior as D1. |
-| PO2 | auto | ✅ | "Share, button, collapsed, opens dialog", after a second Escape: the first only takes NVDA out of focus mode in the field. |
+| PO2 | auto | ✅ | "Share, button, collapsed, opens dialog", after a second Escape. The first Escape only takes NVDA out of focus mode in the field. |
 | AC1 | auto | ✅ | "Can I undo an edit?, button, collapsed, heading, level 4" |
 | AC2 | auto | ✅ | "expanded" |
-| CM1 | auto | ✅ | "Commands, combo box, expanded, has auto complete, editable, Search commands…", after the dialog. The first run caught it skipping the field and reading "Esc"; fixed. |
+| CM1 | auto | ✅ | "Commands, combo box, expanded, has auto complete, editable, Search commands…", after the dialog. The first run found that it skipped the field and read "Esc", and I fixed that. |
 | CM2 | auto | ✅ | "Commands, list. Tasks, grouping. Stop the agent, 2 of 7" |
 | CM3 | auto | ✅ | "1 command" as you type, then the best match: "Toggle theme, 1 of 1" |
 | TT1 | auto | ✅ | "Hover or focus me, button, Saves a copy to your workspace" |
@@ -186,6 +188,5 @@ results are NVDA with Chrome on Windows Server 2025, and quote what NVDA said.
 | TO2 | auto | ✅ | "Couldn't upload file. Check your connection and try again." |
 | TO3–TO5 | manual | ⬜ | |
 
-Anything marked ⚠️ or ❌ becomes an issue, and a sentence in
-[decisions.md](decisions.md) under "What isn't proven yet". Update that section once the pass is
-done.
+Each check marked ⚠️ or ❌ gets an issue and a sentence in [decisions.md](decisions.md) under
+"What isn't proven yet". Update that section once the pass is done.

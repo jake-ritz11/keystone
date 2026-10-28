@@ -9,7 +9,7 @@ export default function TooltipPage() {
   return (
     <DocPage
       title="Tooltip"
-      lede="A short hint on hover or keyboard focus. Never the only place for information someone needs, since touch screens don't show it."
+      lede="A short hint on hover or keyboard focus. It should never be the only place for information someone needs, because touch screens do not show it."
       builtOn={
         <>
           a manual <code>popover</code> and CSS anchor positioning
@@ -49,7 +49,7 @@ export default function TooltipPage() {
               <strong>Hoverable:</strong> the pointer can move onto the tooltip without it closing.
             </>,
             <>
-              <strong>Persistent:</strong> it stays until focus or hover leaves, or Escape.
+              <strong>Persistent:</strong> it stays until focus or hover leaves, or until Escape is pressed.
             </>,
             <>
               It describes its trigger with <code>aria-describedby</code>, or names it with{" "}

@@ -51,21 +51,21 @@ export default function TokensPage() {
   return (
     <DocPage
       title="Tokens"
-      lede="The single source of truth. Components read these as CSS variables and never use a raw value; the audit enforces it."
+      lede="Every color, space, size, font and motion value in the components comes from these tokens. Components read them as CSS variables and never use a raw value, and the audit enforces this."
       source="packages/tokens"
     >
       <Section title="Color">
         <p>
-          Two tiers. The <strong>palette</strong> is every raw color, by hue and step. The{" "}
+          The colors come in two tiers. The <strong>palette</strong> holds every raw color, by hue and step. The{" "}
           <strong>semantic</strong> tokens say what a color is for and point at a palette step in each theme.
-          Components only read the semantic tier, so a theme is a different set of pointers, never a different
-          component. In dev tools that reads as <code>--ks-color-accent: var(--ks-palette-blue-600)</code>.
+          Components read only the semantic tier, so a theme changes the pointers and needs no different component. In
+          dev tools this appears as <code>--ks-color-accent: var(--ks-palette-blue-600)</code>.
         </p>
         <p>
           High contrast follows <code>prefers-contrast: more</code>, and <code>data-contrast</code> on the root pins
-          it either way. It changes only the tokens listed in its columns. A unit test checks every pair that has to
-          be read or found against WCAG: 4.5:1 for text and 3:1 for control outlines, and 7:1 and 4.5:1 in high
-          contrast. All columns are shown whatever theme this page is in.
+          it on or off. It changes only the tokens listed in its columns. A unit test checks every color pair that
+          has to be read or found against the WCAG ratios, which are 4.5:1 for text and 3:1 for control outlines, or 7:1 and 4.5:1
+          in high contrast. All columns are shown whatever theme this page is in.
         </p>
         <div className="table-scroll" role="region" aria-label="Semantic color tokens" tabIndex={0}>
           <table>
@@ -104,8 +104,8 @@ export default function TokensPage() {
         </div>
         <h3 className="token-subhead">Palette</h3>
         <p>
-          Every raw color, as <code>--ks-palette-[hue]-[step]</code>. Steps run from light to dark. A test fails if
-          any step goes unused, so the palette can&apos;t collect colors nobody needs.
+          Every raw color is a <code>--ks-palette-[hue]-[step]</code> variable. The steps run from light to dark. A
+          test fails if any step is unused, so the palette cannot collect colors that nobody needs.
         </p>
         {Object.entries(palette).map(([hue, steps]) => (
           <div key={hue} className="palette-row">
@@ -124,13 +124,13 @@ export default function TokensPage() {
         ))}
         <p>
           The published package also ships these as <code>tokens.json</code> in the{" "}
-          <a href="https://www.designtokens.org/">W3C Design Tokens format</a>, with the semantic colors kept as
-          references to the palette, for Style Dictionary, Figma plugins and other platforms.
+          <a href="https://www.designtokens.org/">W3C Design Tokens format</a>, for Style Dictionary, Figma plugins
+          and other platforms. In that file the semantic colors are kept as references to the palette.
         </p>
       </Section>
 
       <Section title="Space">
-        <p>A 4px scale for padding, margin and gap. The audit flags any raw px spacing.</p>
+        <p>Padding, margin and gap use a 4px scale. The audit flags any raw px spacing.</p>
         <ul className="token-list">
           {Object.entries(space).map(([step, value]) => (
             <li key={step} className="token-row">
@@ -144,10 +144,10 @@ export default function TokensPage() {
 
       <Section title="Target size">
         <p>
-          The smallest a control&apos;s hit area can be. Every control is at least <code>--ks-target-min</code>, WCAG
-          2.5.8&apos;s floor; on a touch screen (<code>pointer: coarse</code>) controls grow to{" "}
-          <code>--ks-target-touch</code>, Apple&apos;s minimum for a fingertip. The hit area can be bigger than what&apos;s
-          drawn: padding counts.
+          These tokens set the smallest hit area a control can have. Every control is at least{" "}
+          <code>--ks-target-min</code>, which is the floor in WCAG 2.5.8. On a touch screen (<code>pointer: coarse</code>),
+          controls grow to <code>--ks-target-touch</code>, the minimum Apple gives for a fingertip. The hit area can be
+          bigger than what is drawn, because padding counts toward it.
         </p>
         <ul className="token-list">
           {Object.entries(target).map(([name, value]) => (
@@ -212,8 +212,8 @@ export default function TokensPage() {
 
       <Section title="Motion">
         <p>
-          Durations and easings, with what each is for, live demos and every pattern built from them, are on{" "}
-          <Link href="/motion">Motion</Link>.
+          The <Link href="/motion">Motion</Link> page lists the durations and easings with what each is for, along
+          with live demos and every pattern built from them.
         </p>
       </Section>
     </DocPage>

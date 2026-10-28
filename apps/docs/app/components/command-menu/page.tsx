@@ -8,7 +8,7 @@ export default function CommandMenuPage() {
   return (
     <DocPage
       title="CommandMenu"
-      lede="Every action in one searchable list: type a few letters, press Enter."
+      lede="Every action in one searchable list. Type a few letters and press Enter."
       builtOn={
         <>
           the native <code>&lt;dialog&gt;</code>, with the combobox pattern inside
@@ -20,7 +20,7 @@ export default function CommandMenuPage() {
         <Example
           title="Grouped, with shortcuts"
           file="command-menu/Palette.tsx"
-          note="Try “dark”: keywords find commands their labels don't name. Export is disabled, so the arrow keys skip it."
+          note="Try “dark”. Keywords find commands even when the word is not in their labels. Export is disabled, so the arrow keys skip it."
         >
           <Palette />
         </Example>
@@ -38,22 +38,22 @@ export default function CommandMenuPage() {
         <Notes
           items={[
             <>
-              Focus stays in the search field the whole time. The field is a <code>combobox</code>; once the arrow
-              keys move into the list, <code>aria-activedescendant</code> points at the current command. Before
-              that, a screen reader reports the field, so people know they can type. Found with NVDA: pointing at
-              the first command on open made it skip the field entirely.
+              Focus stays in the search field the whole time. The field is a <code>combobox</code>, and once the
+              arrow keys move into the list, <code>aria-activedescendant</code> points at the current command. Before
+              that, a screen reader reports the field, so people know they can type. This order came from testing with
+              NVDA, which skipped the field entirely when the first command was pointed at on open.
             </>,
-            <>The number of matching commands is read out as you type, not on every arrow key.</>,
-            <>Groups are labelled groups, so a screen reader says which section a command is in.</>,
+            <>The number of matching commands is read out as you type, but not on every arrow key.</>,
+            <>Groups are labelled, so a screen reader says which section a command is in.</>,
             <>
-              Disabled commands stay in the list with <code>aria-disabled</code>, so people learn they exist; the
-              arrow keys skip them.
+              Disabled commands stay in the list with <code>aria-disabled</code> so that people learn they
+              exist. The arrow keys skip them.
             </>,
             <>
-              Choosing a command closes the menu and returns focus first, then runs it, so a command that opens a
+              Choosing a command closes the menu and returns focus before the command runs, so a command that opens a
               dialog gets the right opener.
             </>,
-            <>One highlight slides between commands; with reduced motion it jumps. In forced colors it&apos;s a system outline.</>,
+            <>One highlight slides between commands, and with reduced motion it jumps. In forced colors it is a system outline.</>,
           ]}
         />
       </Section>

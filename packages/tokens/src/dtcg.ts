@@ -3,7 +3,7 @@
  * Dictionary, Figma plugins, other platforms. Semantic colors stay references to the palette
  * (`{palette.blue.600}`), so the two tiers survive the export.
  */
-import { font, highContrast, motion, palette, radius, semantic, space } from "./index.ts";
+import { font, highContrast, motion, palette, radius, semantic, space, target } from "./index.ts";
 
 type Token = { $type?: string; $value: unknown; $description?: string };
 type Group = { [key: string]: Token | Group | string | undefined; $type?: string; $description?: string };
@@ -48,6 +48,7 @@ export function toDTCG(): Group {
       darkHighContrast: Object.fromEntries(Object.entries(highContrast.dark).map(([k, v]) => [k, colorToken(v)])),
     },
     space: group("dimension", space, dimension),
+    target: group("dimension", target, dimension),
     radius: group("dimension", radius, dimension),
     font: {
       family: group("fontFamily", font.family, (stack: string) => stack.split(",").map((f) => f.trim().replace(/^'|'$/g, ""))),

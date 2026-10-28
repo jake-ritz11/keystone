@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { components, foundations, writing, type DocLink } from "./registry";
 
@@ -22,20 +22,48 @@ function Group({ label, links, pathname }: { label: string; links: DocLink[]; pa
   );
 }
 
+/**
+ * The docs' navigation. On a wide screen it's a sidebar. On a phone it's behind a Menu button
+ * that opens the same grouped list, rather than a row of 30 links scrolling sideways, most of
+ * them offscreen. The button only shows on a phone, so the sidebar never collapses.
+ */
 export function SiteNav() {
   const pathname = usePathname();
-  const navRef = useRef<HTMLElement>(null);
+  const [open, setOpen] = useState(false);
+  const current = [...foundations, ...components, ...writing].find((link) => link.href === pathname);
 
-  // On phones the nav is one scrolling row; bring the current page's link into view.
+  const toggle = useRef<HTMLButtonElement>(null);
+
+  // Choosing a page closes the menu.
+  useEffect(() => setOpen(false), [pathname]);
+
+  // Escape closes it from anywhere: Safari doesn't focus a button that's clicked, so focus may
+  // not be inside the nav when the key is pressed.
   useEffect(() => {
-    navRef.current?.querySelector('[aria-current="page"]')?.scrollIntoView({ block: "nearest", inline: "center" });
-  }, [pathname]);
+    if (!open) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setOpen(false);
+      toggle.current?.focus();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
 
   return (
-    <nav ref={navRef} className="site-nav" aria-label="Docs">
-      <Group label="Foundations" links={foundations} pathname={pathname} />
-      <Group label="Components" links={components} pathname={pathname} />
-      <Group label="Writing" links={writing} pathname={pathname} />
+    <nav className="site-nav" aria-label="Docs" data-open={open || undefined}>
+      <button ref={toggle} type="button" className="nav-toggle" aria-expanded={open} aria-controls="docs-nav-groups" onClick={() => setOpen(!open)}>
+        <span>Menu</span>
+        {current && <span className="nav-toggle-current">{current.title}</span>}
+        <svg className="nav-toggle-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+          <path d="m4 6 4 4 4-4" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+      <div id="docs-nav-groups" className="nav-groups">
+        <Group label="Foundations" links={foundations} pathname={pathname} />
+        <Group label="Components" links={components} pathname={pathname} />
+        <Group label="Writing" links={writing} pathname={pathname} />
+      </div>
     </nav>
   );
 }

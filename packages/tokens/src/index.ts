@@ -187,6 +187,15 @@ export const space = {
   12: "48px",
 } as const;
 
+/**
+ * The smallest a control's hit area can be. `min` is WCAG 2.5.8's floor for every pointer;
+ * `touch` is Apple's minimum, for coarse pointers, where a fingertip is the pointer.
+ */
+export const target = {
+  min: "24px",
+  touch: "44px",
+} as const;
+
 export const radius = {
   sm: "4px",
   md: "8px",
@@ -260,6 +269,7 @@ export function cssVariables(theme: Theme, contrast: "normal" | "more" = "normal
   const out: Record<string, string> = {};
   flatten("--ks-color", contrast === "more" ? colorHighContrast[theme] : color[theme], out);
   flatten("--ks-space", space, out);
+  flatten("--ks-target", target, out);
   flatten("--ks-radius", radius, out);
   flatten("--ks-font", font, out);
   flatten("--ks-motion", motion, out);
@@ -307,6 +317,7 @@ export function tokenStylesheet(): string {
   flatten("--ks-palette", palette, base);
   Object.assign(base, colorVariables(semantic.light));
   flatten("--ks-space", space, base);
+  flatten("--ks-target", target, base);
   flatten("--ks-radius", radius, base);
   flatten("--ks-font", font, base);
   flatten("--ks-motion", motion, base);

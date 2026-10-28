@@ -48,3 +48,10 @@
 .lg {
   padding-block: var(--ks-space-3);
 }
+
+/* Touch screens: never shorter than a fingertip, however few rows it starts with. */
+@media (pointer: coarse) {
+  .textarea {
+    min-block-size: max(calc(var(--ks-textarea-min-rows) * 1lh), var(--ks-target-touch));
+  }
+}

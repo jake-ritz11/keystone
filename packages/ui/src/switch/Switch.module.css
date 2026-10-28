@@ -125,3 +125,21 @@
     background: HighlightText;
   }
 }
+
+/*
+ * Touch screens: the whole row is the hit area, a fingertip tall, the way a settings row works
+ * on a phone. The label's box stretches over the row, and a tap on a label toggles its input.
+ */
+@media (pointer: coarse) {
+  .switch {
+    position: relative;
+    min-block-size: var(--ks-target-touch);
+    align-content: center;
+  }
+
+  .switch .label::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+}

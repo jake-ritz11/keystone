@@ -6,7 +6,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
-import { color, font, motion, radius, space, cssVariables, highContrast } from "@keystone-ui/tokens";
+import { color, font, motion, radius, space, target, cssVariables, highContrast } from "@keystone-ui/tokens";
 import { describeComponent, listComponents } from "./components.ts";
 import { auditSource, formatFindings, RULES } from "./audit.ts";
 import { ELEMENTS, GenerateError, SIZES, generateComponent } from "./generate.ts";
@@ -18,7 +18,7 @@ server.registerTool(
   {
     title: "Get design tokens",
     description:
-      "Returns every Keystone design token (color for light and dark, space, radius, font, motion) " +
+      "Returns every Keystone design token (color for light and dark, space, target sizes, radius, font, motion) " +
       "with its CSS variable name. Use these variables instead of raw values in any component. " +
       "Use only --ks-color-* in components, never --ks-palette-*: the semantic names are what change " +
       "with the theme and with high contrast. Outlines that identify a control use border-control.",
@@ -29,7 +29,7 @@ server.registerTool(
       {
         type: "text",
         text: JSON.stringify(
-          { tokens: { color, space, radius, font, motion }, highContrastChanges: highContrast, cssVariables: cssVariables("light") },
+          { tokens: { color, space, target, radius, font, motion }, highContrastChanges: highContrast, cssVariables: cssVariables("light") },
           null,
           2,
         ),

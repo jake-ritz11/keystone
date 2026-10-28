@@ -111,3 +111,10 @@
     color: HighlightText;
   }
 }
+
+@media (pointer: coarse) {
+  .item {
+    min-block-size: var(--ks-target-touch);
+    min-inline-size: var(--ks-target-touch);
+  }
+}

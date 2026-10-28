@@ -215,9 +215,10 @@
 /* One line, always: the status text changing, or the restart button appearing, never moves the composer. */
 .statusRow {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: var(--ks-space-3);
-  min-height: 1lh;
+  /* As tall as the restart button's hit area, so the button appearing never moves the composer. */
+  min-height: var(--ks-target-min);
   margin: 0 0 var(--ks-space-2);
   font-size: var(--ks-font-size-xs);
   line-height: var(--ks-font-line-height-normal);
@@ -228,8 +229,9 @@
   color: var(--ks-color-text-muted);
 }
 
-/* Link-sized, so it fits the status line's height. */
+/* Link-styled, with a hit area at least --ks-target-min tall (a fingertip on touch screens). */
 .restart {
+  min-block-size: var(--ks-target-min);
   border: 0;
   padding: 0;
   background: none;
@@ -238,6 +240,13 @@
   text-decoration: underline;
   text-underline-offset: 0.2em;
   cursor: pointer;
+}
+
+@media (pointer: coarse) {
+  .statusRow,
+  .restart {
+    min-block-size: var(--ks-target-touch);
+  }
 }
 
 .restart:focus-visible {

@@ -139,3 +139,17 @@
     transition: none;
   }
 }
+
+/*
+ * Touch screens: fields are a fingertip tall, and their text is at least 16px, because iOS
+ * zooms the page into a field with smaller text when it's focused.
+ */
+@media (pointer: coarse) {
+  .control {
+    min-block-size: var(--ks-target-touch);
+  }
+
+  .sm {
+    font-size: var(--ks-font-size-md);
+  }
+}

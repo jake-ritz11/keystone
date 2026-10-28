@@ -47,7 +47,7 @@
   appearance: none;
   display: block;
   width: 100%;
-  height: var(--ks-space-5);
+  height: var(--ks-target-min);
   margin: 0;
   background: transparent;
   cursor: pointer;
@@ -174,5 +174,12 @@
     forced-color-adjust: none;
     border-color: Highlight;
     background: Canvas;
+  }
+}
+
+/* Touch screens: the input is the hit area, so it's a fingertip tall; the track stays thin. */
+@media (pointer: coarse) {
+  .input {
+    height: var(--ks-target-touch);
   }
 }

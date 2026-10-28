@@ -148,3 +148,11 @@
     animation-duration: 2s;
   }
 }
+
+/* Touch screens: a fingertip-sized hit area at every size (Apple's 44pt). Same look, more room. */
+@media (pointer: coarse) {
+  .button {
+    min-block-size: var(--ks-target-touch);
+    min-inline-size: var(--ks-target-touch);
+  }
+}

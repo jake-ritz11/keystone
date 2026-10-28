@@ -32,3 +32,11 @@
 .lg {
   padding-block: var(--ks-space-3);
 }
+
+/* Touch screens: the input itself is a fingertip tall (the field's border adds to it), so a tap anywhere in the field lands. */
+@media (pointer: coarse) {
+  .input {
+    align-self: stretch;
+    min-block-size: var(--ks-target-touch);
+  }
+}

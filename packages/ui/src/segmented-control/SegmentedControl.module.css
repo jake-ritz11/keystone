@@ -65,3 +65,9 @@
     transition: none;
   }
 }
+
+@media (pointer: coarse) {
+  .option {
+    min-block-size: var(--ks-target-touch);
+  }
+}

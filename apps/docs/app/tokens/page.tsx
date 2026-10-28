@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { color, colorHighContrast, font, highContrast, palette, radius, semantic, space } from "@keystone-ui/tokens";
+import { color, colorHighContrast, font, highContrast, palette, radius, semantic, space, target } from "@keystone-ui/tokens";
 import { DocPage, Section } from "../_docs/blocks";
 
 export const metadata: Metadata = { title: "Tokens" };
@@ -137,6 +137,24 @@ export default function TokensPage() {
               <code>--ks-space-{step}</code>
               <span className="token-value">{value}</span>
               <span className="space-bar" style={{ width: `var(--ks-space-${step})` }} aria-hidden="true" />
+            </li>
+          ))}
+        </ul>
+      </Section>
+
+      <Section title="Target size">
+        <p>
+          The smallest a control&apos;s hit area can be. Every control is at least <code>--ks-target-min</code>, WCAG
+          2.5.8&apos;s floor; on a touch screen (<code>pointer: coarse</code>) controls grow to{" "}
+          <code>--ks-target-touch</code>, Apple&apos;s minimum for a fingertip. The hit area can be bigger than what&apos;s
+          drawn: padding counts.
+        </p>
+        <ul className="token-list">
+          {Object.entries(target).map(([name, value]) => (
+            <li key={name} className="token-row">
+              <code>--ks-target-{name}</code>
+              <span className="token-value">{value}</span>
+              <span className="space-bar" style={{ width: `var(--ks-target-${name})` }} aria-hidden="true" />
             </li>
           ))}
         </ul>

@@ -89,3 +89,9 @@
     transition: none;
   }
 }
+
+@media (pointer: coarse) {
+  .trigger {
+    min-block-size: var(--ks-target-touch);
+  }
+}

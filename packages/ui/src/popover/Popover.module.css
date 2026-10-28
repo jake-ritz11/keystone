@@ -132,3 +132,16 @@
     border-color: CanvasText;
   }
 }
+
+/* Touch screens: the close button's hit area reaches past its drawn square to a fingertip's size. */
+@media (pointer: coarse) {
+  .close {
+    position: relative;
+  }
+
+  .close::after {
+    content: "";
+    position: absolute;
+    inset: calc((var(--ks-space-6) - var(--ks-target-touch)) / 2);
+  }
+}

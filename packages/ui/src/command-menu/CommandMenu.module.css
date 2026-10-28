@@ -231,3 +231,14 @@
     outline-offset: -2px;
   }
 }
+
+/* Touch screens: fingertip-tall rows, and 16px search text so iOS doesn't zoom in on focus. */
+@media (pointer: coarse) {
+  .option {
+    min-block-size: var(--ks-target-touch);
+  }
+
+  .input {
+    font-size: var(--ks-font-size-md);
+  }
+}

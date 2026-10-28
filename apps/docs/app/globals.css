@@ -190,6 +190,83 @@ main {
   padding: var(--ks-space-8) var(--ks-space-8) var(--ks-space-12);
 }
 
+/* Only on phones (see below). A full-width row: what it is, where you are, and a chevron. */
+.nav-toggle {
+  display: none;
+  align-items: center;
+  gap: var(--ks-space-2);
+  width: 100%;
+  min-block-size: var(--ks-target-touch);
+  border: 0;
+  border-radius: var(--ks-radius-md);
+  padding: 0 var(--ks-space-3);
+  background: transparent;
+  color: var(--ks-color-text);
+  font: inherit;
+  font-size: var(--ks-font-size-sm);
+  font-weight: var(--ks-font-weight-medium);
+  cursor: pointer;
+}
+
+.nav-toggle-current {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--ks-color-text-muted);
+  font-weight: var(--ks-font-weight-regular);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nav-toggle-chevron {
+  flex-shrink: 0;
+  color: var(--ks-color-text-muted);
+}
+
+.site-nav[data-open] .nav-toggle-chevron {
+  rotate: 180deg;
+}
+
+.nav-toggle:focus-visible {
+  outline: 2px solid var(--ks-color-focus);
+  outline-offset: -2px;
+}
+
+@media (hover: hover) {
+  .nav-toggle:hover {
+    background: var(--ks-color-surface-raised);
+  }
+}
+
+/*
+ * Standalone links are at least --ks-target-min tall (WCAG 2.5.8). On a touch screen they, and
+ * every other control on the site, are a fingertip tall (--ks-target-touch, Apple's 44pt).
+ */
+.site-link,
+.doc-meta a {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--ks-target-min);
+}
+
+@media (pointer: coarse) {
+  .site-link,
+  .site-title,
+  .doc-meta a,
+  .nav-link,
+  .example-code summary {
+    display: flex;
+    align-items: center;
+    min-block-size: var(--ks-target-touch);
+  }
+
+  .site-link,
+  .site-title,
+  .doc-meta a {
+    display: inline-flex;
+  }
+}
+
 @media (max-width: 767px) {
   .site-header {
     padding: var(--ks-space-3) var(--ks-space-4);
@@ -199,31 +276,25 @@ main {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  /* On phones the nav becomes one scrollable row under the header. */
+  /* On phones the nav sits behind a Menu button under the header, and opens in place. */
   .site-nav {
     position: static;
-    display: flex;
-    gap: var(--ks-space-4);
     max-height: none;
-    overflow-x: auto;
+    overflow: visible;
     border-bottom: 1px solid var(--ks-color-border);
-    padding: var(--ks-space-3) var(--ks-space-4);
+    padding: var(--ks-space-2) var(--ks-space-4);
   }
 
-  .nav-group + .nav-group {
-    margin-top: 0;
+  .nav-toggle {
+    display: flex;
   }
 
-  .nav-label {
+  .site-nav:not([data-open]) .nav-groups {
     display: none;
   }
 
-  .nav-list {
-    flex-direction: row;
-  }
-
-  .nav-link {
-    white-space: nowrap;
+  .nav-groups {
+    padding-block: var(--ks-space-3) var(--ks-space-2);
   }
 
   main {

@@ -94,20 +94,14 @@ async function phone(browser: Browser) {
   return { context, page: await context.newPage() };
 }
 
-for (const width of [320, 375]) {
-  for (const path of PAGES) {
-    test(`${path} reflows at ${width}px: nothing scrolls the page sideways`, async ({ page }) => {
-      await page.setViewportSize({ width, height: 800 });
-      await open(page, path);
-      expect(await overflowing(page)).toEqual({ page: 0, elements: [] });
-    });
-  }
-}
-
+// One page load per page, checked at both widths, to keep the suite's run time down.
 for (const path of PAGES) {
-  test(`${path}: every control is at least 24 by 24 at phone width`, async ({ page }) => {
-    await page.setViewportSize({ width: 375, height: 800 });
+  test(`${path}: reflows at 320 and 375px, and every control is at least 24 by 24`, async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 800 });
     await open(page, path);
+    expect(await overflowing(page), "at 320px").toEqual({ page: 0, elements: [] });
+    await page.setViewportSize({ width: 375, height: 800 });
+    expect(await overflowing(page), "at 375px").toEqual({ page: 0, elements: [] });
     expect(await smallTargets(page, 24, true)).toEqual([]);
   });
 }
@@ -124,16 +118,20 @@ test("text fields use 16px text on touch screens, so iOS doesn't zoom in on focu
   await context.close();
 });
 
-for (const { slug } of COMPONENTS) {
-  test(`/components/${slug}: on a touch screen every control in the examples is a fingertip, 44 by 44`, async ({ browser, browserName }) => {
-    test.skip(browserName === "firefox", "Firefox has no mobile emulation");
-    const { context, page } = await phone(browser);
+test("on a touch screen every control in every component example is a fingertip, 44 by 44", async ({ browser, browserName }) => {
+  test.skip(browserName === "firefox", "Firefox has no mobile emulation");
+  test.setTimeout(120_000);
+  const { context, page } = await phone(browser);
+  const problems: Record<string, string[]> = {};
+  for (const { slug } of COMPONENTS) {
     await open(page, `/components/${slug}`);
     expect(await page.evaluate(() => matchMedia("(pointer: coarse)").matches)).toBe(true);
-    expect(await smallTargets(page, 44, false, ".example-preview")).toEqual([]);
-    await context.close();
-  });
-}
+    const small = await smallTargets(page, 44, false, ".example-preview");
+    if (small.length) problems[slug] = small;
+  }
+  expect(problems).toEqual({});
+  await context.close();
+});
 
 test("on a touch screen, a tap anywhere along a checkbox's row toggles it", async ({ browser, browserName }) => {
   test.skip(browserName === "firefox", "Firefox has no mobile emulation");

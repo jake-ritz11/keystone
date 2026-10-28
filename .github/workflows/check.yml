@@ -36,6 +36,30 @@ jobs:
         # against the baselines in apps/*/tests-visual/screenshots. The "Update screenshots"
         # workflow refreshes them.
         run: npm run test:visual -w apps/docs && npm run test:visual -w apps/agent
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: playwright-results
+          path: |
+            apps/docs/test-results
+            apps/agent/test-results
+          retention-days: 7
+
+  # Firefox in its own job, alongside the main one, so neither runs into the time limit.
+  firefox:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.1-noble
+      options: --ipc=host
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run build
       - name: Behavior tests in Firefox
         # The container runs as root, and Firefox refuses to start when $HOME belongs to someone
         # else (GitHub mounts it for the image's pwuser).
@@ -45,7 +69,7 @@ jobs:
       - uses: actions/upload-artifact@v7
         if: failure()
         with:
-          name: playwright-results
+          name: playwright-results-firefox
           path: |
             apps/docs/test-results
             apps/agent/test-results

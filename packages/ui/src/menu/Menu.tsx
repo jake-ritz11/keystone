@@ -71,7 +71,7 @@ export function Menu({ trigger, children, align = "start", className, style, ...
       setOpen(isOpen);
       const trigger = triggerElement();
       if (isOpen) {
-        if (trigger) placeFallback(trigger, menu, "bottom", "start", 4);
+        if (trigger) placeFallback(trigger, menu, "bottom", align, 4);
         const list = items();
         (focusOnOpen.current === "last" ? list.at(-1) : list[0])?.focus();
         focusOnOpen.current = "first";
@@ -79,7 +79,7 @@ export function Menu({ trigger, children, align = "start", className, style, ...
     };
     menu.addEventListener("toggle", onToggle);
     return () => menu.removeEventListener("toggle", onToggle);
-  }, []);
+  }, [align]);
 
   /**
    * Closes from the keyboard or an item choice, then returns focus to the trigger explicitly:

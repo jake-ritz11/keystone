@@ -61,3 +61,6 @@ export type { ProgressProps } from "./progress/Progress";
 
 export { ToggleGroup } from "./toggle-group/ToggleGroup";
 export type { ToggleGroupProps, ToggleOption } from "./toggle-group/ToggleGroup";
+
+export { Popover } from "./popover/Popover";
+export type { PopoverProps } from "./popover/Popover";

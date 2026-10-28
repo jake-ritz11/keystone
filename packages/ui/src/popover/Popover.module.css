@@ -1,0 +1,134 @@
+.trigger {
+  display: contents;
+}
+
+/* Layout on the base rule, so a closing popover doesn't re-lay out; exit is a plain fade. */
+.popover {
+  flex-direction: column;
+  gap: var(--ks-space-3);
+  position-area: block-end span-inline-end;
+  position-try-fallbacks: flip-block, flip-inline;
+  inset: auto;
+  width: max-content;
+  min-inline-size: min(300px, calc(100vw - var(--ks-space-8)));
+  /* Never wider or taller than the screen; long content scrolls. */
+  max-inline-size: min(360px, calc(100vw - var(--ks-space-8)));
+  max-block-size: min(520px, calc(100dvh - var(--ks-space-8)));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  margin: var(--ks-space-1) 0;
+  border: 1px solid var(--ks-color-border);
+  border-radius: var(--ks-radius-md);
+  padding: var(--ks-space-4);
+  background: var(--ks-color-surface);
+  color: var(--ks-color-text);
+  font-family: var(--ks-font-family-sans);
+  font-size: var(--ks-font-size-sm);
+  line-height: var(--ks-font-line-height-normal);
+  box-shadow: 0 8px 24px var(--ks-color-shadow);
+  opacity: 0;
+  transition:
+    opacity var(--ks-motion-duration-fast) var(--ks-motion-easing-standard),
+    display var(--ks-motion-duration-fast) allow-discrete,
+    overlay var(--ks-motion-duration-fast) allow-discrete;
+}
+
+.popover:popover-open {
+  display: flex;
+  opacity: 1;
+}
+
+/* Fade only: it can flip above its trigger, and a slide would then come from the wrong side. */
+@starting-style {
+  .popover:popover-open {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .popover,
+  .popover:popover-open {
+    transition: none;
+  }
+}
+
+/* Focus lands on the popover itself only when it has no controls; its name is read then. */
+.popover:focus {
+  outline: none;
+}
+
+.end {
+  position-area: block-end span-inline-start;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--ks-space-3);
+}
+
+/* With the title hidden, the close button still sits in the corner, over the content's edge. */
+.headerHidden {
+  display: flex;
+  justify-content: flex-end;
+  margin-block-end: calc(-1 * var(--ks-space-3));
+}
+
+.title {
+  margin: 0;
+  font-size: var(--ks-font-size-md);
+  font-weight: var(--ks-font-weight-semibold);
+  line-height: var(--ks-font-line-height-tight);
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.close {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: var(--ks-space-6);
+  height: var(--ks-space-6);
+  margin: calc(-1 * var(--ks-space-1));
+  border: 0;
+  border-radius: var(--ks-radius-sm);
+  padding: 0;
+  background: transparent;
+  color: var(--ks-color-text-muted);
+  cursor: pointer;
+}
+
+.close svg {
+  width: var(--ks-space-4);
+  height: var(--ks-space-4);
+}
+
+@media (hover: hover) {
+  .close:hover {
+    background: var(--ks-color-surface-raised);
+    color: var(--ks-color-text);
+  }
+}
+
+.close:focus-visible {
+  outline: 2px solid var(--ks-color-focus);
+  outline-offset: 2px;
+}
+
+.body {
+  min-width: 0;
+}
+
+@media (forced-colors: active) {
+  .popover {
+    border-color: CanvasText;
+  }
+}

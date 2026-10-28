@@ -48,6 +48,14 @@ test("bottom/start sits under the anchor's left edge", () => {
   });
 });
 
+test("bottom/end lines its right edge up with the anchor's", () => {
+  withViewport(false, () => {
+    const floating = el({ top: 0, left: 0, width: 200, height: 120 });
+    placeFallback(el({ top: 100, left: 300, width: 80, height: 30 }), floating, "bottom", "end", 4);
+    assert.equal(floating.style.inset, "134px auto auto 180px");
+  });
+});
+
 test("bottom flips above when there's no room below", () => {
   withViewport(false, () => {
     const floating = el({ top: 0, left: 0, width: 200, height: 120 });

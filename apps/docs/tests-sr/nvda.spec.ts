@@ -214,6 +214,15 @@ test("TG1, TG2: a toggle group reads its name, then each button's pressed state"
   expectSaid(await heard(nvda, "TG2"), /not pressed/i);
 });
 
+test("PO1, PO2: a popover is announced as a dialog by name, and closing returns to its trigger", async ({ page, nvda }) => {
+  await open(page, nvda, "/components/popover");
+  expectSaid(await reach(nvda, page.getByRole("button", { name: "Share", exact: true }), "PO1 (trigger)"), "share", "button", "collapsed");
+  await nvda.press("Enter");
+  expectSaid(await heard(nvda, "PO1"), "share this session", "dialog", "link");
+  await nvda.press("Escape");
+  expectSaid(await heard(nvda, "PO2"), "share", "button", "collapsed");
+});
+
 test("RG1, RG2: a radio group reads its question, then the answer and its position", async ({ page, nvda }) => {
   await open(page, nvda, "/components/radio-group");
   expectSaid(

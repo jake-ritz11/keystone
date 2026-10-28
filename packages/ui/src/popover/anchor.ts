@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
 
 /**
- * Popovers (Menu, Tooltip) sit in the top layer and are tied to their trigger with CSS anchor
+ * Popovers (Menu, Tooltip, Popover) sit in the top layer and are tied to their trigger with CSS anchor
  * positioning. Browsers without it get a one-shot placement from `placeFallback` on open.
  */
 
@@ -50,7 +50,7 @@ export function placeFallback(
   anchor: HTMLElement,
   floating: HTMLElement,
   side: "top" | "bottom",
-  align: "start" | "center",
+  align: "start" | "center" | "end",
   gap: number,
 ): void {
   if (supportsAnchorPositioning()) return;
@@ -60,7 +60,7 @@ export function placeFallback(
   const fitsAbove = a.top - gap - f.height >= 0;
   const below = side === "bottom" ? fitsBelow || !fitsAbove : !fitsAbove && fitsBelow;
   const top = below ? a.bottom + gap : a.top - gap - f.height;
-  let left = align === "center" ? a.left + a.width / 2 - f.width / 2 : a.left;
+  let left = align === "center" ? a.left + a.width / 2 - f.width / 2 : align === "end" ? a.right - f.width : a.left;
   left = Math.min(Math.max(gap, left), window.innerWidth - f.width - gap);
   floating.style.position = "fixed";
   floating.style.inset = `${top}px auto auto ${left}px`;

@@ -65,10 +65,10 @@ opens this folder. Other clients can run `node packages/mcp/src/server.ts` over 
 
 ## Components
 
-Button, Input, Textarea, Select, Checkbox, Switch, RadioGroup, Slider, Progress, SegmentedControl, ToggleGroup, Dialog, Menu,
+Button, Input, Textarea, Select, Checkbox, Switch, RadioGroup, Slider, Progress, SegmentedControl, ToggleGroup, Dialog, Popover, Menu,
 Tabs, CommandMenu, Tooltip, Disclosure, Badge, Shimmer, DiffView and Toast. The overlays are built on the
 platform rather than a headless library: `<dialog>` and `showModal()` for Dialog, the `popover`
-attribute and CSS anchor positioning for Menu and Tooltip, and `appearance: base-select` for
+attribute and CSS anchor positioning for Menu, Tooltip and Popover, and `appearance: base-select` for
 Select's popup where the browser supports it. Keystone adds the parts the platform leaves out:
 the menu and tabs keyboard models, controlled state, focus return, and live-region
 announcements for toasts. [docs/decisions.md](docs/decisions.md) records why, what broke, and

@@ -32,6 +32,7 @@ export const COMPONENTS: ComponentSummary[] = [
   { slug: "segmented-control", name: "SegmentedControl", imports: ["SegmentedControl"], summary: "One choice from a few, side by side, as a keyboard-friendly radio group." },
   { slug: "toggle-group", name: "ToggleGroup", imports: ["ToggleGroup"], summary: "Buttons that stay pressed, for formatting, filters and view options." },
   { slug: "command-menu", name: "CommandMenu", imports: ["CommandMenu"], summary: "Every action in one searchable list, behind a keyboard shortcut." },
+  { slug: "popover", name: "Popover", imports: ["Popover"], summary: "Interactive content beside its trigger, as a non-modal dialog on the popover API." },
   { slug: "tooltip", name: "Tooltip", imports: ["Tooltip"], summary: "Hover and focus hints that follow WCAG's rules for content on hover." },
   { slug: "disclosure", name: "Disclosure", imports: ["Disclosure"], summary: "Show and hide a section, on the native details element." },
   { slug: "badge", name: "Badge", imports: ["Badge"], summary: "A short, static label for a status or a category." },
@@ -471,6 +472,31 @@ export const api: Record<string, ComponentApi> = {
       { keys: "Left, Up", action: "Previous button." },
       { keys: "Home, End", action: "First or last button." },
       { keys: "Space, Enter", action: "Presses or releases the focused button." },
+    ],
+  },
+  popover: {
+    parts: [
+      {
+        interface: "PopoverProps",
+        source: "packages/ui/src/popover/Popover.tsx",
+        extends: "every <div> attribute except children and title",
+        note: "Controlled or not: pass open with onOpenChange, or leave both out and the trigger toggles it.",
+        props: [
+          { name: "trigger", type: "ReactNode", required: true, description: "A single button. It can come from a server component." },
+          { name: "title", type: "ReactNode", required: true, description: "Names the popover, shown as its heading and announced on open." },
+          { name: "hideTitle", type: "boolean", default: "false", description: "Keeps the title for screen readers only." },
+          { name: "children", type: "ReactNode", required: true, description: "The content." },
+          { name: "align", type: '"start" | "end"', default: '"start"', description: "Which edge of the trigger it lines up with. It flips to stay on screen." },
+          { name: "open", type: "boolean", description: "Whether it's showing, when controlled." },
+          { name: "onOpenChange", type: "(open: boolean) => void", description: "Called when it opens or closes, however that happened." },
+          { name: "dismissButton", type: "boolean", default: "true", description: "A close button in the corner." },
+        ],
+      },
+    ],
+    keyboard: [
+      { keys: "Enter, Space", action: "On the trigger: opens it, with focus on the first control inside, or closes it." },
+      { keys: "Tab", action: "Through the content, then on to the rest of the page. It stays open." },
+      { keys: "Escape", action: "Closes it and returns focus to the trigger." },
     ],
   },
   "command-menu": {

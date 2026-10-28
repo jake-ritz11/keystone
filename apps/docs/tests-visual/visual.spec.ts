@@ -110,3 +110,15 @@ for (const theme of THEMES) {
     await expect(toast).toHaveScreenshot(`state--toast--${theme}.png`);
   });
 }
+
+for (const theme of THEMES) {
+  test(`popover open, ${theme}`, async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 1200 });
+    await load(page, "/components/popover", theme);
+    const trigger = page.getByRole("button", { name: "Share", exact: true });
+    await trigger.click();
+    const popover = page.getByRole("dialog", { name: "Share this session" });
+    await expect(popover).toBeVisible();
+    await expect(page).toHaveScreenshot(`state--popover--${theme}.png`, { clip: await around(page, trigger, popover) });
+  });
+}

@@ -25,7 +25,7 @@ arrow raises the value (it follows the mirrored track) while Safari's lowers it.
 | --- | --- | --- |
 | Checkbox, Switch, RadioGroup | all five | Built in this round |
 | Accordion | all five | Disclosure covers one section; exclusive groups use `<details name>` |
-| Popover | all five | Built internally for Menu and Tooltip; not yet a public component |
+| Popover | all five | Public in the second round: a non-modal dialog on the same anchoring Menu and Tooltip use |
 | Slider, Progress | all five | Built in the second round, on `<input type="range">` and `<progress>` |
 | Toggle group | all five | Built in the second round. SegmentedControl stays for exactly-one choices |
 | Combobox | four | Inside CommandMenu only |

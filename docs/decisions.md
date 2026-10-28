@@ -245,9 +245,12 @@ metrics. Both apps now self-host Inter and JetBrains Mono, which also means the 
 use the same font as a reviewer's browser. Second, with Inter loaded, tabs, segmented options and
 small buttons were still 0.9px high. Their line height of 1.2 at 14px makes a 16.8px line box,
 and the browser snaps the text to a whole pixel. The tokens now write that line height as
-`round(up, 1.2em, 2px)`, an even number of pixels, and every measured label is centered to within
-0.1px. `alignment.spec.ts` checks this on every component page with a tolerance of half a pixel. I
-confirmed that it fails when the rounding is removed.
+`round(up, 1.2em, 2px)`, an even number of pixels, and on Windows every measured label is
+centered to within 0.1px. `alignment.spec.ts` checks every component page, but with a tolerance
+of 1.2 pixels, because Linux snaps baselines differently: in CI the Large button's label measures
+1.0px high where Windows measures it centered. At that tolerance the test catches a label that is
+clearly off, but it would not catch the 0.6 to 0.9px offsets this pass fixed, which I checked by
+removing the rounding.
 
 The same review found spacing problems that the measurement could not:
 

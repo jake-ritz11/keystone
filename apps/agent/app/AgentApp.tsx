@@ -116,7 +116,7 @@ function Shell({ fast }: { fast: boolean }) {
       <CommandMenu open={commandsOpen} onOpenChange={setCommandsOpen} items={commands} />
       <main className={styles.main}>
         {task && transport ? (
-          <AgentSession key={`${task.id}-${run}`} task={task} variant={variant} transport={transport} mode={mode} onCommands={onCommands} />
+          <AgentSession key={`${task.id}-${run}`} task={task} variant={variant} transport={transport} mode={mode} onCommands={onCommands} onRestart={() => setRun((r) => r + 1)} />
         ) : (
           <TaskPicker mode={mode} onPick={start} />
         )}

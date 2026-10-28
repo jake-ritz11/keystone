@@ -212,13 +212,38 @@
   background: var(--ks-color-bg);
 }
 
-/* One line, always: the status text changing never moves the composer. */
-.status {
+/* One line, always: the status text changing, or the restart button appearing, never moves the composer. */
+.statusRow {
+  display: flex;
+  align-items: baseline;
+  gap: var(--ks-space-3);
   min-height: 1lh;
   margin: 0 0 var(--ks-space-2);
-  color: var(--ks-color-text-muted);
   font-size: var(--ks-font-size-xs);
   line-height: var(--ks-font-line-height-normal);
+}
+
+.status {
+  margin: 0;
+  color: var(--ks-color-text-muted);
+}
+
+/* Link-sized, so it fits the status line's height. */
+.restart {
+  border: 0;
+  padding: 0;
+  background: none;
+  color: var(--ks-color-accent);
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+}
+
+.restart:focus-visible {
+  border-radius: var(--ks-radius-sm);
+  outline: 2px solid var(--ks-color-focus);
+  outline-offset: 2px;
 }
 
 .side {

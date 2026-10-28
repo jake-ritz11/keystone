@@ -62,7 +62,7 @@ function explain(error: unknown): string {
   if (error instanceof Anthropic.BadRequestError) return "The agent couldn't accept this conversation. Start a new session.";
   if (error instanceof Anthropic.APIConnectionError) return "Couldn't reach the model. Check the connection and try again.";
   if (error instanceof Anthropic.APIError) return "The model service had a problem. Try again.";
-  return "Something went wrong on the server.";
+  return "The server hit an unexpected error. Try again, and if it keeps happening, restart the task.";
 }
 
 /** Whether live mode is set up, so the app can offer it. */

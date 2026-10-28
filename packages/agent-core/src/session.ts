@@ -317,7 +317,7 @@ function onTurnEnd(state: SessionState, message: Pick<Anthropic.Message, "conten
 
   if (message.stop_reason === "refusal") {
     const resolved = resolveUnrun(next, calls, "The request was declined, so this call was not run.");
-    return { ...resolved, status: "error", error: "The model declined this request.", items: [...resolved.items, notice(resolved, "danger", "The model declined this request.")], seq: resolved.seq + 1 };
+    return { ...resolved, status: "error", error: "The model declined this request.", items: [...resolved.items, notice(resolved, "danger", "The model declined this request. Rewording the task may help, or try a different one.")], seq: resolved.seq + 1 };
   }
   if (message.stop_reason === "max_tokens" && calls.length > 0) {
     // A truncated tool input can still parse, so nothing from this turn runs.
@@ -326,7 +326,7 @@ function onTurnEnd(state: SessionState, message: Pick<Anthropic.Message, "conten
       ...resolved,
       status: "error",
       error: "The response was cut off.",
-      items: [...resolved.items, notice(resolved, "danger", "The response was cut off before the agent finished a tool call.")],
+      items: [...resolved.items, notice(resolved, "danger", "The response was cut off before the agent finished a tool call, so none of it ran. Restarting the task usually gets past it.")],
       seq: resolved.seq + 1,
     };
   }

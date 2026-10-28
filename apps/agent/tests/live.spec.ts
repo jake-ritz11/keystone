@@ -86,15 +86,21 @@ test("live mode: the client streams turns from the route, runs tools, and sends 
   expect(Object.keys(bodies[0]!).sort()).toEqual(["messages", "variant"]);
 });
 
-test("live mode: a route error is shown, not thrown", async ({ page }) => {
-  await page.route("**/api/turn", (route) =>
-    route.request().method() === "GET"
-      ? route.fulfill({ json: { live: true, model: "claude-opus-5-5" } })
-      : route.fulfill({ status: 429, json: { error: "Today's budget for live sessions is used up. Replays still work." } }),
-  );
+test("live mode: a route error is shown, not thrown, with a way to start again", async ({ page }) => {
+  let turns = 0;
+  await page.route("**/api/turn", (route) => {
+    if (route.request().method() === "GET") return route.fulfill({ json: { live: true, model: "claude-opus-5-5" } });
+    turns++;
+    return route.fulfill({ status: 429, json: { error: "Today's budget for live sessions is used up. Replays still work." } });
+  });
   await open(page);
   await page.getByRole("radiogroup", { name: "Mode" }).getByRole("radio", { name: "Live" }).click();
   await page.getByRole("button", { name: /Fix the broken link/ }).click();
-  await expect(status(page)).toHaveText("Something went wrong");
+  await expect(status(page)).toHaveText("Stopped by an error");
   await expect(page.getByText("Today's budget for live sessions is used up.")).toBeVisible();
+  // The next step is on screen, not only in the command menu.
+  expect(turns).toBe(1);
+  await page.getByRole("button", { name: "Restart this task" }).click();
+  await expect.poll(() => turns).toBe(2);
+  await expect(status(page)).toHaveText("Stopped by an error");
 });

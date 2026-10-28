@@ -19,7 +19,8 @@ const STATUS_TEXT: Partial<Record<string, string>> = {
   review: "Done. Review the changes.",
   done: "Done",
   stopped: "Stopped",
-  error: "Something went wrong",
+  // The reason is in the timeline, so the status doesn't announce it a second time.
+  error: "Stopped by an error",
 };
 
 export function AgentSession({
@@ -28,6 +29,7 @@ export function AgentSession({
   transport,
   mode,
   onCommands,
+  onRestart,
 }: {
   task: SampleTask;
   variant: Variant;
@@ -35,6 +37,8 @@ export function AgentSession({
   mode: "replay" | "live";
   /** Receives the commands that make sense in this session right now, for the command menu. */
   onCommands?: (items: CommandItem[]) => void;
+  /** Starts the same task again; offered once the session has stopped. */
+  onRestart?: () => void;
 }) {
   const study = useStudy();
   // One study session per agent session, only when taking part. A ref, so React's development
@@ -152,9 +156,17 @@ export function AgentSession({
             </button>
           )}
           <div className={styles.footer}>
-            <p className={styles.status} role="status" data-status={state.status}>
-              {STATUS_TEXT[state.status] ?? ""}
-            </p>
+            <div className={styles.statusRow}>
+              <p className={styles.status} role="status" data-status={state.status}>
+                {STATUS_TEXT[state.status] ?? ""}
+              </p>
+              {/* An error or a stop says what to do next, here and not only in the command menu. */}
+              {(state.status === "error" || state.status === "stopped") && onRestart && (
+                <button type="button" className={styles.restart} onClick={onRestart}>
+                  Restart this task
+                </button>
+              )}
+            </div>
             <Composer state={state} dispatch={dispatch} stop={stop} />
           </div>
         </section>

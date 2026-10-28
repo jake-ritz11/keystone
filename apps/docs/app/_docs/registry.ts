@@ -27,6 +27,7 @@ export interface Writing {
 export const WRITING: Writing[] = [
   { slug: "case-study", file: "case-study.md", title: "Case study", summary: "The agent interface from question to tests: what was built, what broke, and what isn't proven." },
   { slug: "comparison", file: "comparison.md", title: "How Keystone compares", summary: "Against five component libraries, six design systems and three agent UI kits: what it adopted, what it skips, and the bugs the comparison found." },
+  { slug: "content-guidelines", file: "content-guidelines.md", title: "Content guidelines", summary: "How the interfaces talk: actions, tool states, errors and forms, with the rules a test enforces." },
   { slug: "decisions", file: "decisions.md", title: "Decisions", summary: "Why it's built this way, what broke, and what the tests do and don't prove." },
   { slug: "variants", file: "variants.md", title: "Interaction variants", summary: "The three open questions the study compares, with expectations written before testing." },
   { slug: "study-plan", file: "study-plan.md", title: "Study plan", summary: "The protocol, measures, data dictionary and analysis, set before any sessions run." },

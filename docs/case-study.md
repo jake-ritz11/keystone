@@ -106,11 +106,13 @@ cursor. The change was reverted and the reason is written down.
 ## What the tests cover
 
 `npm run check` runs on every commit: type checks, unit tests, the design-system audit, size
-budgets for the published packages, a production build, and 85 Playwright behavior tests
-in Chromium and WebKit locally, with Firefox and NVDA in CI. CI also compares screenshots of
-every example and overlay state, in both themes, against baselines rendered in its own Linux
-image, so a change to how something looks shows up as an image diff in review. Specs for tricky behavior are
-checked by breaking the code they guard and watching them fail, so they can't pass by accident.
+budgets for the published packages, the content rules, a production build, and 137 Playwright
+behavior tests (111 for the components, 26 for the agent app) in Chromium and WebKit locally,
+with Firefox and NVDA in CI. Every docs page also passes axe in light, dark and both
+high-contrast themes. CI compares 114 screenshots of every example and overlay state, in both
+themes, against baselines rendered in its own Linux image, so a change to how something looks
+shows up as an image diff in review. Specs for tricky behavior are checked by breaking the code
+they guard and watching them fail, so they can't pass by accident.
 
 ## What isn't proven
 

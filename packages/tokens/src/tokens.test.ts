@@ -95,7 +95,7 @@ test("the DTCG export keeps the two tiers and uses spec value shapes", () => {
   assert.deepEqual(tokens.space["4"].$value, { value: 16, unit: "px" });
   assert.deepEqual(tokens.motion.easing.standard.$value, [0.2, 0, 0, 1]);
   assert.deepEqual(tokens.motion.duration.ambient.$value, { value: 2000, unit: "ms" });
-  assert.deepEqual(tokens.font.family.mono.$value, ["JetBrains Mono", "ui-monospace", "Cascadia Code", "monospace"]);
+  assert.deepEqual(tokens.font.family.mono.$value, ["JetBrains Mono Variable", "JetBrains Mono", "ui-monospace", "Cascadia Code", "monospace"]);
   // Every reference points at a real palette token.
   const refs = JSON.stringify(tokens).match(/\{palette\.\w+\.\w+\}/g) ?? [];
   for (const ref of refs) {

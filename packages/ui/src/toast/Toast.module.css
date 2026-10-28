@@ -47,9 +47,20 @@
   opacity: 0;
 }
 
+/*
+ * The icon and the close button are each as tall as the title's first line plus the content's
+ * padding, and center within it, so they line up with the title however many lines follow.
+ */
+.icon,
+.close {
+  min-block-size: calc(2 * var(--ks-space-1) + 1lh);
+  font-size: var(--ks-font-size-sm);
+  line-height: var(--ks-font-line-height-normal);
+}
+
 .icon {
   display: inline-flex;
-  margin-block-start: var(--ks-space-1);
+  align-items: center;
   color: var(--ks-color-text-muted);
 }
 

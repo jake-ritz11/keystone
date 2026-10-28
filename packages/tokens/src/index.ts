@@ -205,8 +205,10 @@ export const radius = {
 
 export const font = {
   family: {
-    sans: "'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif",
-    mono: "'JetBrains Mono', ui-monospace, 'Cascadia Code', monospace",
+    // The apps self-host the variable fonts (@fontsource-variable), so text is set the same,
+    // and sits the same in its box, on every operating system. The rest are fallbacks.
+    sans: "'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif",
+    mono: "'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, 'Cascadia Code', monospace",
   },
   size: {
     xs: "12px",
@@ -256,6 +258,16 @@ function flatten(prefix: string, values: Record<string, unknown>, out: Record<st
   }
 }
 
+/**
+ * The tight line height is written to CSS rounded up to a whole, even number of pixels. At
+ * 1.2 times 14px the line box is 16.8px, and the browser then snaps the text to a pixel edge,
+ * which left labels in buttons and tabs 0.9px off center. An even line box centers them exactly.
+ * The token itself stays the ratio, for TypeScript and the W3C export.
+ */
+const tightLineHeight = (out: Record<string, string>) => {
+  out["--ks-font-line-height-tight"] = `round(up, ${font.lineHeight.tight}em, 2px)`;
+};
+
 const paletteVar = (value: SemanticValue) => {
   const ref = REF.exec(value);
   return ref ? `var(--ks-palette-${ref[1]}-${ref[2]})` : value;
@@ -272,6 +284,7 @@ export function cssVariables(theme: Theme, contrast: "normal" | "more" = "normal
   flatten("--ks-target", target, out);
   flatten("--ks-radius", radius, out);
   flatten("--ks-font", font, out);
+  tightLineHeight(out);
   flatten("--ks-motion", motion, out);
   return out;
 }
@@ -320,6 +333,7 @@ export function tokenStylesheet(): string {
   flatten("--ks-target", target, base);
   flatten("--ks-radius", radius, base);
   flatten("--ks-font", font, base);
+  tightLineHeight(base);
   flatten("--ks-motion", motion, base);
   const dark = colorVariables(semantic.dark);
   const rules = [

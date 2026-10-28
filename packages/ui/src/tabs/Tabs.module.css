@@ -31,6 +31,11 @@
   flex-shrink: 0;
 }
 
+/* The panel starts level with the first tab's label, which sits inside the tab's padding. */
+.vertical .panel {
+  padding-block-start: var(--ks-space-2);
+}
+
 .tab {
   position: relative;
   display: inline-flex;

@@ -144,7 +144,7 @@
   scrollbar-gutter: stable;
   padding: var(--ks-space-5);
   /* Room for the sticky plan, measured in AgentSession. */
-  scroll-padding-block-start: calc(var(--plan-height, 0px) + var(--ks-space-3));
+  scroll-padding-block-start: calc(var(--plan-height, 0px) + var(--ks-space-2) + var(--ks-space-3));
 }
 
 /*
@@ -473,9 +473,11 @@
 
 /* Plan and review */
 
+/* Pins a little below the top edge, so it floats like the cards around it instead of butting
+   against the header with its shadow cut off. */
 .plan {
   position: sticky;
-  top: calc(var(--ks-space-5) * -1);
+  top: var(--ks-space-2);
   z-index: 1;
   border: 1px solid var(--ks-color-border);
   border-radius: var(--ks-radius-lg);

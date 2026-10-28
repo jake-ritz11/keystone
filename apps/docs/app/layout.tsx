@@ -7,6 +7,8 @@ import { ThemeToggle } from "./ThemeToggle";
 import { Hydrated } from "./_docs/Hydrated";
 import { SiteNav } from "./_docs/SiteNav";
 import { REPO } from "./_docs/registry";
+import "@fontsource-variable/inter";
+import "@fontsource-variable/jetbrains-mono";
 import "./globals.css";
 
 export const metadata: Metadata = {

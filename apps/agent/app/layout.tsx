@@ -3,6 +3,8 @@ import type { ReactNode } from "react";
 import { tokenStylesheet } from "@keystone-ui/tokens";
 import { ToastProvider } from "@keystone-ui/ui";
 import { Hydrated } from "./Hydrated";
+import "@fontsource-variable/inter";
+import "@fontsource-variable/jetbrains-mono";
 import "./globals.css";
 
 export const metadata: Metadata = {

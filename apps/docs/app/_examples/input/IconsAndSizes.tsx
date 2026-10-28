@@ -18,7 +18,7 @@ export function IconsAndSizes() {
         iconStart={<SearchIcon />}
         reserveMessageSpace={false}
       />
-      <div className="row">
+      <div className="row top">
         <Input label="Small" size="sm" placeholder="sm" />
         <Input label="Medium" size="md" placeholder="md" />
         <Input label="Large" size="lg" placeholder="lg" />

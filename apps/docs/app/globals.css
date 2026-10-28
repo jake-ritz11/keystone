@@ -79,8 +79,8 @@ kbd {
 
 .skip-link {
   position: absolute;
-  top: var(--ks-space-2);
-  left: var(--ks-space-2);
+  inset-block-start: var(--ks-space-2);
+  inset-inline-start: var(--ks-space-2);
   z-index: 10;
   border-radius: var(--ks-radius-md);
   padding: var(--ks-space-2) var(--ks-space-4);
@@ -314,9 +314,18 @@ h3 {
   line-height: var(--ks-font-line-height-tight);
 }
 
+/* A one-word title like "SegmentedControl" is wider than a 320px screen at full size, so the
+   smallest screens get a smaller heading, and a word that still does not fit may break. */
 h1 {
   margin: 0 0 var(--ks-space-3);
   font-size: var(--ks-font-size-2xl);
+  overflow-wrap: break-word;
+}
+
+@media (max-width: 360px) {
+  h1 {
+    font-size: var(--ks-font-size-xl);
+  }
 }
 
 h2 {
@@ -336,26 +345,28 @@ h3 {
   font-size: var(--ks-font-size-lg);
 }
 
+/* Baseline, so the Source link (taller, for its hit area) sits on the same line as the text. */
 .doc-meta {
   display: flex;
   flex-wrap: wrap;
+  align-items: baseline;
   gap: var(--ks-space-4);
   margin: var(--ks-space-4) 0 0;
   color: var(--ks-color-text-muted);
   font-size: var(--ks-font-size-sm);
 }
 
+/* Two aligned columns, label and value, rather than pairs wrapping wherever they fit. */
 .doc-tested {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--ks-space-2) var(--ks-space-6);
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: var(--ks-space-1) var(--ks-space-4);
   margin: var(--ks-space-3) 0 0;
   font-size: var(--ks-font-size-sm);
 }
 
 .doc-tested > div {
-  display: flex;
-  gap: var(--ks-space-2);
+  display: contents;
 }
 
 .doc-tested dt {
@@ -422,15 +433,17 @@ h3 {
 
 .code-copy {
   position: absolute;
-  top: var(--ks-space-2);
-  right: var(--ks-space-2);
+  inset-block-start: var(--ks-space-2);
+  inset-inline-end: var(--ks-space-2);
 }
 
+/* Room at the end of the first lines for the Copy button, which sits over the code. */
 .code pre {
   max-height: 480px;
   margin: 0;
   overflow: auto;
   padding: var(--ks-space-4);
+  padding-inline-end: calc(var(--ks-space-12) + var(--ks-space-8));
   line-height: var(--ks-font-line-height-normal);
   tab-size: 2;
 }
@@ -452,7 +465,7 @@ h3 {
 .table-scroll td {
   border-bottom: 1px solid var(--ks-color-border);
   padding: var(--ks-space-3) var(--ks-space-4);
-  text-align: left;
+  text-align: start;
   vertical-align: top;
 }
 
@@ -473,12 +486,14 @@ h3 {
   white-space: nowrap;
 }
 
+/* Breaks a value only where it has to: "anywhere" also let the column shrink until a short
+   value like "neutral" broke mid-word. */
 .table-scroll td code {
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .required-tag {
-  margin-left: var(--ks-space-2);
+  margin-inline-start: var(--ks-space-2);
   color: var(--ks-color-danger);
   font-family: var(--ks-font-family-sans);
   font-size: var(--ks-font-size-xs);
@@ -500,7 +515,7 @@ h3 {
   gap: var(--ks-space-2);
   max-width: 68ch;
   margin: 0;
-  padding-left: var(--ks-space-5);
+  padding-inline-start: var(--ks-space-5);
 }
 
 /* Example layouts */
@@ -510,6 +525,16 @@ h3 {
   flex-wrap: wrap;
   align-items: center;
   gap: var(--ks-space-3);
+}
+
+/* A stack sets the space between its children, so paragraphs in it drop their own margins. */
+.stack > p {
+  margin: 0;
+}
+
+/* Fields of different sizes line up by their labels, not by their centers. */
+.row.top {
+  align-items: flex-start;
 }
 
 .grid {

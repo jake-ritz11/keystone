@@ -84,6 +84,12 @@
   padding-inline-start: calc(var(--ks-space-4) + var(--ks-space-2));
 }
 
+/* hidden="until-found" hides with content-visibility, not display: none, so the padding would
+   still take up room under every closed section. */
+.panel[hidden] {
+  padding: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .chevron {
     transition: none;

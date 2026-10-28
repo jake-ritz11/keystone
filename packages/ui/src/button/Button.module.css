@@ -111,6 +111,12 @@
   white-space: nowrap;
 }
 
+/* A button whose only content is an icon is square, with the icon centred. */
+.button:has(> .label > svg:only-child) {
+  aspect-ratio: 1;
+  padding-inline: 0;
+}
+
 /* Icons, including an icon passed as the only child, sit centred instead of on the baseline. */
 .button svg {
   display: block;

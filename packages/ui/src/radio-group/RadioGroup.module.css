@@ -12,7 +12,10 @@
   color: var(--ks-color-text);
 }
 
+/* A fieldset's legend sits outside the flex layout, so the group's gap doesn't reach it; this
+   gives it the same space the options have between them. */
 .legend {
+  margin-block-end: var(--ks-space-2);
   padding: 0;
   font-weight: var(--ks-font-weight-medium);
   line-height: var(--ks-font-line-height-tight);

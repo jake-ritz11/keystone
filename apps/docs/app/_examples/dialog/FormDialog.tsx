@@ -28,7 +28,7 @@ export function FormDialog() {
         }
       >
         <div className="stack">
-          <Input label="Name" defaultValue="Ada Lovelace" autoFocus />
+          <Input label="Name" defaultValue="Ada Lovelace" hint="As it appears on your comments and edits." autoFocus />
           <Input label="Role" defaultValue="Analyst" hint="Shown next to your name." />
         </div>
       </Dialog>

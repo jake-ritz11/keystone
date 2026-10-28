@@ -232,6 +232,34 @@ Dialog stays as it is. Swapping the native element for a `div` would give up the
 the inert background to work around a screen reader quirk. The results are in the
 [checklist](screen-reader-checklist.md#results).
 
+## 9. Centering text by measurement
+
+Badge and button labels looked slightly low on my Windows machine, so I measured them instead
+of adjusting them by eye. A test inserts a zero-size marker at the start of each label to find its
+baseline, reads the font's cap height from a canvas, and compares the space above the capitals
+with the space below the baseline. Button labels were 0.9px low.
+
+There were two causes. First, the tokens named Inter as the typeface, but no app loaded it, so
+every operating system drew the text in its own fallback font, each with different vertical
+metrics. Both apps now self-host Inter and JetBrains Mono, which also means the screenshots in CI
+use the same font as a reviewer's browser. Second, with Inter loaded, tabs, segmented options and
+small buttons were still 0.9px high. Their line height of 1.2 at 14px makes a 16.8px line box,
+and the browser snaps the text to a whole pixel. The tokens now write that line height as
+`round(up, 1.2em, 2px)`, an even number of pixels, and every measured label is centered to within
+0.1px. `alignment.spec.ts` checks this on every component page with a tolerance of half a pixel. I
+confirmed that it fails when the rounding is removed.
+
+The same review found spacing problems that the measurement could not:
+
+- closed Accordion sections kept 12px of padding, because `hidden="until-found"` hides content
+  with `content-visibility` and not `display: none`;
+- the RadioGroup legend sat 6px above its first option while the options were 14px apart, because
+  a fieldset's legend is outside the flex layout and the gap does not reach it;
+- SegmentedControl stretched to the full width of a flex column;
+- an icon-only button was 50 by 34 pixels instead of square;
+- the toast's icon and close button were aligned to the top of the toast, not to its title;
+- a props table broke `"neutral"` in the middle of the word.
+
 ## What isn't proven yet
 
 Firefox has not been run locally. It passes in CI on Linux, but it does not launch

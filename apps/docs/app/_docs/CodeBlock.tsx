@@ -16,7 +16,8 @@ export function CodeBlock({ code, label }: { code: string; label: string }) {
 
   return (
     <div className="code">
-      <Button variant="ghost" size="sm" className="code-copy" onClick={copy}>
+      {/* Secondary, not ghost: it has its own surface, so code scrolled beneath it never shows through. */}
+      <Button variant="secondary" size="sm" className="code-copy" onClick={copy}>
         Copy<span className="visually-hidden"> {label} code</span>
       </Button>
       {/* Focusable so keyboard users can scroll long lines sideways. */}

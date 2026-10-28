@@ -173,8 +173,10 @@ results are NVDA with Chrome on Windows Server 2025, and quote what NVDA said.
 | PR1 | auto | ✅ | "progress bar, 3 of 12 files". In browse mode NVDA gives the bar its own line and reads the label as the line above, rather than repeating it. |
 | TG1 | auto | ✅ | "Show in the activity log, grouping, Edits, toggle button, pressed" |
 | TG2 | auto | ✅ | "not pressed" |
-| PO1, PO2 | auto | ⬜ | |
-| AC1, AC2 | auto | ⬜ | |
+| PO1 | auto | ✅ | "Share, button, collapsed, opens dialog", then "expanded. Share this session, dialog" and the Link field. The dialog's name is read twice, the same NVDA and Chrome behavior as D1. |
+| PO2 | auto | ✅ | "Share, button, collapsed, opens dialog", after a second Escape: the first only takes NVDA out of focus mode in the field. |
+| AC1 | auto | ✅ | "Can I undo an edit?, button, collapsed, heading, level 4" |
+| AC2 | auto | ✅ | "expanded" |
 | CM1 | auto | ✅ | "Commands, combo box, expanded, has auto complete, editable, Search commands…", after the dialog. The first run caught it skipping the field and reading "Esc"; fixed. |
 | CM2 | auto | ✅ | "Commands, list. Tasks, grouping. Stop the agent, 2 of 7" |
 | CM3 | auto | ✅ | "1 command" as you type, then the best match: "Toggle theme, 1 of 1" |

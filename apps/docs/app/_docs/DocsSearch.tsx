@@ -42,7 +42,9 @@ export function DocsSearch() {
   useEffect(() => {
     setMac(/Mac|iPhone|iPad/.test(navigator.platform));
     const onKey = (event: KeyboardEvent) => {
-      const typing = event.target instanceof Element && event.target.closest("input, textarea, select, [contenteditable='true']");
+      // Typing means a visible field has focus; a hidden one (a closed menu's search, say) does not count.
+      const field = event.target instanceof Element ? event.target.closest("input, textarea, select, [contenteditable='true']") : null;
+      const typing = field !== null && field.checkVisibility();
       // A demo on the page that binds the same shortcut (the CommandMenu example) marks itself,
       // and gets it; "/" still opens search there.
       const owned = document.querySelector('[data-owns-shortcut="mod+k"]');

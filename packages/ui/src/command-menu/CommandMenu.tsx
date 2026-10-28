@@ -205,7 +205,11 @@ export const CommandMenu = forwardRef<HTMLDialogElement, CommandMenuProps>(funct
       }}
       onClose={(event) => {
         onClose?.(event);
-        returnFocus.current?.focus();
+        // Opened from a shortcut with nothing focused, there is nowhere to return to. Safari
+        // then leaves focus on the hidden search field, where keys meant for the page land.
+        const dialog = event.currentTarget;
+        if (returnFocus.current) returnFocus.current.focus();
+        else if (document.activeElement instanceof HTMLElement && dialog.contains(document.activeElement)) document.activeElement.blur();
         returnFocus.current = null;
         const select = pending.current;
         pending.current = null;

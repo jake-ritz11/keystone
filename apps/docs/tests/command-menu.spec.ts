@@ -119,3 +119,15 @@ test("the pointer moves the highlight only when it actually moves", async ({ pag
   }, [x, y]);
   expect(await current(page)).toContain("Open the docs");
 });
+
+test("opened from the shortcut with nothing focused, closing leaves no focus inside the hidden menu", async ({ page }) => {
+  await open(page, "/components/command-menu");
+  await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur());
+  await page.keyboard.press("Control+k");
+  await expect(menu(page)).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(menu(page)).toBeHidden();
+  // Safari otherwise keeps focus on the closed menu's search field, and keys meant for the page
+  // (the docs' "/" search shortcut, for one) land there.
+  expect(await page.evaluate(() => !!document.activeElement?.closest("dialog"))).toBe(false);
+});

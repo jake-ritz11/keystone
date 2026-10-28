@@ -115,3 +115,7 @@ test fails if the generated file is stale or if a prop has no JSDoc.
    app, with consent-based logging, and the results will be published as a case study. The
    plan, measures and data dictionary are in [docs/study-plan.md](docs/study-plan.md), and the
    instrumentation is built. The study needs the deployed app.
+
+## License
+
+[MIT](LICENSE).

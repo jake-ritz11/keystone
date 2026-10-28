@@ -26,6 +26,7 @@ export const CHECK_PREFIXES: Record<string, string | null> = {
   CM: "command-menu",
   TT: "tooltip",
   TO: "toast",
+  ST: "streaming-text",
 };
 
 export type CheckStatus = "pass" | "odd" | "broken" | "unchecked";

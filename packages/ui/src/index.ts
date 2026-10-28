@@ -59,6 +59,9 @@ export type { SliderProps } from "./slider/Slider";
 export { Progress } from "./progress/Progress";
 export type { ProgressProps } from "./progress/Progress";
 
+export { StreamingText } from "./streaming-text/StreamingText";
+export type { StreamingTextProps } from "./streaming-text/StreamingText";
+
 export { ToggleGroup } from "./toggle-group/ToggleGroup";
 export type { ToggleGroupProps, ToggleOption } from "./toggle-group/ToggleGroup";
 

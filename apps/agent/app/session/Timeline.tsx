@@ -2,7 +2,7 @@
 
 import type { Action, Item, SessionState, ToolItem } from "@keystone-ui/agent-core";
 import { useEffect, useRef, useState } from "react";
-import { Disclosure, Shimmer } from "@keystone-ui/ui";
+import { Disclosure, Shimmer, StreamingText } from "@keystone-ui/ui";
 import { isWrite, summarize, describeTool } from "./describe";
 import { useSessionLog } from "../study/SessionLog";
 import { RichText } from "./RichText";
@@ -51,10 +51,9 @@ function Entry({ row, live, approval, dispatch }: { row: Row; live: boolean; app
       return <p className={styles.user}>{row.text}</p>;
     case "text":
       return (
-        <p className={styles.text}>
+        <StreamingText className={styles.text} text={row.text} streaming={row.streaming}>
           <RichText text={row.text} />
-          {row.streaming && <span className={styles.caret} aria-hidden="true" />}
-        </p>
+        </StreamingText>
       );
     case "progress":
       return <Progress text={row.text} live={live} />;

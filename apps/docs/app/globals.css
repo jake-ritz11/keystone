@@ -727,6 +727,41 @@ h3 {
   max-width: 28rem;
 }
 
+/* StreamingText example */
+
+/* Room for the whole response from the start, so the transcript below doesn't move while it streams. */
+.streaming-demo {
+  max-width: 40rem;
+  white-space: pre-line;
+  min-block-size: calc(5lh + 2 * var(--ks-space-4));
+  border: 1px solid var(--ks-color-border);
+  border-radius: var(--ks-radius-md);
+  padding: var(--ks-space-4);
+}
+
+.streaming-demo code {
+  border-radius: var(--ks-radius-sm);
+  padding: 0 var(--ks-space-1);
+  background: var(--ks-color-surface-raised);
+}
+
+.heard {
+  max-width: 40rem;
+}
+
+.heard h3 {
+  margin: 0 0 var(--ks-space-2);
+  font-size: var(--ks-font-size-sm);
+}
+
+.heard ol {
+  display: grid;
+  gap: var(--ks-space-1);
+  margin: 0;
+  padding-inline-start: var(--ks-space-5);
+  font-size: var(--ks-font-size-sm);
+}
+
 /* Disclosure examples */
 
 .disclosure-output {

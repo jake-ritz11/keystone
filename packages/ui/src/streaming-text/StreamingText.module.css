@@ -1,0 +1,51 @@
+.text {
+  overflow-wrap: anywhere;
+}
+
+/*
+ * While text streams: a dot at the end of the line that breathes, rather than a cursor that
+ * blinks. It sits inline, so it moves with the text and never changes the height of the line.
+ */
+.caret {
+  display: inline-block;
+  inline-size: 0.5em;
+  block-size: 0.5em;
+  margin-inline-start: var(--ks-space-1);
+  border-radius: var(--ks-radius-full);
+  vertical-align: middle;
+  background: var(--ks-color-accent);
+  animation: breathe var(--ks-motion-duration-ambient) var(--ks-motion-easing-standard) infinite;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+  50% {
+    opacity: 0.35;
+    scale: 0.7;
+  }
+}
+
+.visuallyHidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .caret {
+    animation: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .caret {
+    background: CanvasText;
+  }
+}

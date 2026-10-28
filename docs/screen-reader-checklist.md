@@ -137,6 +137,14 @@ anything is missing or announced twice.
 | TO4 | Activate With action, then Tab to the toast | Its Undo button and "Dismiss: 3 files moved to trash, button" are reachable |
 | TO5 | Open "From a dialog", activate Show toast | Announced while the dialog is open (the layer moves into the modal) |
 
+### StreamingText (`/components/streaming-text`)
+
+| # | Do | Expect |
+| --- | --- | --- |
+| ST1 | Activate Play response, then wait without pressing anything | Each sentence read as it finishes, including "Checking what else calls firstPage" after the pause |
+| ST2 | The same run | No sentence read in pieces or twice, and no backticks read out |
+| ST3 | Choose Live text, then Play response | Not a check of Keystone: a record of how the usual approach, the text itself as the live region, sounds |
+
 ## Results
 
 Status: ✅ as expected, ⚠️ works but reads oddly, ❌ broken, ⬜ not checked yet. The automated
@@ -181,6 +189,9 @@ said.
 | AC2 | auto | ✅ | "expanded" |
 | CM1 | auto | ✅ | "Commands, combo box, expanded, has auto complete, editable, Search commands…", after the dialog. The first run found that it skipped the field and read "Esc", and I fixed that. |
 | CM2 | auto | ✅ | "Commands, list. Tasks, grouping. Stop the agent, 2 of 7" |
+| ST1 | auto | ⬜ | Waiting for the first CI run. |
+| ST2 | auto | ⬜ | Waiting for the first CI run. |
+| ST3 | auto | ⬜ | Waiting for the first CI run. |
 | CM3 | auto | ✅ | "1 command" as you type, then the best match: "Toggle theme, 1 of 1" |
 | TT1 | auto | ✅ | "Hover or focus me, button, Saves a copy to your workspace" |
 | TT2, TT3 | manual | ⬜ | |

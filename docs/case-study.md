@@ -46,7 +46,7 @@ day. The browser sends only the conversation.
 
 ```
 packages/tokens      colors (light, dark and high contrast), space, target sizes, type, motion
-packages/ui          23 components built only from tokens
+packages/ui          24 components built only from tokens
 packages/agent-core  workspace, tools, diffs, session reducer, replays (no React)
 apps/agent           the interface: timeline, plan, diffs, preview, variants
 apps/docs            every component, every token, these write-ups

@@ -44,6 +44,7 @@ export const COMPONENTS: ComponentSummary[] = [
   { slug: "disclosure", name: "Disclosure", imports: ["Disclosure"], summary: "Show and hide a section, on the native details element.", category: "Layout" },
   { slug: "badge", name: "Badge", imports: ["Badge"], summary: "A short, static label for a status or a category.", category: "Display" },
   { slug: "shimmer", name: "Shimmer", imports: ["Shimmer"], summary: "Live text: a light sweeps across it while the work it names is happening.", category: "Display" },
+  { slug: "streaming-text", name: "StreamingText", imports: ["StreamingText"], summary: "A response that arrives as it's read, announced a sentence at a time.", category: "Display" },
   { slug: "diff-view", name: "DiffView", imports: ["DiffView"], summary: "A unified diff for reviewing a change, readable by screen readers.", category: "Display" },
   { slug: "toast", name: "Toast", imports: ["ToastProvider", "useToast"], summary: "Announced notifications that pause on hover and work over a modal.", category: "Overlays" },
 ];
@@ -156,6 +157,15 @@ export const spec: Record<string, ComponentSpec> = {
         interface: "ShimmerProps",
         source: "packages/ui/src/shimmer/Shimmer.tsx",
         extends: "every <span> attribute",
+      },
+    ],
+  },
+  "streaming-text": {
+    parts: [
+      {
+        interface: "StreamingTextProps",
+        source: "packages/ui/src/streaming-text/StreamingText.tsx",
+        extends: "every <div> attribute",
       },
     ],
   },

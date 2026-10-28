@@ -230,6 +230,37 @@ export const PROPS: Record<string, PropDoc[]> = {
       "description": "Sweeps while true; plain text in the surrounding color when false, so the words can stay once the work ends."
     }
   ],
+  "StreamingTextProps": [
+    {
+      "name": "text",
+      "type": "string",
+      "required": true,
+      "description": "Everything received so far. It only grows while streaming; new text replaces it and starts over."
+    },
+    {
+      "name": "streaming",
+      "type": "boolean",
+      "required": true,
+      "description": "True while more text is coming. Shows the caret, and decides when the last words are announced."
+    },
+    {
+      "name": "announce",
+      "type": "\"sentences\" | \"end\" | \"off\"",
+      "default": "\"sentences\"",
+      "description": "What screen readers hear as it arrives. \"sentences\" says each finished sentence; \"end\" says the whole text once it's complete; \"off\" says nothing, for when something else announces it."
+    },
+    {
+      "name": "pause",
+      "type": "number",
+      "default": "1500",
+      "description": "How long the text can stall mid-sentence, in milliseconds, before the unfinished part is said anyway. A model often pauses before calling a tool, on \"Let me check the config\"."
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "description": "How to draw the text, such as with inline code or links. Plain `text` by default."
+    }
+  ],
   "DiffViewProps": [
     {
       "name": "path",

@@ -349,30 +349,6 @@
   background: var(--ks-color-surface-raised);
 }
 
-/* While text streams: a dot that breathes rather than a cursor that blinks. */
-.caret {
-  display: inline-block;
-  width: 0.5em;
-  height: 0.5em;
-  margin-inline-start: var(--ks-space-1);
-  border-radius: var(--ks-radius-full);
-  vertical-align: middle;
-  background: var(--ks-color-accent);
-  animation: breathe var(--ks-motion-duration-ambient) var(--ks-motion-easing-standard) infinite;
-}
-
-@keyframes breathe {
-  0%,
-  100% {
-    opacity: 1;
-    scale: 1;
-  }
-  50% {
-    opacity: 0.35;
-    scale: 0.7;
-  }
-}
-
 .progress,
 .notice {
   margin: 0;
@@ -839,7 +815,6 @@
 @media (prefers-reduced-motion: reduce) {
   .tasks > li,
   .bump,
-  .caret,
   .check {
     animation: none;
   }

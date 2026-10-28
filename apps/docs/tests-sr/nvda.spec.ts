@@ -257,3 +257,37 @@ test("RG1, RG2: a radio group reads its question, then the answer and its positi
   await nvda.press("ArrowDown");
   expectSaid(await heard(nvda, "RG2"), "review at the end", "2 of 3", "review them all together");
 });
+
+/** Everything NVDA says over `ms`, however long the pauses between phrases. */
+async function listen(nvda: NVDA, ms: number, check: string): Promise<string[]> {
+  await new Promise((resolve) => setTimeout(resolve, ms));
+  const log = await nvda.spokenPhraseLog();
+  await nvda.clearSpokenPhraseLog();
+  console.log(`[${check}] ${log.join(" | ")}`);
+  return log;
+}
+
+test("ST1, ST2: a streamed response is read a sentence at a time, each sentence once", async ({ page, nvda }) => {
+  await open(page, nvda, "/components/streaming-text");
+  await reach(nvda, page.getByRole("button", { name: "Play response" }), "ST1 trigger");
+  await nvda.press("Enter");
+  const phrases = await listen(nvda, 14_000, "ST1");
+  const said = phrases.join(" ");
+  expectSaid(said, "found the problem in pagination.ts", "first page is skipped", "nothing else does", "all 14 tests pass");
+  // ST2: no sentence is said in pieces or twice, which is what a live region on the text itself does.
+  for (const sentence of ["first page is skipped", "added a test for the first page"]) {
+    expect(said.toLowerCase().split(sentence).length - 1, sentence).toBe(1);
+  }
+  expect(phrases.length).toBeLessThan(20);
+});
+
+test("ST3: for comparison, the same response with the text itself as the live region", async ({ page, nvda }) => {
+  // Not a check of Keystone: a record of what the usual approach sounds like, for docs/streaming.md.
+  await open(page, nvda, "/components/streaming-text");
+  await page.getByRole("radio", { name: "Live text" }).click();
+  await reach(nvda, page.getByRole("button", { name: "Play response" }), "ST3 trigger");
+  await nvda.press("Enter");
+  const phrases = await listen(nvda, 14_000, "ST3");
+  const said = phrases.join(" ").toLowerCase();
+  console.log(`[ST3] ${phrases.length} phrases; "first page is skipped" said ${said.split("first page is skipped").length - 1} times`);
+});

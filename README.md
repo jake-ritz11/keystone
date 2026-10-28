@@ -6,7 +6,7 @@ Claude can build components from the system and check its own work against it.
 | Package | What it is |
 | --- | --- |
 | [`packages/tokens`](packages/tokens) | Design tokens for color (light, dark and high contrast), space, target size, radius, type and motion. Every component reads its values from here |
-| [`packages/ui`](packages/ui) | 23 React components, styled only with tokens, each with keyboard support, a reduced-motion fallback and both themes |
+| [`packages/ui`](packages/ui) | 24 React components, styled only with tokens, each with keyboard support, a reduced-motion fallback and both themes |
 | [`packages/mcp`](packages/mcp) | MCP server: `get_tokens`, `get_component`, `audit_component`, `generate_component`, plus a CLI audit |
 | [`apps/docs`](apps/docs) | Next.js docs site and component playground |
 | [`apps/agent`](apps/agent) | The agent interface (phase 2): work with a coding agent, with switchable interaction variants |
@@ -70,7 +70,7 @@ opens this folder. Other clients can run `node packages/mcp/src/server.ts` over 
 
 Button, Input, Textarea, Select, Checkbox, Switch, RadioGroup, Slider, Progress,
 SegmentedControl, ToggleGroup, Dialog, Popover, Menu, Tabs, CommandMenu, Tooltip, Accordion,
-Disclosure, Badge, Shimmer, DiffView and Toast.
+Disclosure, Badge, Shimmer, StreamingText, DiffView and Toast.
 
 The overlays are built on the browser platform instead of a headless library. Dialog uses
 `<dialog>` and `showModal()`. Menu, Tooltip and Popover use the `popover` attribute and CSS
@@ -98,7 +98,7 @@ test fails if the generated file is stale or if a prop has no JSDoc.
 
 ## Roadmap
 
-1. **The kit** is built. It has 23 components, two-tier tokens with high contrast, the MCP
+1. **The kit** is built. It has 24 components, two-tier tokens with high contrast, the MCP
    server, and docs whose props tables are generated from the source. What remains is to
    publish the packages to npm and to use changesets for the changelog from then on.
 2. **An agent interface built on the kit** is built. It is a web app for working with an AI

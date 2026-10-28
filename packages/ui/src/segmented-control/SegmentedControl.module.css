@@ -70,8 +70,10 @@
   }
 }
 
+/* A short label ("Off") would otherwise make a fingertip target narrower than it is tall. */
 @media (pointer: coarse) {
   .option {
     min-block-size: var(--ks-target-touch);
+    min-inline-size: var(--ks-target-touch);
   }
 }

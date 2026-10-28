@@ -41,6 +41,7 @@ export const WRITING: Writing[] = [
   { slug: "case-study", file: "case-study.md", title: "Case study", summary: "The agent interface from question to tests: what was built, what broke, and what isn't proven." },
   { slug: "comparison", file: "comparison.md", title: "How Keystone compares", summary: "Against five component libraries, six design systems and three agent UI kits: what it adopted, what it skips, and the bugs the comparison found." },
   { slug: "content-guidelines", file: "content-guidelines.md", title: "Content guidelines", summary: "How the interfaces talk: actions, tool states, errors and forms, with the rules a test enforces." },
+  { slug: "streaming", file: "streaming.md", title: "Streaming and screen readers", summary: "What a screen reader should say while a response streams in: the sources, the design, and what NVDA was measured saying." },
   { slug: "voice", file: "voice.md", title: "Voice", summary: "How the long-form writing reads, modelled on six student theses and checked against the known signs of machine-written text." },
   { slug: "mobile", file: "mobile.md", title: "Mobile", summary: "The small-screen standards, from WCAG and the platform guidelines, with the data behind them and the tests that hold them." },
   { slug: "decisions", file: "decisions.md", title: "Decisions", summary: "Why it's built this way, what broke, and what the tests do and don't prove." },

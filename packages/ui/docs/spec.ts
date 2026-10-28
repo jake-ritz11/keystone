@@ -13,33 +13,39 @@ export interface ComponentSummary {
   /** What to import from "@keystone-ui/ui" to use it. */
   imports: string[];
   summary: string;
+  /** Where it sits in the docs' sidebar and search. */
+  category: ComponentCategory;
 }
+
+/** The sidebar's component groups, in order. */
+export const CATEGORIES = ["Actions", "Forms", "Overlays", "Layout", "Display"] as const;
+export type ComponentCategory = (typeof CATEGORIES)[number];
 
 /** Every component, in docs order. */
 export const COMPONENTS: ComponentSummary[] = [
-  { slug: "button", name: "Button", imports: ["Button"], summary: "Actions, in four variants, with a loading state that keeps focus." },
-  { slug: "input", name: "Input", imports: ["Input"], summary: "A labelled text field with hint and error text wired for screen readers." },
-  { slug: "textarea", name: "Textarea", imports: ["Textarea"], summary: "Multi-line text that grows as you type, up to a limit, then scrolls." },
-  { slug: "select", name: "Select", imports: ["Select"], summary: "A native select, with a token-styled popup where the browser allows it." },
-  { slug: "dialog", name: "Dialog", imports: ["Dialog"], summary: "A modal on the native <dialog>, with React in control of open state." },
-  { slug: "menu", name: "Menu", imports: ["Menu", "MenuItem", "MenuSeparator"], summary: "An actions menu on the popover API, with the full menu keyboard model." },
-  { slug: "tabs", name: "Tabs", imports: ["Tabs", "TabList", "Tab", "TabPanel"], summary: "Underline or segmented, horizontal or vertical, automatic or manual." },
-  { slug: "checkbox", name: "Checkbox", imports: ["Checkbox"], summary: "A native checkbox with a drawn box, a mixed state and a check that draws in." },
-  { slug: "switch", name: "Switch", imports: ["Switch"], summary: "An on/off setting that applies at once, announced as a switch." },
-  { slug: "radio-group", name: "RadioGroup", imports: ["RadioGroup"], summary: "One answer from a short list: native radios in a fieldset." },
-  { slug: "slider", name: "Slider", imports: ["Slider"], summary: "A number from a range, on a native range input, with a formatted value." },
-  { slug: "progress", name: "Progress", imports: ["Progress"], summary: "How far along work is, or that it's happening, on the native progress element." },
-  { slug: "segmented-control", name: "SegmentedControl", imports: ["SegmentedControl"], summary: "One choice from a few, side by side, as a keyboard-friendly radio group." },
-  { slug: "toggle-group", name: "ToggleGroup", imports: ["ToggleGroup"], summary: "Buttons that stay pressed, for formatting, filters and view options." },
-  { slug: "command-menu", name: "CommandMenu", imports: ["CommandMenu"], summary: "Every action in one searchable list, behind a keyboard shortcut." },
-  { slug: "popover", name: "Popover", imports: ["Popover"], summary: "Interactive content beside its trigger, as a non-modal dialog on the popover API." },
-  { slug: "tooltip", name: "Tooltip", imports: ["Tooltip"], summary: "Hover and focus hints that follow WCAG's rules for content on hover." },
-  { slug: "accordion", name: "Accordion", imports: ["Accordion", "AccordionItem"], summary: "Sections under real headings, one or several open, still found by find-in-page." },
-  { slug: "disclosure", name: "Disclosure", imports: ["Disclosure"], summary: "Show and hide a section, on the native details element." },
-  { slug: "badge", name: "Badge", imports: ["Badge"], summary: "A short, static label for a status or a category." },
-  { slug: "shimmer", name: "Shimmer", imports: ["Shimmer"], summary: "Live text: a light sweeps across it while the work it names is happening." },
-  { slug: "diff-view", name: "DiffView", imports: ["DiffView"], summary: "A unified diff for reviewing a change, readable by screen readers." },
-  { slug: "toast", name: "Toast", imports: ["ToastProvider", "useToast"], summary: "Announced notifications that pause on hover and work over a modal." },
+  { slug: "button", name: "Button", imports: ["Button"], summary: "Actions, in four variants, with a loading state that keeps focus.", category: "Actions" },
+  { slug: "input", name: "Input", imports: ["Input"], summary: "A labelled text field with hint and error text wired for screen readers.", category: "Forms" },
+  { slug: "textarea", name: "Textarea", imports: ["Textarea"], summary: "Multi-line text that grows as you type, up to a limit, then scrolls.", category: "Forms" },
+  { slug: "select", name: "Select", imports: ["Select"], summary: "A native select, with a token-styled popup where the browser allows it.", category: "Forms" },
+  { slug: "dialog", name: "Dialog", imports: ["Dialog"], summary: "A modal on the native <dialog>, with React in control of open state.", category: "Overlays" },
+  { slug: "menu", name: "Menu", imports: ["Menu", "MenuItem", "MenuSeparator"], summary: "An actions menu on the popover API, with the full menu keyboard model.", category: "Actions" },
+  { slug: "tabs", name: "Tabs", imports: ["Tabs", "TabList", "Tab", "TabPanel"], summary: "Underline or segmented, horizontal or vertical, automatic or manual.", category: "Layout" },
+  { slug: "checkbox", name: "Checkbox", imports: ["Checkbox"], summary: "A native checkbox with a drawn box, a mixed state and a check that draws in.", category: "Forms" },
+  { slug: "switch", name: "Switch", imports: ["Switch"], summary: "An on/off setting that applies at once, announced as a switch.", category: "Forms" },
+  { slug: "radio-group", name: "RadioGroup", imports: ["RadioGroup"], summary: "One answer from a short list: native radios in a fieldset.", category: "Forms" },
+  { slug: "slider", name: "Slider", imports: ["Slider"], summary: "A number from a range, on a native range input, with a formatted value.", category: "Forms" },
+  { slug: "progress", name: "Progress", imports: ["Progress"], summary: "How far along work is, or that it's happening, on the native progress element.", category: "Display" },
+  { slug: "segmented-control", name: "SegmentedControl", imports: ["SegmentedControl"], summary: "One choice from a few, side by side, as a keyboard-friendly radio group.", category: "Forms" },
+  { slug: "toggle-group", name: "ToggleGroup", imports: ["ToggleGroup"], summary: "Buttons that stay pressed, for formatting, filters and view options.", category: "Forms" },
+  { slug: "command-menu", name: "CommandMenu", imports: ["CommandMenu"], summary: "Every action in one searchable list, behind a keyboard shortcut.", category: "Actions" },
+  { slug: "popover", name: "Popover", imports: ["Popover"], summary: "Interactive content beside its trigger, as a non-modal dialog on the popover API.", category: "Overlays" },
+  { slug: "tooltip", name: "Tooltip", imports: ["Tooltip"], summary: "Hover and focus hints that follow WCAG's rules for content on hover.", category: "Overlays" },
+  { slug: "accordion", name: "Accordion", imports: ["Accordion", "AccordionItem"], summary: "Sections under real headings, one or several open, still found by find-in-page.", category: "Layout" },
+  { slug: "disclosure", name: "Disclosure", imports: ["Disclosure"], summary: "Show and hide a section, on the native details element.", category: "Layout" },
+  { slug: "badge", name: "Badge", imports: ["Badge"], summary: "A short, static label for a status or a category.", category: "Display" },
+  { slug: "shimmer", name: "Shimmer", imports: ["Shimmer"], summary: "Live text: a light sweeps across it while the work it names is happening.", category: "Display" },
+  { slug: "diff-view", name: "DiffView", imports: ["DiffView"], summary: "A unified diff for reviewing a change, readable by screen readers.", category: "Display" },
+  { slug: "toast", name: "Toast", imports: ["ToastProvider", "useToast"], summary: "Announced notifications that pause on hover and work over a modal.", category: "Overlays" },
 ];
 
 export interface PartSpec {

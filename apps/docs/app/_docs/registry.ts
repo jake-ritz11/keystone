@@ -1,5 +1,8 @@
-/** Every page in the docs, in sidebar order. */
-import { COMPONENTS } from "@keystone-ui/ui/docs";
+/**
+ * Every page in the docs, in sidebar order. The sidebar and search are client components, so this
+ * imports the component list on its own, without the props tables (those stay on the server).
+ */
+import { CATEGORIES, COMPONENTS, type ComponentCategory } from "@keystone-ui/ui/docs/components";
 
 export interface DocLink {
   href: string;
@@ -13,6 +16,16 @@ export const foundations: DocLink[] = [
 ];
 
 export const components: DocLink[] = COMPONENTS.map((c) => ({ href: `/components/${c.slug}`, title: c.name, summary: c.summary }));
+
+/** The components in the sidebar's groups, in category order and docs order within each. */
+export const componentGroups: { category: ComponentCategory; links: DocLink[] }[] = CATEGORIES.map((category) => ({
+  category,
+  links: COMPONENTS.filter((c) => c.category === category).map((c) => ({
+    href: `/components/${c.slug}`,
+    title: c.name,
+    summary: c.summary,
+  })),
+}));
 
 export const REPO = "https://github.com/jake-ritz11/keystone";
 

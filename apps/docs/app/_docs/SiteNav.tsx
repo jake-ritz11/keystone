@@ -3,29 +3,48 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { components, foundations, writing, type DocLink } from "./registry";
+import { DocsSearch } from "./DocsSearch";
+import { componentGroups, components, foundations, writing, type DocLink } from "./registry";
 
-function Group({ label, links, pathname }: { label: string; links: DocLink[]; pathname: string }) {
+function Links({ links, pathname }: { links: DocLink[]; pathname: string }) {
   return (
-    <div className="nav-group">
-      <h2 className="nav-label">{label}</h2>
-      <ul className="nav-list">
-        {links.map((link) => (
-          <li key={link.href}>
-            <Link href={link.href} className="nav-link" aria-current={pathname === link.href ? "page" : undefined}>
-              {link.title}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <ul className="nav-list">
+      {links.map((link) => (
+        <li key={link.href}>
+          <Link href={link.href} className="nav-link" aria-current={pathname === link.href ? "page" : undefined}>
+            {link.title}
+          </Link>
+        </li>
+      ))}
+    </ul>
   );
 }
 
 /**
- * The docs' navigation. On a wide screen it's a sidebar. On a phone it's behind a Menu button
- * that opens the same grouped list, rather than a row of 30 links scrolling sideways, most of
- * them offscreen. The button only shows on a phone, so the sidebar never collapses.
+ * A collapsible group, on the native details element. It opens when it holds the current page,
+ * and otherwise stays as the reader left it, so the sidebar shows one group's links at a time
+ * instead of all 37.
+ */
+function Collapsible({ label, links, pathname, level }: { label: string; links: DocLink[]; pathname: string; level: "group" | "category" }) {
+  const here = links.some((link) => link.href === pathname);
+  return (
+    <details className={`nav-collapsible nav-${level}`} open={here || undefined}>
+      <summary>
+        <span>{label}</span>
+        {/* A visual hint of the group's size; the list itself says how many there are. */}
+        <span className="nav-count" aria-hidden="true">
+          {links.length}
+        </span>
+      </summary>
+      <Links links={links} pathname={pathname} />
+    </details>
+  );
+}
+
+/**
+ * The docs' navigation: search at the top, then the pages in groups, with the components split
+ * into categories that collapse. On a wide screen it is a sidebar. On a phone the groups sit
+ * behind a Menu button, and search stays visible above it.
  */
 export function SiteNav() {
   const pathname = usePathname();
@@ -52,6 +71,9 @@ export function SiteNav() {
 
   return (
     <nav className="site-nav" aria-label="Docs" data-open={open || undefined}>
+      <div className="nav-search">
+        <DocsSearch />
+      </div>
       <button ref={toggle} type="button" className="nav-toggle" aria-expanded={open} aria-controls="docs-nav-groups" onClick={() => setOpen(!open)}>
         <span>Menu</span>
         {current && <span className="nav-toggle-current">{current.title}</span>}
@@ -60,9 +82,19 @@ export function SiteNav() {
         </svg>
       </button>
       <div id="docs-nav-groups" className="nav-groups">
-        <Group label="Foundations" links={foundations} pathname={pathname} />
-        <Group label="Components" links={components} pathname={pathname} />
-        <Group label="Writing" links={writing} pathname={pathname} />
+        <div className="nav-group">
+          <h2 className="nav-label">Foundations</h2>
+          <Links links={foundations} pathname={pathname} />
+        </div>
+        <div className="nav-group">
+          <h2 className="nav-label">Components</h2>
+          {componentGroups.map(({ category, links }) => (
+            <Collapsible key={category} label={category} links={links} pathname={pathname} level="category" />
+          ))}
+        </div>
+        <div className="nav-group">
+          <Collapsible label="Writing" links={writing} pathname={pathname} level="group" />
+        </div>
       </div>
     </nav>
   );

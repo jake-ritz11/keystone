@@ -156,6 +156,8 @@ test("on a phone the docs nav is a Menu button that opens the grouped list, and 
   await menu.click();
   await expect(menu).toHaveAttribute("aria-expanded", "true");
   await expect(page.getByRole("heading", { name: "Components", level: 2 })).toBeVisible();
+  // Slider is under Forms, which is closed while Button (under Actions) is the current page.
+  await page.getByRole("navigation", { name: "Docs" }).locator("summary", { hasText: "Forms" }).click();
   await page.getByRole("navigation", { name: "Docs" }).getByRole("link", { name: "Slider" }).click();
   await expect(page).toHaveURL(/\/components\/slider$/);
   await expect(menu).toHaveAttribute("aria-expanded", "false");

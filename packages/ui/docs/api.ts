@@ -7,7 +7,7 @@ import { PROPS } from "./props.generated.ts";
 import { spec, type ComponentSpec, type KeyDoc, type PartSpec } from "./spec.ts";
 import type { PropDoc } from "./props.ts";
 
-export { COMPONENTS, type ComponentSummary } from "./spec.ts";
+export { CATEGORIES, COMPONENTS, type ComponentCategory, type ComponentSummary } from "./spec.ts";
 export type { KeyDoc, PropDoc };
 
 export interface PropsPart extends PartSpec {

@@ -6,7 +6,8 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./docs": "./docs/api.ts"
+    "./docs": "./docs/api.ts",
+    "./docs/components": "./docs/spec.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit",

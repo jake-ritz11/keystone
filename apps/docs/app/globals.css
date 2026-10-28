@@ -179,6 +179,157 @@ kbd {
   }
 }
 
+/* Search, at the top of the sidebar: a button that looks like a field. */
+.nav-search {
+  margin-block-end: var(--ks-space-6);
+}
+
+.docs-search {
+  display: flex;
+  align-items: center;
+  gap: var(--ks-space-2);
+  width: 100%;
+  min-block-size: var(--ks-space-8);
+  border: 1px solid var(--ks-color-border-control);
+  border-radius: var(--ks-radius-md);
+  padding: 0 var(--ks-space-2) 0 var(--ks-space-3);
+  background: var(--ks-color-surface);
+  color: var(--ks-color-text-muted);
+  font: inherit;
+  font-size: var(--ks-font-size-sm);
+  cursor: pointer;
+}
+
+.docs-search-label {
+  flex: 1;
+  text-align: start;
+}
+
+.docs-search-key {
+  border: 1px solid var(--ks-color-border);
+  border-radius: var(--ks-radius-sm);
+  padding: 0 var(--ks-space-1);
+  font-family: var(--ks-font-family-sans);
+  font-size: var(--ks-font-size-xs);
+}
+
+/* No keyboard shortcut to show on a touch screen. */
+@media (pointer: coarse) {
+  .docs-search-key {
+    display: none;
+  }
+
+  .docs-search {
+    min-block-size: var(--ks-target-touch);
+  }
+}
+
+@media (hover: hover) {
+  .docs-search:hover {
+    border-color: var(--ks-color-border-control-hover);
+    color: var(--ks-color-text);
+  }
+}
+
+.docs-search:focus-visible {
+  outline: 2px solid var(--ks-color-focus);
+  outline-offset: 2px;
+}
+
+/* Collapsible groups: a summary row with a chevron and a count, and the links under it. */
+.nav-collapsible > summary {
+  display: flex;
+  align-items: center;
+  gap: var(--ks-space-2);
+  min-block-size: var(--ks-space-8);
+  border-radius: var(--ks-radius-md);
+  padding: 0 var(--ks-space-3);
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+}
+
+.nav-collapsible > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* The chevron, drawn with borders so it follows the text color; it points along the reading
+   direction when closed and down when open. */
+.nav-collapsible > summary::before {
+  content: "";
+  flex-shrink: 0;
+  width: var(--ks-space-1);
+  height: var(--ks-space-1);
+  margin-inline-end: var(--ks-space-1);
+  border-block-end: 1.5px solid currentColor;
+  border-inline-end: 1.5px solid currentColor;
+  rotate: -45deg;
+  transition: rotate var(--ks-motion-duration-fast) var(--ks-motion-easing-standard);
+}
+
+.nav-collapsible > summary:dir(rtl)::before {
+  rotate: 45deg;
+}
+
+.nav-collapsible[open] > summary::before {
+  rotate: 45deg;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-collapsible > summary::before {
+    transition: none;
+  }
+}
+
+.nav-collapsible > summary span:first-of-type {
+  flex: 1;
+}
+
+.nav-count {
+  color: var(--ks-color-text-muted);
+  font-size: var(--ks-font-size-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.nav-category > summary {
+  color: var(--ks-color-text);
+  font-size: var(--ks-font-size-sm);
+  font-weight: var(--ks-font-weight-medium);
+}
+
+/* Writing is a top-level group, so its summary reads like the other group labels. */
+.nav-group > .nav-collapsible.nav-group > summary,
+.nav-collapsible.nav-group > summary {
+  color: var(--ks-color-text-muted);
+  font-size: var(--ks-font-size-xs);
+  font-weight: var(--ks-font-weight-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Links in a category sit under its label, past the chevron. */
+.nav-collapsible > .nav-list {
+  margin-block: var(--ks-space-1) var(--ks-space-2);
+  padding-inline-start: var(--ks-space-3);
+}
+
+@media (hover: hover) {
+  .nav-collapsible > summary:hover {
+    background: var(--ks-color-surface-raised);
+  }
+}
+
+.nav-collapsible > summary:focus-visible {
+  outline: 2px solid var(--ks-color-focus);
+  outline-offset: -2px;
+}
+
+@media (pointer: coarse) {
+  .nav-collapsible > summary {
+    min-block-size: var(--ks-target-touch);
+  }
+}
+
 .nav-link[aria-current="page"] {
   background: var(--ks-color-surface-raised);
   color: var(--ks-color-accent);

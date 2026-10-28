@@ -22,7 +22,10 @@ export default function CommandMenuPage() {
           file="command-menu/Palette.tsx"
           note="Try “dark”. Keywords find commands even when the word is not in their labels. Export is disabled, so the arrow keys skip it."
         >
-          <Palette />
+          {/* The demo binds Ctrl+K itself, so the docs search leaves that shortcut to it on this page. */}
+          <div data-owns-shortcut="mod+k">
+            <Palette />
+          </div>
         </Example>
       </Section>
 

@@ -3,6 +3,10 @@
 Keystone is a token-driven React design system with an MCP server and Claude skills, so that
 Claude can build components from the system and check its own work against it.
 
+Start with the [case study](docs/case-study.md). Two pieces of research came out of it:
+[what a screen reader should say while a response streams](docs/streaming.md), and
+[whether the MCP server changes what Claude builds](docs/evals.md).
+
 | Package | What it is |
 | --- | --- |
 | [`packages/tokens`](packages/tokens) | Design tokens for color (light, dark and high contrast), space, target size, radius, type and motion. Every component reads its values from here |

@@ -110,19 +110,64 @@ One of my explanations was wrong. I thought NVDA read the top of the page after 
 because focus returned too late. Moving focus earlier did not change what NVDA read, and the
 behavior comes from NVDA's own reading cursor. I reverted the change and recorded the reason.
 
+## A response that streams, for someone who cannot watch it
+
+An agent's reply arrives a few characters at a time. In the first version of the app the reply
+was silent for screen-reader users until the status line said "Done", so they had to wait for
+the end and then go back and find the text. The common alternative, making the reply a live
+region, gives the screen reader every change: the example response in the docs changes between
+36 and 56 times, depending on the browser, while it streams.
+
+I read what has been measured about live regions before choosing between those two. The sources
+agree on less than I expected. JAWS and Narrator treat every live region as polite, VoiceOver on
+macOS skips polite regions during read-all, and `aria-busy`, which looks designed for streaming,
+stops NVDA from announcing anything at all. One NVDA issue measured it: 0 of 10 updates were
+announced in Chrome and 0 of 10 in Firefox. The products I could find keep the reply silent and
+announce only that it started and finished. Nobody had tested the middle.
+
+`StreamingText` is the middle. The visible text is not live, and a separate hidden region
+receives whole sentences: everything up to the last sentence that has finished, as one
+announcement, with an unfinished sentence said only once the stream pauses for 1.5 seconds. In
+the example, the region receives 6 announcements, which are the response's 6 sentences in
+order. The behavior tests prove that on a fake clock in three browser engines, and NVDA in CI
+checks that each sentence is spoken once. A comparison check records what NVDA says when the
+text itself is the live region. The full reasoning, the sources and the limits are in
+[Streaming and screen readers](streaming.md). The claim that matters, that a sentence at a time
+is easier to follow than silence, needs listeners, and no test can make it.
+
+## Does the MCP server change what Claude builds?
+
+The MCP server is the reason Keystone exists, and until now its value was an assertion. The
+eval harness in `packages/evals` tests it. It gives Claude 8 ordinary UI tasks, such as a
+confirmation dialog, a settings panel or a sign-up form, in two conditions. In both, the system
+prompt says to use Keystone and its tokens. In one, Claude also has the server's
+`get_tokens`, `get_component` and `audit_component` tools, answered by the same functions the
+server uses. Everything else is held equal, including the model and the effort level.
+
+The scores come from the text alone, with no model grading another model: audit findings,
+components imported that the kit does not have, props a component does not have, native
+elements rebuilt where the kit has a component, and the share of the components a good answer
+would use. Each measure is narrow, and none of them says whether the interface is good. Runs in
+which the API fell back to another model are listed and not scored, because they no longer
+measure the model under test.
+
+The harness is tested against a scripted model, so I know it scores what I meant it to score.
+It has not yet run against the API. The method, what each measure misses and my expectations,
+written before the first run, are in [Does the MCP server help?](evals.md). The results will go
+there and here, with the number of runs behind each figure, whatever they show.
+
 ## What the tests cover
 
 `npm run check` runs before every commit. It runs type checks, unit tests, the design-system
-audit, size budgets for the published packages, the content rules, a production build, and 138
-Playwright behavior tests in Chromium and WebKit (111 for the components and 27 for the agent
-app). It also checks every page at 320 and 375 pixels wide for sideways scrolling, tap-target
-size and text-field size. CI runs the same suite in Firefox and
-runs the NVDA checks. Every documentation page is also checked with axe in light, dark and both
-high-contrast themes. CI compares 114 screenshots, covering every example and overlay state in
-both themes, against reference images rendered in the same Linux environment, so any visual
-change shows up as an image difference in review. For the tests of more complicated behavior, I
-broke the code each test guards and confirmed that the test failed, so that a test cannot pass
-without checking anything.
+audit, size budgets for the published packages, the content rules, a production build, and 425
+Playwright tests, each run in Chromium and WebKit: 394 for the documentation and the components,
+and 31 for the agent app. They include a check of every page at 320 and 375 pixels wide for
+sideways scrolling, tap-target size and text-field size. CI runs the same suite in Firefox and
+runs 36 NVDA checks. Every documentation page is also checked with axe in light, dark and both
+high-contrast themes. CI compares every example and overlay state in both themes with reference
+screenshots rendered in the same Linux environment, so any visual change shows up as an image
+difference in review. For the tests of more complicated behavior, I broke the code each test
+guards and confirmed that the test failed, so that a test cannot pass without checking anything.
 
 ## What is not proven
 
@@ -133,6 +178,9 @@ are built, but it needs the app deployed with live mode, so every expectation in
 Live mode has not yet been used with the real API. Its browser side is tested against recorded
 stream data, which shows that the app handles the expected format but not that the format
 matches what the API sends today.
+
+The eval of the MCP server has not run against the API, so the claim that the server helps
+Claude build with the system is still an expectation, not a result.
 
 Only one screen reader is tested. NVDA with Chrome runs automatically. VoiceOver, JAWS and
 Firefox are manual checks that I have not yet done, and they are listed in the

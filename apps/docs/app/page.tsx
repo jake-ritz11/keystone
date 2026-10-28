@@ -13,6 +13,12 @@ export default function Overview() {
           A token-driven React design system built on the web platform and tested in real browsers. It
           includes an MCP server so that Claude can build components from it and audit them against it.
         </p>
+        <p className="doc-start">
+          Start with the <Link href="/writing/case-study">case study</Link>, which follows the project from its question
+          to its tests. Two pieces of research came out of it: <Link href="/writing/streaming">what a screen reader should
+          say while a response streams</Link>, and <Link href="/writing/evals">whether the MCP server changes what Claude
+          builds</Link>.
+        </p>
       </header>
 
       <section className="doc-section" aria-labelledby="principles">

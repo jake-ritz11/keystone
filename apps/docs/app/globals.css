@@ -496,6 +496,11 @@ h3 {
   font-size: var(--ks-font-size-lg);
 }
 
+.doc-start {
+  max-width: 64ch;
+  margin: var(--ks-space-4) 0 0;
+}
+
 /* Baseline, so the Source link (taller, for its hit area) sits on the same line as the text. */
 .doc-meta {
   display: flex;

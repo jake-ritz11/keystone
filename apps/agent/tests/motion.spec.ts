@@ -68,7 +68,10 @@ test("Ctrl+K: the command menu approves the pending edit and starts tasks", asyn
 
   await page.keyboard.press("Control+k");
   const menu = page.getByRole("dialog", { name: "Commands" });
-  await expect(menu).toBeVisible();
+  const search = menu.getByRole("combobox", { name: "Commands" });
+  // The search field takes focus in the open effect, a frame after the dialog shows; keys
+  // typed before that would go to the page. No person types that fast, but a test can.
+  await expect(search).toBeFocused();
   await page.keyboard.type("approve");
   await expect(menu.getByRole("option", { name: "Approve the edit to index.html" })).toBeVisible();
   await page.keyboard.press("Enter");
@@ -77,6 +80,7 @@ test("Ctrl+K: the command menu approves the pending edit and starts tasks", asyn
 
   // From anywhere, start another task.
   await page.getByRole("button", { name: "Commands" }).click();
+  await expect(search).toBeFocused();
   await page.keyboard.type("pricing");
   await page.keyboard.press("Enter");
   await expect(page.getByRole("list", { name: "Conversation" })).toContainText("pricing table");

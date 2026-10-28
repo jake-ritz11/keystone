@@ -12,6 +12,7 @@ export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement
   error?: ReactNode;
   /** Mixed: some of a group is checked. Shown as a dash and announced as "mixed". */
   indeterminate?: boolean;
+  /** Called with the new state. onChange still works too. */
   onCheckedChange?: (checked: boolean) => void;
 }
 

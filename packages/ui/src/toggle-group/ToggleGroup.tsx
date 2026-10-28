@@ -14,6 +14,10 @@ export interface ToggleOption<T extends string> {
 export interface ToggleGroupProps<T extends string> extends Omit<HTMLAttributes<HTMLDivElement>, "onChange" | "defaultValue"> {
   /** Names the group for assistive tech, e.g. "Text style". */
   "aria-label": string;
+  /**
+   * The buttons, in order.
+   * @docsType { value, label, icon?, disabled? }[]
+   */
   options: ToggleOption<T>[];
   /** Any number pressed at once, or at most one. */
   multiple?: boolean;
@@ -21,9 +25,11 @@ export interface ToggleGroupProps<T extends string> extends Omit<HTMLAttributes<
   value?: T[];
   /** The values pressed at first, when uncontrolled. */
   defaultValue?: T[];
+  /** Called with every pressed value after a change. */
   onValueChange?: (value: T[]) => void;
   /** Show only the icons. Each label still names its button. */
   iconOnly?: boolean;
+  /** Padding around each button. */
   size?: "sm" | "md";
 }
 

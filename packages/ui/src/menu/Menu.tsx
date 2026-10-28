@@ -158,9 +158,11 @@ export function Menu({ trigger, children, align = "start", className, style, ...
 }
 
 export interface MenuItemProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  /** Icon before the label. */
   iconStart?: ReactNode;
   /** Display-only hint, such as "Ctrl D". Wire the actual shortcut yourself. */
   shortcut?: string;
+  /** Danger for destructive actions. */
   tone?: "default" | "danger";
 }
 

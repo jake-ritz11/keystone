@@ -13,11 +13,13 @@ export interface PopoverProps extends Omit<HTMLAttributes<HTMLDivElement>, "chil
   title: ReactNode;
   /** Keep the title for screen readers only, when the content makes it obvious. */
   hideTitle?: boolean;
+  /** The content. */
   children: ReactNode;
   /** Which edge of the trigger it lines up with. */
   align?: "start" | "end";
   /** Whether it's showing, when controlled. Pair with `onOpenChange`. */
   open?: boolean;
+  /** Called when it opens or closes, however that happened. */
   onOpenChange?: (open: boolean) => void;
   /** A close button in the corner. On by default; Escape and clicking outside always close it. */
   dismissButton?: boolean;

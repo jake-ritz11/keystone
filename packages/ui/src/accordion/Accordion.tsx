@@ -30,6 +30,7 @@ export interface AccordionProps extends Omit<HTMLAttributes<HTMLDivElement>, "de
   value?: string[];
   /** The items open at first, when uncontrolled. */
   defaultValue?: string[];
+  /** Called with the open items after a change. */
   onValueChange?: (value: string[]) => void;
   /** The heading level each item's title sits in, to fit the page's outline. */
   headingLevel?: 2 | 3 | 4 | 5 | 6;
@@ -95,7 +96,9 @@ export interface AccordionItemProps extends Omit<HTMLAttributes<HTMLDivElement>,
   title: ReactNode;
   /** Shown at the end of the heading, e.g. a status Badge. Part of the button's name. */
   meta?: ReactNode;
+  /** Can't be opened or closed, and the arrow keys skip it. */
   disabled?: boolean;
+  /** The section's content. */
   children: ReactNode;
 }
 

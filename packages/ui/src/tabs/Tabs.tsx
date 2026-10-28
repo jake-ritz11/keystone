@@ -38,13 +38,16 @@ export interface TabsProps extends Omit<HTMLAttributes<HTMLDivElement>, "default
   value?: string;
   /** Uncontrolled initial tab. */
   defaultValue?: string;
+  /** Called when the selection changes. */
   onValueChange?: (value: string) => void;
   /**
    * `automatic` selects a tab as soon as it gets focus, best when panels are cheap to show.
    * `manual` waits for Enter or Space, for panels that load something.
    */
   activation?: "automatic" | "manual";
+  /** Which arrow keys move between tabs. */
   orientation?: "horizontal" | "vertical";
+  /** Visual style. */
   variant?: TabsVariant;
 }
 
@@ -126,6 +129,7 @@ export const TabList = forwardRef<HTMLDivElement, TabListProps>(function TabList
 });
 
 export interface TabProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  /** Matches the TabPanel it controls. */
   value: string;
 }
 
@@ -158,6 +162,7 @@ export const Tab = forwardRef<HTMLButtonElement, TabProps>(function Tab(
 });
 
 export interface TabPanelProps extends HTMLAttributes<HTMLDivElement> {
+  /** Matches its Tab. */
   value: string;
 }
 

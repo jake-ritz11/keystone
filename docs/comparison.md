@@ -72,6 +72,13 @@ missing. Every example on every component page, and the open menu, tooltip, dial
 toast and focus ring, are compared in both themes against baselines rendered in CI's Linux image.
 The list comes from the component registry, so a new page is covered without a new test.
 
+One more came from looking at how the libraries document props. React Aria generates its tables
+from the TypeScript types, so they can't drift. Keystone's were written by hand, with a test that
+only checked the names. They're now generated from each interface and its JSDoc, so the editor
+hover, the docs page and the MCP server read the same sentence, and a test fails if a prop has
+none. TypeScript 7 has no JavaScript compiler API, so a small parser reads the one shape
+Keystone's components are written in, and its tests pin that shape down.
+
 Building these found two real bugs the existing tests had missed:
 
 1. **Field borders failed WCAG 1.4.11.** A text field's resting outline was 1.34:1 against

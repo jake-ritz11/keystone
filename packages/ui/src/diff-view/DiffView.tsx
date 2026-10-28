@@ -19,6 +19,7 @@ export interface DiffViewHunk {
 export interface DiffViewProps extends HTMLAttributes<HTMLElement> {
   /** The file the change is to. Also names the region for assistive tech. */
   path: string;
+  /** Changed regions, each with its lines and their numbers on both sides. */
   hunks: DiffViewHunk[];
   /** Header content after the path and counts, e.g. Approve and Reject buttons. */
   actions?: ReactNode;

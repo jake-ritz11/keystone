@@ -20,7 +20,8 @@ description: Build or change a React component in the Keystone design system. Us
    - Forward refs and spread the remaining native props so callers keep full control.
 5. **Audit before you hand it over.** Call `audit_component` on each file you wrote, or run
    `npm run audit:ui`. Fix every finding; don't explain it away.
-6. **Document and show it.** Add it to `COMPONENTS` and `api` in `packages/ui/docs/api.ts` (the
-   tests fail until the props table matches the interface), then give it a page at
+6. **Document and show it.** Give every prop a JSDoc comment (it becomes the props table; add
+   `@default` for a default the code can't show). Add the component to `COMPONENTS` and `spec`
+   in `packages/ui/docs/spec.ts`, run `node scripts/generate-props.ts`, then give it a page at
    `apps/docs/app/components/<slug>/page.tsx` showing every variant and state, checked in light
    and dark.

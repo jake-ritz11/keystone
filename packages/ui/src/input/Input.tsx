@@ -8,6 +8,7 @@ export interface InputProps
     Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "prefix"> {
   /** Decorative; give meaning through the label, not the icon. */
   iconStart?: ReactNode;
+  /** Decorative icon after the text. */
   iconEnd?: ReactNode;
 }
 

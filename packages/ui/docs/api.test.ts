@@ -2,20 +2,10 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import { generate, OUTPUT } from "../../../scripts/generate-props.ts";
 import { api, COMPONENTS } from "./api.ts";
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
-
-/** The props an interface declares itself (not the ones it extends), from the source text. */
-function ownProps(source: string, name: string): string[] {
-  const text = readFileSync(root + source, "utf8");
-  const start = text.search(new RegExp(`interface ${name}\\b`));
-  assert.notEqual(start, -1, `${name} not found in ${source}`);
-  const open = text.indexOf("{", start);
-  const close = text.indexOf("\n}", open);
-  const body = text.slice(open + 1, close);
-  return [...body.matchAll(/^ {2}"?([\w-]+)"?\??:/gm)].map((m) => m[1] ?? "");
-}
 
 test("every component in the list has a reference, and nothing else does", () => {
   assert.deepEqual(Object.keys(api).sort(), COMPONENTS.map((c) => c.slug).sort());
@@ -27,11 +17,16 @@ test("every import a component lists is a runtime export of the package", () => 
   for (const c of COMPONENTS) for (const name of c.imports) assert.ok(exported.includes(name), `${c.slug}: ${name} isn't exported`);
 });
 
+test("props.generated.ts is up to date with the component sources", () => {
+  // If this fails, run: node scripts/generate-props.ts
+  assert.equal(readFileSync(OUTPUT, "utf8"), generate());
+});
+
 for (const [component, { parts }] of Object.entries(api)) {
   for (const part of parts) {
-    test(`${component}: the ${part.interface} table matches the source`, () => {
-      const documented = part.props.map((p) => p.name).sort();
-      assert.deepEqual(documented, ownProps(part.source, part.interface).sort());
+    test(`${component}: every ${part.interface} prop has a description in its JSDoc`, () => {
+      assert.ok(part.props.length > 0, `${part.interface} has no props; is the interface name right?`);
+      assert.deepEqual(part.props.filter((p) => !p.description).map((p) => p.name), []);
     });
   }
 }

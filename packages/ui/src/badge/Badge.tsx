@@ -4,6 +4,7 @@ import styles from "./Badge.module.css";
 export type BadgeTone = "neutral" | "accent" | "success" | "danger";
 
 export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
+  /** Color. The text still has to carry the meaning. */
   tone?: BadgeTone;
   /** A leading dot, for statuses. The text still has to carry the meaning on its own. */
   dot?: boolean;

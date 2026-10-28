@@ -19,7 +19,9 @@ import { filterCommands } from "./filter";
 import styles from "./CommandMenu.module.css";
 
 export interface CommandItem {
+  /** Stable and unique within the list. */
   id: string;
+  /** What it does, starting with a verb. */
   label: string;
   /** Commands with the same group are listed together under it, in order of first appearance. */
   group?: string;
@@ -27,18 +29,22 @@ export interface CommandItem {
   keywords?: string[];
   /** Keys shown beside it, e.g. ["Ctrl", "K"]. Display only: binding them is up to the app. */
   shortcut?: string[];
+  /** Listed but skipped by the arrow keys, and can't be chosen. */
   disabled?: boolean;
   /** Runs after the menu has closed and focus is back where it was. */
   onSelect: () => void;
 }
 
 export interface CommandMenuProps extends Omit<DialogHTMLAttributes<HTMLDialogElement>, "open" | "onSelect"> {
+  /** Whether it's showing. You own the state, and usually a shortcut that toggles it. */
   open: boolean;
   /** Called with `false` on Escape, a backdrop click, or once a command is chosen. */
   onOpenChange: (open: boolean) => void;
+  /** The commands, in the order to list them. */
   items: CommandItem[];
   /** Names the dialog and the search field. */
   label?: string;
+  /** Hint in the empty search field. */
   placeholder?: string;
   /** Shown when nothing matches. */
   emptyText?: ReactNode;

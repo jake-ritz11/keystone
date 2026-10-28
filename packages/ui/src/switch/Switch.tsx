@@ -8,6 +8,7 @@ export interface SwitchProps extends Omit<InputHTMLAttributes<HTMLInputElement>,
   label: ReactNode;
   /** Help under the label, read with the switch. */
   hint?: ReactNode;
+  /** Called with the new state. onChange still works too. */
   onCheckedChange?: (checked: boolean) => void;
 }
 

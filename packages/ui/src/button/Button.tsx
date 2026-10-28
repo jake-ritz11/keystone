@@ -7,11 +7,15 @@ export type ButtonVariant = "primary" | "secondary" | "ghost" | "danger";
 export type ButtonSize = "sm" | "md" | "lg";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  /** Visual weight. Keep one primary action per view. */
   variant?: ButtonVariant;
+  /** Padding and text size. */
   size?: ButtonSize;
   /** Shows a spinner, blocks clicks and sets `aria-busy`, but keeps the button focusable. */
   loading?: boolean;
+  /** Icon before the label. Hidden while loading. */
   iconStart?: ReactNode;
+  /** Icon after the label. */
   iconEnd?: ReactNode;
 }
 

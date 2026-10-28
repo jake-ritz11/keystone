@@ -127,6 +127,14 @@ function ScrollTable({ label, children }: { label: string; children: ReactNode }
   );
 }
 
+/** JSDoc marks code with backticks; render those spans as code. */
+function withCode(text: string): ReactNode {
+  return text.split(/(`[^`]+`)/).map((part, i) => (part.startsWith("`") ? <code key={i}>{part.slice(1, -1)}</code> : part));
+}
+
+/** A default is code when it's a value ("md", false, []); prose ("the first enabled option") isn't. */
+const isLiteral = (text: string) => !/\s|'/.test(text) || /^["[{]/.test(text);
+
 export function PropsTables({ component }: { component: string }) {
   const entry = api[component];
   if (!entry) throw new Error(`No API docs for "${component}".`);
@@ -154,8 +162,16 @@ export function PropsTables({ component }: { component: string }) {
                   <td>
                     <code>{prop.type}</code>
                   </td>
-                  <td>{prop.default ? <code>{prop.default}</code> : <span aria-label="none">–</span>}</td>
-                  <td>{prop.description}</td>
+                  <td>
+                    {prop.default === undefined ? (
+                      <span aria-label="none">–</span>
+                    ) : isLiteral(prop.default) ? (
+                      <code>{prop.default}</code>
+                    ) : (
+                      prop.default
+                    )}
+                  </td>
+                  <td>{withCode(prop.description)}</td>
                 </tr>
               ))}
             </tbody>

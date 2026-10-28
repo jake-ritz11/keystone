@@ -12,12 +12,21 @@ export interface SegmentedOption<T extends string> {
 export interface SegmentedControlProps<T extends string> extends Omit<HTMLAttributes<HTMLDivElement>, "onChange" | "defaultValue"> {
   /** Names the group for assistive tech, e.g. "Preview width". */
   "aria-label": string;
+  /**
+   * The choices, in order.
+   * @docsType { value, label, disabled? }[]
+   */
   options: SegmentedOption<T>[];
   /** The selected value, when controlled. */
   value?: T;
-  /** The first selected value, when uncontrolled. */
+  /**
+   * The first selected value, when uncontrolled.
+   * @default the first enabled option
+   */
   defaultValue?: T;
+  /** Called when the selection changes. */
   onValueChange?: (value: T) => void;
+  /** Padding and text size. */
   size?: "sm" | "md";
 }
 

@@ -6,7 +6,9 @@ import styles from "./Textarea.module.css";
 export interface TextareaProps extends FieldOwnProps, TextareaHTMLAttributes<HTMLTextAreaElement> {
   /** Grow with the text, from `minRows` up to `maxRows`, then scroll. */
   autoResize?: boolean;
+  /** Height when empty, in lines. */
   minRows?: number;
+  /** Tallest it grows before scrolling, in lines. */
   maxRows?: number;
 }
 

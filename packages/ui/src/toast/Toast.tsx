@@ -18,16 +18,24 @@ import styles from "./Toast.module.css";
 export type ToastTone = "neutral" | "success" | "danger";
 
 export interface ToastOptions {
+  /** The message. */
   title: string;
+  /** One more sentence of detail. */
   description?: string;
-  /** `danger` is announced assertively; the others politely. */
+  /**
+   * `danger` is announced assertively; the others politely.
+   * @default "neutral"
+   */
   tone?: ToastTone;
   /**
    * One optional action, such as "Undo". Toasts time out, so the same action must also be
    * reachable somewhere else in the interface.
    */
   action?: { label: string; onClick: () => void };
-  /** Milliseconds before it dismisses itself. `Infinity` keeps it until closed. */
+  /**
+   * Milliseconds before it dismisses itself. `Infinity` keeps it until closed.
+   * @default the provider's
+   */
   duration?: number;
 }
 
@@ -54,6 +62,7 @@ const EXIT_MS = 200;
 let counter = 0;
 
 export interface ToastProviderProps {
+  /** Your app. Wrap it once, near the root. */
   children: ReactNode;
   /** Default time on screen, in ms. */
   duration?: number;

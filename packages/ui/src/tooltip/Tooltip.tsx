@@ -5,9 +5,11 @@ import { anchorName, placeFallback, positionedStyle, wireTrigger } from "../popo
 import styles from "./Tooltip.module.css";
 
 export interface TooltipProps {
+  /** The text. Never put anything interactive in a tooltip. */
   content: ReactNode;
   /** One focusable element, such as a Keystone `Button`. It can come from a server component. */
   children: ReactNode;
+  /** Preferred side. It flips when there's no room. */
   side?: "top" | "bottom";
   /**
    * `description` adds to the trigger's own name (aria-describedby). Use `label` for icon-only

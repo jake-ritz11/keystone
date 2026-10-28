@@ -14,6 +14,7 @@ export interface DisclosureProps extends Omit<DetailsHTMLAttributes<HTMLDetailsE
   defaultOpen?: boolean;
   /** Called with the new state when the user opens or closes it. */
   onOpenChange?: (open: boolean) => void;
+  /** A bordered box, or a plain line for lists like FAQs. */
   variant?: "bordered" | "plain";
 }
 

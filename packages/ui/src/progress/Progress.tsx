@@ -4,11 +4,13 @@ import styles from "./Progress.module.css";
 export interface ProgressProps extends Omit<ProgressHTMLAttributes<HTMLProgressElement>, "value" | "max"> {
   /** Always required: what's in progress ("Uploading report.pdf"). */
   label: ReactNode;
+  /** Hides the label visually; it's still announced. */
   hideLabel?: boolean;
   /** Help under the bar, read with it: what's left, or what happens next. */
   hint?: ReactNode;
   /** How far along, from 0 to `max`. Leave it out while the amount is unknown. */
   value?: number;
+  /** The value at completion. */
   max?: number;
   /**
    * How the value is shown and announced: "3 of 12 files", "1.2 of 4 MB". Without it, a

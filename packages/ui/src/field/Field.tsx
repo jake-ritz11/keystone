@@ -7,15 +7,25 @@ export type FieldSize = "sm" | "md" | "lg";
 export interface FieldOwnProps {
   /** Always required. Use `hideLabel` when the context already makes it obvious. */
   label: ReactNode;
+  /**
+   * Hides the label visually but keeps it for assistive tech.
+   * @default false
+   */
   hideLabel?: boolean;
+  /** Help text below the control, linked with aria-describedby. */
   hint?: ReactNode;
   /** Shown below the control, sets `aria-invalid`, and is announced with the field. */
   error?: ReactNode;
+  /**
+   * Control height and text size.
+   * @default "md"
+   */
   size?: FieldSize;
   /**
-   * Keep a line under the control for the hint or error even when there's neither, so an error
-   * that appears later doesn't push the content below it down. On by default; turn it off for
-   * fields that never show a message, like a search box in a toolbar.
+   * Keep a line under the control for the hint or error even when there's neither, so an error that
+   * appears later doesn't push the content below it down. On by default; turn it off for fields
+   * that never show a message, like a search box in a toolbar.
+   * @default true
    */
   reserveMessageSpace?: boolean;
 }

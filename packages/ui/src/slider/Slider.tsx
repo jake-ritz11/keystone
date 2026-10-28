@@ -7,13 +7,22 @@ export interface SliderProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "size" | "value" | "defaultValue" | "min" | "max" | "step"> {
   /** Always required. Use `hideLabel` when the context already makes it obvious. */
   label: ReactNode;
+  /** Hides the label visually; it's still announced. */
   hideLabel?: boolean;
   /** Help under the slider, read with it. */
   hint?: ReactNode;
+  /** The value, when controlled. */
   value?: number;
+  /**
+   * The first value, when uncontrolled.
+   * @default min
+   */
   defaultValue?: number;
+  /** The lowest value. */
   min?: number;
+  /** The highest value. */
   max?: number;
+  /** How far one arrow key moves it. */
   step?: number;
   /**
    * How a value is shown and announced: "40%", "3 agents", "2.5 s". Without it the number is
@@ -22,6 +31,7 @@ export interface SliderProps
   formatValue?: (value: number) => string;
   /** Show the current value next to the label. On by default. */
   showValue?: boolean;
+  /** Called with the new value as it moves. */
   onValueChange?: (value: number) => void;
 }
 

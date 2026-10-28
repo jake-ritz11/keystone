@@ -83,8 +83,10 @@ the agent (or person) still does the design work and reviews what lands.
 
 `get_component` hands Claude the reference for an existing component: what to import, every
 prop with its default and the reason it exists, and the keyboard behavior already built in. It
-reads the same data the docs pages render (`packages/ui/docs/api.ts`), whose tests fail if a
-props table drifts from its interface, so the agent and the docs can't disagree.
+reads the same data the docs pages render (`packages/ui/docs/api.ts`), so the agent and the docs
+can't disagree. The props tables are generated from each component's interface and JSDoc by
+`node scripts/generate-props.ts`, so an editor's hover, the docs page and the agent all read the
+same sentence; a test fails if the generated file is stale or a prop has no JSDoc.
 
 ## Roadmap
 

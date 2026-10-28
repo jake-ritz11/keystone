@@ -16,14 +16,17 @@ import styles from "./Dialog.module.css";
 export type DialogSize = "sm" | "md" | "lg";
 
 export interface DialogProps extends Omit<DialogHTMLAttributes<HTMLDialogElement>, "open" | "title"> {
+  /** Whether the dialog is open. Drives showModal() and close(). */
   open: boolean;
   /** Called with `false` on Escape, the close button, or a backdrop click (when `dismissible`). */
   onOpenChange: (open: boolean) => void;
   /** Names the dialog for assistive tech. Required: every dialog needs an accessible name. */
   title: ReactNode;
+  /** Supporting text, linked with aria-describedby. */
   description?: ReactNode;
   /** Usually the actions. Rendered in a bar below the scrollable body. */
   footer?: ReactNode;
+  /** Width: 400, 520 or 720px, never wider than the viewport. */
   size?: DialogSize;
   /** Close on a backdrop click. Turn off for dialogs that hold unsaved input. */
   dismissible?: boolean;

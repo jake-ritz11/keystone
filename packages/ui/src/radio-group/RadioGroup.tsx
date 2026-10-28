@@ -14,19 +14,32 @@ export interface RadioOption<T extends string> {
 export interface RadioGroupProps<T extends string> extends Omit<FieldsetHTMLAttributes<HTMLFieldSetElement>, "onChange" | "defaultValue"> {
   /** The question the options answer. Rendered as the fieldset's legend. */
   label: ReactNode;
+  /**
+   * The answers, in order.
+   * @docsType { value, label, hint?, disabled? }[]
+   */
   options: RadioOption<T>[];
   /** The selected value, when controlled. */
   value?: T;
   /** The first selected value, when uncontrolled. Leave unset for no answer yet. */
   defaultValue?: T;
+  /** Called when the selection changes. */
   onValueChange?: (value: T) => void;
-  /** Submitted with a form. Generated when unset, so the radios still group. */
+  /**
+   * Submitted with a form. Generated when unset, so the radios still group.
+   * @default generated
+   */
   name?: string;
   /** Help for the whole group, read when focus enters it. */
   hint?: ReactNode;
   /** Shown under the legend, marks every option invalid, and is read when focus enters. */
   error?: ReactNode;
+  /**
+   * An answer is needed to submit. The browser enforces it.
+   * @default false
+   */
   required?: boolean;
+  /** Stacked, or in a row that wraps. */
   orientation?: "vertical" | "horizontal";
 }
 

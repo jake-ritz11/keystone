@@ -1,8 +1,7 @@
 name: Update screenshots
 
-# Renders the visual-regression baselines in the same image the check job compares them in, and
-# uploads them. Download the artifact into apps/docs/tests-visual/screenshots, look at the diff,
-# and commit it.
+# Renders the visual-regression baselines for both apps in the same image the check job compares
+# them in, and uploads them. Download the artifact into apps/, look at the diff, and commit it.
 on:
   workflow_dispatch:
 
@@ -20,10 +19,14 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
-      - run: npm run build -w apps/docs
+      - run: npm run build
       - run: npm run test:visual -w apps/docs -- --update-snapshots=all
+      - run: npm run test:visual -w apps/agent -- --update-snapshots=all
+      # Paths inside the artifact start below apps/: docs/tests-visual/… and agent/tests-visual/….
       - uses: actions/upload-artifact@v7
         with:
           name: screenshots
-          path: apps/docs/tests-visual/screenshots
+          path: |
+            apps/docs/tests-visual/screenshots
+            apps/agent/tests-visual/screenshots
           retention-days: 7

@@ -252,25 +252,38 @@
   padding: var(--ks-space-4) var(--ks-space-5);
 }
 
-@media (max-width: 900px) {
-  .app {
-    height: auto;
-    min-height: 100dvh;
-  }
+/* Only on a narrow screen, where the two panes take turns. */
+.viewSwitch {
+  display: none;
+}
 
+.viewBadge {
+  margin-inline-start: var(--ks-space-2);
+}
+
+/*
+ * Narrow: one pane at a time, each the full height, switched at the top, rather than the
+ * workspace stacked a long scroll below the composer.
+ */
+@media (max-width: 900px) {
   .session {
     grid-template-columns: minmax(0, 1fr);
-    height: auto;
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+
+  .viewSwitch {
+    display: flex;
+    border-bottom: 1px solid var(--ks-color-border);
+    padding: var(--ks-space-2) var(--ks-space-5);
   }
 
   .conversation {
-    height: 75dvh;
     border-inline-end: 0;
-    border-bottom: 1px solid var(--ks-color-border);
   }
 
-  .side {
-    min-height: 75dvh;
+  .session[data-view="workspace"] .conversation,
+  .session[data-view="conversation"] .side {
+    display: none;
   }
 }
 

@@ -55,3 +55,34 @@ test("a cited line is marked, scrolled into view and named; a range marks every 
   await page.getByRole("combobox", { name: "File" }).selectOption("index.html");
   await expect(fileView(page).locator("[data-cited]")).toHaveCount(0);
 });
+
+test("on a phone the conversation and the workspace take turns; on a wide screen both show", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/?speed=fast");
+  await page.locator("html[data-hydrated]").waitFor({ state: "attached" });
+  await page.getByRole("button", { name: /Fix the broken link/ }).click();
+  const view = page.getByRole("radiogroup", { name: "View" });
+  await expect(conversation(page)).toBeVisible();
+  await expect(page.getByRole("tab", { name: "Preview" })).toBeHidden();
+  await expect(page.getByRole("button", { name: "Approve" })).toBeVisible();
+
+  await view.getByRole("radio", { name: "Workspace" }).click();
+  await expect(page.getByRole("tab", { name: "Preview" })).toBeVisible();
+  await expect(conversation(page)).toBeHidden();
+  // An approval is waiting in the other pane, and the switch says so.
+  await expect(view.getByRole("radio", { name: "Conversation Waiting" })).toBeVisible();
+
+  // Following a file reference from the conversation brings the workspace with it.
+  await view.getByRole("radio", { name: /Conversation/ }).click();
+  await conversation(page).getByRole("button", { name: "about.html" }).first().click();
+  await expect(view.getByRole("radio", { name: "Workspace" })).toHaveAttribute("aria-checked", "true");
+  await expect(fileView(page)).toBeFocused();
+
+  // The page itself never scrolls: each pane scrolls inside.
+  expect(await page.evaluate(() => document.documentElement.scrollHeight - window.innerHeight)).toBe(0);
+
+  await page.setViewportSize({ width: 1400, height: 900 });
+  await expect(view).toBeHidden();
+  await expect(conversation(page)).toBeVisible();
+  await expect(page.getByRole("tab", { name: "Preview" })).toBeVisible();
+});

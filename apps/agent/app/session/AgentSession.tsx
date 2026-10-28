@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import type { CommandItem } from "@keystone-ui/ui";
+import { Badge, SegmentedControl, type CommandItem } from "@keystone-ui/ui";
 import { paths, SAMPLE_SITE, studyEvent, type Action, type SampleTask, type SessionState, type StudyEvent, type Transport, type Variant } from "@keystone-ui/agent-core";
 import type { Citation } from "./cite";
 import { CiteContext } from "./RichText";
@@ -64,8 +64,19 @@ export function AgentSession({
   const [rated, setRated] = useState(false);
   // The file reference the user last followed from the conversation; seq makes a repeat count.
   const [citation, setCitation] = useState<{ cite: Citation; seq: number }>();
+  // On a narrow screen one pane shows at a time; on a wide one this changes nothing.
+  const [view, setView] = useState<"conversation" | "workspace">("conversation");
   const files = useMemo(() => new Set(paths(state.workspace)), [state.workspace]);
-  const cites = useMemo(() => ({ files, open: (cite: Citation) => setCitation((c) => ({ cite, seq: (c?.seq ?? 0) + 1 })) }), [files]);
+  const cites = useMemo(
+    () => ({
+      files,
+      open: (cite: Citation) => {
+        setCitation((c) => ({ cite, seq: (c?.seq ?? 0) + 1 }));
+        setView("workspace");
+      },
+    }),
+    [files],
+  );
   const finished = state.status === "done" || state.status === "stopped" || state.status === "error";
 
   // Close the study session with how it ended.
@@ -129,7 +140,32 @@ export function AgentSession({
 
   return (
     <SessionLog.Provider value={log}>
-      <div className={styles.session}>
+      <div className={styles.session} data-view={view}>
+        <div className={styles.viewSwitch}>
+          <SegmentedControl
+            aria-label="View"
+            size="sm"
+            value={view}
+            onValueChange={setView}
+            options={[
+              {
+                value: "conversation",
+                label: (
+                  <>
+                    Conversation
+                    {/* So an approval waiting in the other pane isn't missed. */}
+                    {view === "workspace" && state.status === "waiting" && (
+                      <Badge tone="accent" className={styles.viewBadge}>
+                        Waiting
+                      </Badge>
+                    )}
+                  </>
+                ),
+              },
+              { value: "workspace", label: "Workspace" },
+            ]}
+          />
+        </div>
         <section className={styles.conversation} aria-label="Agent">
           <div
             ref={scroller}

@@ -4,6 +4,10 @@
   "private": true,
   "description": "MCP server that gives Claude the Keystone tokens and audits components against them.",
   "type": "module",
+  "exports": {
+    "./tools": "./src/tools.ts",
+    "./audit": "./src/audit.ts"
+  },
   "bin": {
     "keystone-mcp": "./src/server.ts",
     "keystone-audit": "./src/cli.ts"

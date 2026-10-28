@@ -8,6 +8,7 @@ Claude can build components from the system and check its own work against it.
 | [`packages/tokens`](packages/tokens) | Design tokens for color (light, dark and high contrast), space, target size, radius, type and motion. Every component reads its values from here |
 | [`packages/ui`](packages/ui) | 24 React components, styled only with tokens, each with keyboard support, a reduced-motion fallback and both themes |
 | [`packages/mcp`](packages/mcp) | MCP server: `get_tokens`, `get_component`, `audit_component`, `generate_component`, plus a CLI audit |
+| [`packages/evals`](packages/evals) | Measures whether the MCP server changes what Claude builds: the same UI tasks with and without its tools, scored from the files ([method](docs/evals.md)) |
 | [`apps/docs`](apps/docs) | Next.js docs site and component playground |
 | [`apps/agent`](apps/agent) | The agent interface (phase 2): work with a coding agent, with switchable interaction variants |
 | [`packages/agent-core`](packages/agent-core) | The agent's logic, without React: sandboxed workspace, tools, diffs, session reducer, replays |

@@ -6,76 +6,39 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
-import { color, font, motion, radius, space, target, cssVariables, highContrast } from "@keystone-ui/tokens";
-import { describeComponent, listComponents } from "./components.ts";
-import { auditSource, formatFindings, RULES } from "./audit.ts";
+import { auditComponent, DESCRIPTIONS, getComponent, getTokens, type ToolText } from "./tools.ts";
+import { formatFindings } from "./audit.ts";
 import { ELEMENTS, GenerateError, SIZES, generateComponent } from "./generate.ts";
 
 const server = new McpServer({ name: "keystone", version: "0.0.0" });
 
-server.registerTool(
-  "get_tokens",
-  {
-    title: "Get design tokens",
-    description:
-      "Returns every Keystone design token (color for light and dark, space, target sizes, radius, font, motion) " +
-      "with its CSS variable name. Use these variables instead of raw values in any component. " +
-      "Use only --ks-color-* in components, never --ks-palette-*: the semantic names are what change " +
-      "with the theme and with high contrast. Outlines that identify a control use border-control.",
-    inputSchema: {},
-  },
-  async () => ({
-    content: [
-      {
-        type: "text",
-        text: JSON.stringify(
-          { tokens: { color, space, target, radius, font, motion }, highContrastChanges: highContrast, cssVariables: cssVariables("light") },
-          null,
-          2,
-        ),
-      },
-    ],
-  }),
-);
+const reply = ({ text, isError }: ToolText) => ({ content: [{ type: "text" as const, text }], ...(isError ? { isError } : {}) });
+
+server.registerTool("get_tokens", { title: "Get design tokens", description: DESCRIPTIONS.get_tokens, inputSchema: {} }, async () => reply(getTokens()));
 
 server.registerTool(
   "get_component",
   {
     title: "Get a component's reference",
-    description:
-      "Explains how to use a Keystone component: what it's for, what to import, every prop with " +
-      "its type, default and why it exists, and the keyboard behavior it already handles. Leave " +
-      "out the name to list every component. Reach for an existing component before writing a new one.",
+    description: DESCRIPTIONS.get_component,
     inputSchema: {
       name: z.string().optional().describe('Component name, e.g. "Dialog" or "SegmentedControl"'),
     },
   },
-  async ({ name }) => {
-    if (!name) return { content: [{ type: "text", text: listComponents() }] };
-    const text = describeComponent(name);
-    if (text) return { content: [{ type: "text", text }] };
-    return { content: [{ type: "text", text: `No component named "${name}".
-
-${listComponents()}` }], isError: true };
-  },
+  async ({ name }) => reply(getComponent(name)),
 );
 
 server.registerTool(
   "audit_component",
   {
     title: "Audit a component",
-    description:
-      "Checks one component file (CSS, TSX or JSX) against the Keystone rules: tokens only for " +
-      "color and spacing, a focus-visible style, a reduced-motion fallback, and real buttons " +
-      `for click targets. Rules: ${Object.values(RULES).join(" ")}`,
+    description: DESCRIPTIONS.audit_component,
     inputSchema: {
       filename: z.string().describe("File name with extension, e.g. Card.module.css or Card.tsx"),
       source: z.string().describe("The file's full contents"),
     },
   },
-  async ({ filename, source }) => ({
-    content: [{ type: "text", text: formatFindings(auditSource(filename, source)) }],
-  }),
+  async ({ filename, source }) => reply(auditComponent(filename, source)),
 );
 
 server.registerTool(

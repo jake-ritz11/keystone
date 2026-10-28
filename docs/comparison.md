@@ -111,9 +111,15 @@ and is thinner on the parts that are about chat:
 | Diff review | partial | ✓ | none | ✓, with three approval modes |
 | Live preview | ✓ | ✓ | none | ✓ |
 | Thinking status | ✓ | ✓ | unverified | ✓, timed |
-| Sources, citations | ✓ | ✓ | none | none |
+| Sources, citations | ✓ | ✓ | none | ✓, as file and line references that open the file there |
 | Suggestions, branching, regenerate | ✓ | ✓ | ✓ | none |
 | Attachments in the composer | ✓ | ✓ | ✓ | none |
+
+The kits' citations point at web pages. For a coding agent the sources are the files, so
+Keystone's are file references: when the agent writes `index.html:40`, or just a file name,
+it's a link that opens the Files tab with that line marked and focused. Only files that exist
+become links, so a typo the agent is describing ("abuot.html") stays text, and the system
+prompt asks for `path:line` wherever a claim can be checked.
 
 What none of the kits do is treat the interaction itself as an open question. Keystone's three
 variants (planning, visibility, approval) are switches, so the same task can be run under

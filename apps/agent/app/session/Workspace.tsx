@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { diffHunks, paths, type Workspace } from "@keystone-ui/agent-core";
 import { Badge, DiffView, SegmentedControl, Select, Tab, TabList, TabPanel, Tabs } from "@keystone-ui/ui";
+import type { Citation } from "./cite";
 import styles from "./session.module.css";
 
 /**
@@ -145,16 +146,81 @@ function Preview({ workspace, baseline }: { workspace: Workspace; baseline: Work
   );
 }
 
-/** The site the agent is editing: a live preview, the changes so far, and the raw files. */
-export function WorkspacePane({ workspace, baseline }: { workspace: Workspace; baseline: Workspace }) {
+/**
+ * A file's text, line by line, with the cited lines marked. Following a citation moves focus
+ * here and scrolls the first cited line into view, so the place is where the reader's eyes are.
+ */
+function FileView({ path, text, cited, citation }: { path: string; text: string | undefined; cited?: Citation; citation?: number }) {
+  const ref = useRef<HTMLPreElement>(null);
+  const first = cited?.line;
+  const last = cited?.end ?? first;
+
+  useEffect(() => {
+    const pre = ref.current;
+    if (!pre || citation === undefined) return;
+    pre.focus({ preventScroll: true });
+    const line = first ? pre.querySelector<HTMLElement>(`[data-line="${first}"]`) : null;
+    // Measured against the view itself: offsetTop counts from the nearest positioned ancestor,
+    // which isn't the view, and overshot.
+    if (line) pre.scrollTop += line.getBoundingClientRect().top - pre.getBoundingClientRect().top - pre.clientHeight / 3;
+    else pre.scrollTop = 0;
+    // Once per citation followed.
+  }, [citation, path, first]);
+
+  if (text === undefined) {
+    return (
+      <pre ref={ref} className={styles.fileView} tabIndex={0} aria-label={`Contents of ${path}`}>
+        This file was deleted.
+      </pre>
+    );
+  }
+  const where = first ? (last !== first ? `, lines ${first} to ${last} marked` : `, line ${first} marked`) : "";
+  return (
+    <pre ref={ref} className={styles.fileView} tabIndex={0} aria-label={`Contents of ${path}${where}`}>
+      {text.split("\n").map((content, i) => {
+        const n = i + 1;
+        const marked = first !== undefined && last !== undefined && n >= first && n <= last;
+        return (
+          <span key={i} className={styles.fileLine} data-line={n} data-cited={marked || undefined}>
+            {content}
+          </span>
+        );
+      })}
+    </pre>
+  );
+}
+
+/**
+ * The site the agent is editing: a live preview, the changes so far, and the raw files.
+ * `citation` is the last file reference the user followed from the conversation; each new one
+ * (a new `seq`) switches to Files and shows that place.
+ */
+export function WorkspacePane({
+  workspace,
+  baseline,
+  citation,
+}: {
+  workspace: Workspace;
+  baseline: Workspace;
+  citation?: { cite: Citation; seq: number };
+}) {
   const changed = useMemo(
     () => [...new Set([...paths(workspace), ...paths(baseline)])].filter((p) => workspace[p] !== baseline[p]),
     [workspace, baseline],
   );
+  const [tab, setTab] = useState("preview");
   const [file, setFile] = useState("index.html");
+  const [cited, setCited] = useState<Citation | undefined>();
+
+  useEffect(() => {
+    if (!citation) return;
+    setTab("files");
+    setFile(citation.cite.path);
+    setCited(citation.cite);
+  }, [citation]);
 
   return (
-    <Tabs defaultValue="preview" className={styles.workspace}>
+    <Tabs value={tab} onValueChange={setTab} className={styles.workspace}>
       <TabList aria-label="Workspace">
         <Tab value="preview">Preview</Tab>
         <Tab value="changes">
@@ -184,7 +250,17 @@ export function WorkspacePane({ workspace, baseline }: { workspace: Workspace; b
       </TabPanel>
       <TabPanel value="files" className={styles.workspacePanel}>
         <div className={styles.files}>
-          <Select label="File" hideLabel size="sm" value={file} onChange={(e) => setFile(e.target.value)} reserveMessageSpace={false}>
+          <Select
+            label="File"
+            hideLabel
+            size="sm"
+            value={file}
+            onChange={(e) => {
+              setFile(e.target.value);
+              setCited(undefined);
+            }}
+            reserveMessageSpace={false}
+          >
             {paths(workspace).map((p) => (
               <option key={p} value={p}>
                 {p}
@@ -192,9 +268,7 @@ export function WorkspacePane({ workspace, baseline }: { workspace: Workspace; b
               </option>
             ))}
           </Select>
-          <pre className={styles.fileView} tabIndex={0} aria-label={`Contents of ${file}`}>
-            {workspace[file] ?? "This file was deleted."}
-          </pre>
+          <FileView path={file} text={workspace[file]} cited={cited?.path === file ? cited : undefined} citation={citation?.seq} />
         </div>
       </TabPanel>
     </Tabs>

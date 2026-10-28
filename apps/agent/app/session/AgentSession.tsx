@@ -1,8 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { CommandItem } from "@keystone-ui/ui";
-import { SAMPLE_SITE, studyEvent, type Action, type SampleTask, type SessionState, type StudyEvent, type Transport, type Variant } from "@keystone-ui/agent-core";
+import { paths, SAMPLE_SITE, studyEvent, type Action, type SampleTask, type SessionState, type StudyEvent, type Transport, type Variant } from "@keystone-ui/agent-core";
+import type { Citation } from "./cite";
+import { CiteContext } from "./RichText";
 import { RatingCard } from "../study/RatingCard";
 import { SessionLog } from "../study/SessionLog";
 import { useStudy } from "../study/StudyProvider";
@@ -60,6 +62,10 @@ export function AgentSession({
   );
   const { state, dispatch, stop } = useSession(transport, SAMPLE_SITE, variant, task.prompt, onAction);
   const [rated, setRated] = useState(false);
+  // The file reference the user last followed from the conversation; seq makes a repeat count.
+  const [citation, setCitation] = useState<{ cite: Citation; seq: number }>();
+  const files = useMemo(() => new Set(paths(state.workspace)), [state.workspace]);
+  const cites = useMemo(() => ({ files, open: (cite: Citation) => setCitation((c) => ({ cite, seq: (c?.seq ?? 0) + 1 })) }), [files]);
   const finished = state.status === "done" || state.status === "stopped" || state.status === "error";
 
   // Close the study session with how it ended.
@@ -135,7 +141,9 @@ export function AgentSession({
             }}
           >
             <PlanPanel state={state} dispatch={dispatch} />
-            <Timeline state={state} dispatch={dispatch} />
+            <CiteContext.Provider value={cites}>
+              <Timeline state={state} dispatch={dispatch} />
+            </CiteContext.Provider>
             <ReviewPanel state={state} dispatch={dispatch} />
             {studySession.current && state.status === "done" && !rated && (
               <RatingCard
@@ -171,7 +179,7 @@ export function AgentSession({
           </div>
         </section>
         <section className={styles.side} aria-label="Workspace">
-          <WorkspacePane workspace={state.workspace} baseline={state.baseline} />
+          <WorkspacePane workspace={state.workspace} baseline={state.baseline} citation={citation} />
         </section>
       </div>
     </SessionLog.Provider>

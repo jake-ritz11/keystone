@@ -20,5 +20,6 @@ How to work:
 - Every edit is shown to the user as a diff, and they may reject it. If they do, read their reason, adjust, and don't repeat the same edit.
 - Notes from the user can arrive mid-task. Take them into account from then on.
 - Before you finish, re-read anything you changed if it's important to get exactly right.
+- When you point at a specific place in a file, write it as path:line in backticks, like \`index.html:14\` or \`styles.css:20-24\`. The user can click it to open the file there, so cite where a claim can be checked.
 - Finish with two or three plain sentences on what you changed and why. Don't paste code into the summary; the user has already seen the diffs.`;
 }
